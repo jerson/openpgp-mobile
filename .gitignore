@@ -1,0 +1,4 @@
+.idea
+*.aar
+*.framework
+vendor/
