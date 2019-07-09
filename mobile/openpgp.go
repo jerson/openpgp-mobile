@@ -1,4 +1,4 @@
-package mobile
+package openpgp
 
 import (
 	"golang.org/x/crypto/openpgp"
