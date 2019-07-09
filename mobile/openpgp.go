@@ -1,6 +1,7 @@
 package openpgp
 
 import (
+	"fmt"
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 	"io/ioutil"
@@ -23,7 +24,7 @@ func (o *OpenPGP) Decode(message, privateKey, passphrase string) string {
 	keyringFileBuffer := strings.NewReader(privateKey)
 	entityList, err := openpgp.ReadArmoredKeyRing(keyringFileBuffer)
 	if err != nil {
-		return ""
+		return "error reading ring"
 	}
 	entity = entityList[0]
 
@@ -51,4 +52,9 @@ func (o *OpenPGP) Decode(message, privateKey, passphrase string) string {
 	decStr := string(output)
 
 	return decStr
+}
+
+func (o *OpenPGP) Sample(message string) string {
+
+	return fmt.Sprintf("%s-end",message)
 }
