@@ -1,7 +1,8 @@
-package modules
+package openpgp
 
 import (
 	"errors"
+	"github.com/jerson/openpgp-mobile/mobile/modules"
 	"testing"
 )
 
@@ -140,7 +141,7 @@ var inputMessage = "hola mundo"
 
 func TestOpenPGPkEY_Decrypt(t *testing.T) {
 
-	openPGP := NewOpenPGPKey()
+	openPGP := modules.NewOpenPGPKey()
 	output, err := openPGP.Decrypt(message, privateKey, passphrase)
 	if err != nil {
 		t.Fatal(err)
@@ -151,7 +152,7 @@ func TestOpenPGPkEY_Decrypt(t *testing.T) {
 
 func TestOpenPGPKey_Encrypt(t *testing.T) {
 
-	openPGP := NewOpenPGPKey()
+	openPGP := modules.NewOpenPGPKey()
 	output, err := openPGP.Encrypt(inputMessage, publicKey)
 	if err != nil {
 		t.Fatal(err)
@@ -162,7 +163,7 @@ func TestOpenPGPKey_Encrypt(t *testing.T) {
 
 func TestOpenPGPKey_Complete(t *testing.T) {
 
-	openPGP := NewOpenPGPKey()
+	openPGP := modules.NewOpenPGPKey()
 	input, err := openPGP.Encrypt(inputMessage, publicKey)
 	if err != nil {
 		t.Fatal(err)
@@ -180,7 +181,7 @@ func TestOpenPGPKey_Complete(t *testing.T) {
 
 func TestOpenPGPKey_Sign(t *testing.T) {
 
-	openPGP := NewOpenPGPKey()
+	openPGP := modules.NewOpenPGPKey()
 	output, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
 	if err != nil {
 		t.Fatal(err)
@@ -191,7 +192,7 @@ func TestOpenPGPKey_Sign(t *testing.T) {
 
 func TestOpenPGPKey_Verify(t *testing.T) {
 
-	openPGP := NewOpenPGPKey()
+	openPGP := modules.NewOpenPGPKey()
 	output, err := openPGP.Verify(signed, inputMessage, publicKey)
 	if err != nil {
 		t.Fatal(err)
@@ -202,7 +203,7 @@ func TestOpenPGPKey_Verify(t *testing.T) {
 
 func TestOpenPGPKey_VerifyAndSign(t *testing.T) {
 
-	openPGP := NewOpenPGPKey()
+	openPGP := modules.NewOpenPGPKey()
 	input, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
 	if err != nil {
 		t.Fatal(err)
