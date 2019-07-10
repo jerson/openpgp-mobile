@@ -6,12 +6,12 @@ import (
 
 func TestOpenPGP_Generate(t *testing.T) {
 
-	options := Options{
+	options := &Options{
 		Email:      "sample@sample.com",
 		Name:       "Test",
 		Comment:    "sample",
 		Passphrase: "sample",
-		KeyOptions: KeyOptions{
+		KeyOptions: &KeyOptions{
 			CompressionLevel: 1,
 			RSABits:          2048,
 		},
