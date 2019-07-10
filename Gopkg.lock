@@ -23,6 +23,7 @@
   input-imports = [
     "golang.org/x/crypto/openpgp",
     "golang.org/x/crypto/openpgp/armor",
+    "golang.org/x/crypto/openpgp/packet",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

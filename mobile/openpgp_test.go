@@ -2,7 +2,6 @@ package openpgp
 
 import (
 	"errors"
-	"github.com/jerson/openpgp-mobile/mobile/modules"
 	"testing"
 )
 
@@ -139,31 +138,10 @@ s9nAZmdI3qERI21Uz/AXHKtG/0vKdRep1mOaVOjR4tIVFIYS1NfBkmxUu0yT68w=
 var passphrase = "test"
 var inputMessage = "hola mundo"
 
-func TestOpenPGPkEY_Decrypt(t *testing.T) {
 
-	openPGP := modules.NewOpenPGPKey()
-	output, err := openPGP.Decrypt(message, privateKey, passphrase)
-	if err != nil {
-		t.Fatal(err)
-	}
+func TestOpenPGP_Complete(t *testing.T) {
 
-	t.Log("output:", output)
-}
-
-func TestOpenPGPKey_Encrypt(t *testing.T) {
-
-	openPGP := modules.NewOpenPGPKey()
-	output, err := openPGP.Encrypt(inputMessage, publicKey)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	t.Log("output:", output)
-}
-
-func TestOpenPGPKey_Complete(t *testing.T) {
-
-	openPGP := modules.NewOpenPGPKey()
+	openPGP := NewOpenPGP()
 	input, err := openPGP.Encrypt(inputMessage, publicKey)
 	if err != nil {
 		t.Fatal(err)
@@ -179,31 +157,10 @@ func TestOpenPGPKey_Complete(t *testing.T) {
 	}
 }
 
-func TestOpenPGPKey_Sign(t *testing.T) {
 
-	openPGP := modules.NewOpenPGPKey()
-	output, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
-	if err != nil {
-		t.Fatal(err)
-	}
+func TestOpenPGP_VerifyAndSign(t *testing.T) {
 
-	t.Log("output:", output)
-}
-
-func TestOpenPGPKey_Verify(t *testing.T) {
-
-	openPGP := modules.NewOpenPGPKey()
-	output, err := openPGP.Verify(signed, inputMessage, publicKey)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	t.Log("output:", output)
-}
-
-func TestOpenPGPKey_VerifyAndSign(t *testing.T) {
-
-	openPGP := modules.NewOpenPGPKey()
+	openPGP := NewOpenPGP()
 	input, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
 	if err != nil {
 		t.Fatal(err)
