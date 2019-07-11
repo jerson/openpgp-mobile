@@ -7,13 +7,12 @@ import (
 func TestOpenPGP_Generate(t *testing.T) {
 
 	options := &Options{
-		Email:      "sample@sample.com",
-		Name:       "Test",
-		Comment:    "sample",
-		Passphrase: "sample",
+		Email:   "sample@sample.com",
+		Name:    "Test",
+		Comment: "sample",
 		KeyOptions: &KeyOptions{
 			CompressionLevel: 9,
-			RSABits:          4096,
+			RSABits:          2048,
 			Cipher:           "aes256",
 			Compression:      "zlib",
 			Hash:             "sha512",

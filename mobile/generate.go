@@ -16,7 +16,6 @@ type Options struct {
 	Name       string
 	Comment    string
 	Email      string
-	Passphrase string
 }
 
 func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {

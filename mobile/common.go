@@ -107,7 +107,7 @@ func (o *OpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList, er
 	}
 	entity = entityList[0]
 
-	if passphrase != "" {
+	if entity.PrivateKey.Encrypted {
 		passphraseByte := []byte(passphrase)
 		err = entity.PrivateKey.Decrypt(passphraseByte)
 		if err != nil {
