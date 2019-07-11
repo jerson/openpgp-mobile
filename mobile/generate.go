@@ -48,6 +48,7 @@ func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {
 	if err != nil {
 		return keyPair, err
 	}
+	writerPrivate.Close()
 	keyPair.PrivateKey = privateKeyBuf.String()
 
 	publicKeyBuf := bytes.NewBuffer(nil)
@@ -61,6 +62,7 @@ func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {
 	if err != nil {
 		return keyPair, err
 	}
+	writerPublic.Close()
 	keyPair.PublicKey = publicKeyBuf.String()
 
 	return keyPair, nil

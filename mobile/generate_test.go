@@ -12,8 +12,11 @@ func TestOpenPGP_Generate(t *testing.T) {
 		Comment:    "sample",
 		Passphrase: "sample",
 		KeyOptions: &KeyOptions{
-			CompressionLevel: 1,
-			RSABits:          2048,
+			CompressionLevel: 9,
+			RSABits:          4096,
+			Cipher:           "aes256",
+			Compression:      "zlib",
+			Hash:             "sha512",
 		},
 	}
 	openPGP := NewOpenPGP()

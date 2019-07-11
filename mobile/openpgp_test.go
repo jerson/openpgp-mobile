@@ -169,3 +169,74 @@ func TestOpenPGP_VerifyAndSign(t *testing.T) {
 	}
 	t.Log("output:", output)
 }
+
+func TestOpenPGP_GenerateComplete(t *testing.T) {
+	options := &Options{
+		Email:      "sample@sample.com",
+		Name:       "Test",
+		Comment:    "sample",
+		Passphrase: "sample",
+		KeyOptions: &KeyOptions{
+			CompressionLevel: 9,
+			RSABits:          2048,
+			Cipher:           "aes256",
+			Compression:      "none",
+			Hash:             "sha512",
+		},
+	}
+	openPGP := NewOpenPGP()
+
+	// Generate
+	keyPair, err := openPGP.Generate(options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Common
+	input := "hello world"
+
+	// Encrypt and Decrypt
+	encrypted, err := openPGP.Encrypt(input, keyPair.PublicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	decrypted, err := openPGP.Decrypt(encrypted, keyPair.PrivateKey, options.Passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if decrypted != input {
+		t.Fatal(errors.New("fail decrypt"))
+	}
+	t.Logf("%s === %s", input, decrypted)
+
+	// Sign and Verify
+	signed, err := openPGP.Sign(input, keyPair.PublicKey, keyPair.PrivateKey, options.Passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+	verified, err := openPGP.Verify(signed, input, keyPair.PublicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if verified == false {
+		t.Fatal(errors.New("fail verify"))
+	}
+
+	t.Logf("verified  == %t", verified)
+
+	// Symmetric
+	encryptedSymmetric, err := openPGP.EncryptSymmetric(input, passphrase, options.KeyOptions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	decryptedSymmetric, err := openPGP.DecryptSymmetric(encryptedSymmetric, passphrase, options.KeyOptions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if decryptedSymmetric != input {
+		t.Fatal(errors.New("fail decrypt symmectric"))
+	}
+	t.Logf("%s === %s", input, decryptedSymmetric)
+
+}
