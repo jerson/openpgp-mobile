@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 )
 
-func (o *OpenPGP) DecryptSymmetric(message, password string, options *KeyOptions) (string, error) {
+func (o *OpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
 
 	var output string
 	buf := bytes.NewBufferString(message)
@@ -27,7 +27,7 @@ func (o *OpenPGP) DecryptSymmetric(message, password string, options *KeyOptions
 			return nil, errors.New("decryption failed")
 		}
 		failed = true
-		return []byte(password), nil
+		return []byte(passphrase), nil
 	}
 
 	config := generatePacketConfig(options)

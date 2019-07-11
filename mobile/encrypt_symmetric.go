@@ -6,7 +6,7 @@ import (
 	"golang.org/x/crypto/openpgp/armor"
 )
 
-func (o *OpenPGP) EncryptSymmetric(message, password string, options *KeyOptions) (string, error) {
+func (o *OpenPGP) EncryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
 
 	var output string
 	buf := bytes.NewBuffer(nil)
@@ -17,7 +17,7 @@ func (o *OpenPGP) EncryptSymmetric(message, password string, options *KeyOptions
 	defer w.Close()
 
 	config := generatePacketConfig(options)
-	pt, err := openpgp.SymmetricallyEncrypt(w, []byte(password), nil, config)
+	pt, err := openpgp.SymmetricallyEncrypt(w, []byte(passphrase), nil, config)
 	if err != nil {
 		return output, err
 	}
