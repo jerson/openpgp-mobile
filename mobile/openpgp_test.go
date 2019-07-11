@@ -138,7 +138,6 @@ s9nAZmdI3qERI21Uz/AXHKtG/0vKdRep1mOaVOjR4tIVFIYS1NfBkmxUu0yT68w=
 var passphrase = "test"
 var inputMessage = "hola mundo"
 
-
 func TestOpenPGP_Complete(t *testing.T) {
 
 	openPGP := NewOpenPGP()
@@ -156,7 +155,6 @@ func TestOpenPGP_Complete(t *testing.T) {
 		t.Fatal(errors.New("fail"))
 	}
 }
-
 
 func TestOpenPGP_VerifyAndSign(t *testing.T) {
 

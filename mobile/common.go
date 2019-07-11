@@ -22,13 +22,13 @@ type KeyOptions struct {
 	RSABits          int
 }
 
-func generatePacketConfig(options *KeyOptions) packet.Config {
+func generatePacketConfig(options *KeyOptions) *packet.Config {
 
 	if options == nil {
-		return packet.Config{}
+		return &packet.Config{}
 	}
 
-	return packet.Config{
+	config := &packet.Config{
 		DefaultHash:            hashTo(options.Hash),
 		DefaultCipher:          cipherToFunction(options.Cipher),
 		DefaultCompressionAlgo: compressionToAlgo(options.Compression),
@@ -37,6 +37,7 @@ func generatePacketConfig(options *KeyOptions) packet.Config {
 		},
 		RSABits: options.RSABits,
 	}
+	return config
 }
 
 func cipherToFunction(cipher string) packet.CipherFunction {
@@ -48,7 +49,7 @@ func cipherToFunction(cipher string) packet.CipherFunction {
 	case "aes128":
 		return packet.CipherAES128
 	default:
-		return packet.CipherAES256
+		return packet.CipherAES128
 	}
 }
 
@@ -61,7 +62,7 @@ func compressionToAlgo(algo string) packet.CompressionAlgo {
 	case "zip":
 		return packet.CompressionZIP
 	default:
-		return packet.CompressionZLIB
+		return packet.CompressionNone
 	}
 }
 
@@ -76,7 +77,7 @@ func hashTo(hash string) crypto.Hash {
 	case "sha512":
 		return crypto.SHA512
 	default:
-		return crypto.SHA512
+		return crypto.SHA256
 	}
 }
 

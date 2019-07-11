@@ -8,14 +8,14 @@ import (
 	"io/ioutil"
 )
 
-func (o *OpenPGP)  DecryptSymmetric(message, password string, options *KeyOptions) (string, error) {
+func (o *OpenPGP) DecryptSymmetric(message, password string, options *KeyOptions) (string, error) {
 
 	var output string
 	buf := bytes.NewBufferString(message)
 
 	armorBlock, err := armor.Decode(buf)
 	if err != nil {
-		return output,err
+		return output, err
 	}
 
 	failed := false
@@ -31,14 +31,14 @@ func (o *OpenPGP)  DecryptSymmetric(message, password string, options *KeyOption
 	}
 
 	config := generatePacketConfig(options)
-	md, err := openpgp.ReadMessage(armorBlock.Body, nil, prompt, &config)
+	md, err := openpgp.ReadMessage(armorBlock.Body, nil, prompt, config)
 	if err != nil {
-		return output,err
+		return output, err
 	}
 
 	result, err := ioutil.ReadAll(md.UnverifiedBody)
 	if err != nil {
-		return output,err
+		return output, err
 	}
 
 	output = string(result)

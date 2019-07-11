@@ -12,4 +12,3 @@ func TestOpenPGP_Decrypt(t *testing.T) {
 
 	t.Log("output:", output)
 }
-

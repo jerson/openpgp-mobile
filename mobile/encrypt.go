@@ -51,4 +51,3 @@ func (o *OpenPGP) Encrypt(message, publicKey string) (string, error) {
 
 	return outputString, nil
 }
-

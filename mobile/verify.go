@@ -1,7 +1,5 @@
 package openpgp
 
-
-
 func (o *OpenPGP) Verify(signature, message, publicKey string) (bool, error) {
 	entityList, err := o.readPublicKey(publicKey)
 	if err != nil {
@@ -24,4 +22,3 @@ func (o *OpenPGP) Verify(signature, message, publicKey string) (bool, error) {
 
 	return true, nil
 }
-

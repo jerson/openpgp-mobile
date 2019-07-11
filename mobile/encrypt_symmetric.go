@@ -17,7 +17,7 @@ func (o *OpenPGP) EncryptSymmetric(message, password string, options *KeyOptions
 	defer w.Close()
 
 	config := generatePacketConfig(options)
-	pt, err := openpgp.SymmetricallyEncrypt(w, []byte(password), nil, &config)
+	pt, err := openpgp.SymmetricallyEncrypt(w, []byte(password), nil, config)
 	if err != nil {
 		return output, err
 	}
@@ -28,5 +28,15 @@ func (o *OpenPGP) EncryptSymmetric(message, password string, options *KeyOptions
 		return output, err
 	}
 
-	return buf.String(), nil
+	err = pt.Close()
+	if err != nil {
+		return output, err
+	}
+	err = w.Close()
+	if err != nil {
+		return output, err
+	}
+
+	output = buf.String()
+	return output, nil
 }

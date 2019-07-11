@@ -23,7 +23,7 @@ func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {
 
 	var keyPair *KeyPair
 	config := generatePacketConfig(options.KeyOptions)
-	entity, err := openpgp.NewEntity(options.Name, options.Comment, options.Email, &config)
+	entity, err := openpgp.NewEntity(options.Name, options.Comment, options.Email, config)
 	if err != nil {
 		return keyPair, err
 	}

@@ -31,4 +31,3 @@ func (o *OpenPGP) Decrypt(message, privateKey, passphrase string) (string, error
 
 	return outputString, nil
 }
-

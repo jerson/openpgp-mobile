@@ -1,4 +1,10 @@
 
+test:
+	go test ./...
+
+fmt:
+	go fmt ./...
+
 gomobile:
 	gomobile bind -target=android -o openpgp.aar github.com/jerson/openpgp-mobile/mobile
 

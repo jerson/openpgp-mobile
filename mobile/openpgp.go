@@ -6,4 +6,3 @@ type OpenPGP struct {
 func NewOpenPGP() *OpenPGP {
 	return &OpenPGP{}
 }
-
