@@ -2,8 +2,8 @@ package openpgp
 
 import (
 	"bytes"
-	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
+	"github.com/keybase/go-crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp/armor"
 )
 
 type KeyPair struct {
@@ -16,6 +16,7 @@ type Options struct {
 	Name       string
 	Comment    string
 	Email      string
+	Passphrase string
 }
 
 func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {
@@ -34,8 +35,14 @@ func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {
 		}
 	}
 
-	keyPair = &KeyPair{}
+	if options.Passphrase != "" {
+		err = entity.PrivateKey.Encrypt([]byte(options.Passphrase), nil)
+		if err != nil {
+			return keyPair, err
+		}
+	}
 
+	keyPair = &KeyPair{}
 	privateKeyBuf := bytes.NewBuffer(nil)
 	writerPrivate, err := armor.Encode(privateKeyBuf, openpgp.PrivateKeyType, headers)
 	if err != nil {

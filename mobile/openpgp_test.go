@@ -172,9 +172,10 @@ func TestOpenPGP_VerifyAndSign(t *testing.T) {
 
 func TestOpenPGP_GenerateComplete(t *testing.T) {
 	options := &Options{
-		Email:   "sample@sample.com",
-		Name:    "Test",
-		Comment: "sample",
+		Email:      "sample@sample.com",
+		Name:       "Test",
+		Comment:    "sample",
+		Passphrase: "test",
 		KeyOptions: &KeyOptions{
 			CompressionLevel: 9,
 			RSABits:          2048,
@@ -193,7 +194,7 @@ func TestOpenPGP_GenerateComplete(t *testing.T) {
 
 	// Common
 	input := "hello world"
-	passphrase := ""
+	passphrase := options.Passphrase
 
 	// Encrypt and Decrypt
 	encrypted, err := openPGP.Encrypt(input, keyPair.PublicKey)

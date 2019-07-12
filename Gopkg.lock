@@ -3,27 +3,33 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:50804d40964a0c59170e827824e79bbf810cc10ae57603d8facce8a1f48f9a83"
-  name = "golang.org/x/crypto"
+  digest = "1:7b1d8f83ad794f2967dfb98015f8327f2a099654b778fb1c09669d9a083293c0"
+  name = "github.com/keybase/go-crypto"
   packages = [
+    "brainpool",
     "cast5",
+    "curve25519",
+    "ed25519",
+    "ed25519/internal/edwards25519",
     "openpgp",
     "openpgp/armor",
+    "openpgp/ecdh",
     "openpgp/elgamal",
     "openpgp/errors",
     "openpgp/packet",
     "openpgp/s2k",
+    "rsa",
   ]
   pruneopts = "UT"
-  revision = "4def268fd1a49955bfb3dda92fe3db4f924f2285"
+  revision = "b785b22cc75714432d7ebf0b554dfafaff608671"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "golang.org/x/crypto/openpgp",
-    "golang.org/x/crypto/openpgp/armor",
-    "golang.org/x/crypto/openpgp/packet",
+    "github.com/keybase/go-crypto/openpgp",
+    "github.com/keybase/go-crypto/openpgp/armor",
+    "github.com/keybase/go-crypto/openpgp/packet",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

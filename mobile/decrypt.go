@@ -1,8 +1,8 @@
 package openpgp
 
 import (
-	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
+	"github.com/keybase/go-crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp/armor"
 	"io/ioutil"
 	"strings"
 )

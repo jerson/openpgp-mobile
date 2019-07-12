@@ -2,7 +2,7 @@ package openpgp
 
 import (
 	"bytes"
-	"golang.org/x/crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp"
 )
 
 func (o *OpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {

@@ -2,8 +2,8 @@ package openpgp
 
 import (
 	"bytes"
-	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
+	"github.com/keybase/go-crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp/armor"
 )
 
 func (o *OpenPGP) EncryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {

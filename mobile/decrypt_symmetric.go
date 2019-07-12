@@ -3,8 +3,8 @@ package openpgp
 import (
 	"bytes"
 	"errors"
-	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
+	"github.com/keybase/go-crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp/armor"
 	"io/ioutil"
 )
 
@@ -20,9 +20,6 @@ func (o *OpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptio
 
 	failed := false
 	prompt := func(keys []openpgp.Key, symmetric bool) ([]byte, error) {
-		// If the given passphrase isn't correct, the function will be called again, forever.
-		// This method will fail fast.
-		// Ref: https://godoc.org/golang.org/x/crypto/openpgp#PromptFunction
 		if failed {
 			return nil, errors.New("decryption failed")
 		}
