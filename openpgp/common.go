@@ -81,7 +81,7 @@ func hashTo(hash string) crypto.Hash {
 	}
 }
 
-func (o *OpenPGP) readSignKey(publicKey, privateKey, passphrase string) (*openpgp.Entity, error) {
+func (o *FastOpenPGP) readSignKey(publicKey, privateKey, passphrase string) (*openpgp.Entity, error) {
 
 	entityListPublic, err := o.readPublicKey(publicKey)
 	if err != nil {
@@ -96,7 +96,7 @@ func (o *OpenPGP) readSignKey(publicKey, privateKey, passphrase string) (*openpg
 	return entityListPublic[0], nil
 }
 
-func (o *OpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList, error) {
+func (o *FastOpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList, error) {
 
 	var entity *openpgp.Entity
 	var entityList openpgp.EntityList
@@ -124,7 +124,7 @@ func (o *OpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList, er
 	return entityList, nil
 }
 
-func (o *OpenPGP) readPublicKey(key string) (openpgp.EntityList, error) {
+func (o *FastOpenPGP) readPublicKey(key string) (openpgp.EntityList, error) {
 
 	entityList, err := openpgp.ReadArmoredKeyRing(strings.NewReader(key))
 	if err != nil {
@@ -133,7 +133,7 @@ func (o *OpenPGP) readPublicKey(key string) (openpgp.EntityList, error) {
 
 	return entityList, nil
 }
-func (o *OpenPGP) readSignature(message string) (*packet.Signature, error) {
+func (o *FastOpenPGP) readSignature(message string) (*packet.Signature, error) {
 
 	block, err := armor.Decode(strings.NewReader(message))
 	if err != nil {

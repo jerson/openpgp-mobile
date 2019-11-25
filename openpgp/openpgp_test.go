@@ -138,9 +138,9 @@ s9nAZmdI3qERI21Uz/AXHKtG/0vKdRep1mOaVOjR4tIVFIYS1NfBkmxUu0yT68w=
 var passphrase = "test"
 var inputMessage = "hola mundo"
 
-func TestOpenPGP_Complete(t *testing.T) {
+func TestFastOpenPGP_Complete(t *testing.T) {
 
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	input, err := openPGP.Encrypt(inputMessage, publicKey)
 	if err != nil {
 		t.Fatal(err)
@@ -156,9 +156,9 @@ func TestOpenPGP_Complete(t *testing.T) {
 	}
 }
 
-func TestOpenPGP_VerifyAndSign(t *testing.T) {
+func TestFastOpenPGP_VerifyAndSign(t *testing.T) {
 
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	input, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
 	if err != nil {
 		t.Fatal(err)
@@ -170,7 +170,7 @@ func TestOpenPGP_VerifyAndSign(t *testing.T) {
 	t.Log("output:", output)
 }
 
-func TestOpenPGP_GenerateComplete(t *testing.T) {
+func TestFastOpenPGP_GenerateComplete(t *testing.T) {
 	options := &Options{
 		Email:      "sample@sample.com",
 		Name:       "Test",
@@ -184,7 +184,7 @@ func TestOpenPGP_GenerateComplete(t *testing.T) {
 			Hash:             "sha512",
 		},
 	}
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 
 	// Generate
 	keyPair, err := openPGP.Generate(options)

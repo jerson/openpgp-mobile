@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestOpenPGP_EncryptSymmetric(t *testing.T) {
+func TestFastOpenPGP_EncryptSymmetric(t *testing.T) {
 
 	options := &KeyOptions{
 		CompressionLevel: 9,
@@ -13,7 +13,7 @@ func TestOpenPGP_EncryptSymmetric(t *testing.T) {
 		Compression:      "zlib",
 		Hash:             "sha512",
 	}
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	output, err := openPGP.EncryptSymmetric(inputMessage, passphrase, options)
 	if err != nil {
 		t.Fatal(err)

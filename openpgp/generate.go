@@ -2,6 +2,7 @@ package openpgp
 
 import (
 	"bytes"
+
 	"github.com/keybase/go-crypto/openpgp"
 	"github.com/keybase/go-crypto/openpgp/armor"
 )
@@ -19,7 +20,7 @@ type Options struct {
 	Passphrase string
 }
 
-func (o *OpenPGP) Generate(options *Options) (*KeyPair, error) {
+func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 
 	var keyPair *KeyPair
 	config := generatePacketConfig(options.KeyOptions)

@@ -5,7 +5,7 @@ import (
 	"github.com/keybase/go-crypto/openpgp"
 )
 
-func (o *OpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {
+func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {
 
 	entity, err := o.readSignKey(publicKey, privateKey, passphrase)
 	if err != nil {

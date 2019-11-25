@@ -12,7 +12,7 @@ hFhABS/ig+ryWeEGIgA=
 =RN2S
 -----END PGP MESSAGE-----`
 
-func TestOpenPGP_DecryptSymmetric(t *testing.T) {
+func TestFastOpenPGP_DecryptSymmetric(t *testing.T) {
 
 	options := &KeyOptions{
 		CompressionLevel: 9,
@@ -21,7 +21,7 @@ func TestOpenPGP_DecryptSymmetric(t *testing.T) {
 		Compression:      "zlib",
 		Hash:             "sha512"}
 
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	output, err := openPGP.DecryptSymmetric(symmetricMessage, passphrase, options)
 	if err != nil {
 		t.Fatal(err)

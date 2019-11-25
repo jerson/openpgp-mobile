@@ -2,9 +2,9 @@ package openpgp
 
 import "testing"
 
-func TestOpenPGP_Sign(t *testing.T) {
+func TestFastOpenPGP_Sign(t *testing.T) {
 
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	output, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
 	if err != nil {
 		t.Fatal(err)

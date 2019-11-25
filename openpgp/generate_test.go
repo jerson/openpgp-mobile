@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestOpenPGP_Generate(t *testing.T) {
+func TestFastOpenPGP_Generate(t *testing.T) {
 
 	options := &Options{
 		Email:   "sample@sample.com",
@@ -18,7 +18,7 @@ func TestOpenPGP_Generate(t *testing.T) {
 			Hash:             "sha512",
 		},
 	}
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	output, err := openPGP.Generate(options)
 	if err != nil {
 		t.Fatal(err)
@@ -27,7 +27,7 @@ func TestOpenPGP_Generate(t *testing.T) {
 	t.Log("output:", output)
 }
 
-func TestOpenPGP_GenerateWithPassphrase(t *testing.T) {
+func TestFastOpenPGP_GenerateWithPassphrase(t *testing.T) {
 
 	options := &Options{
 		Email:      "sample@sample.com",
@@ -42,7 +42,7 @@ func TestOpenPGP_GenerateWithPassphrase(t *testing.T) {
 			Hash:             "sha512",
 		},
 	}
-	openPGP := NewOpenPGP()
+	openPGP := NewFastOpenPGP()
 	output, err := openPGP.Generate(options)
 	if err != nil {
 		t.Fatal(err)

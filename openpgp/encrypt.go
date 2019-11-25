@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 )
 
-func (o *OpenPGP) Encrypt(message, publicKey string) (string, error) {
+func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
 
 	entityList, err := o.readPublicKey(publicKey)
 	if err != nil {

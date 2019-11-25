@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 )
 
-func (o *OpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
+func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
 
 	var output string
 	buf := bytes.NewBufferString(message)

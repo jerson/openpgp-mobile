@@ -2,6 +2,8 @@
 
 default: fmt test
 
+deps: 
+	dep ensure -vendor-only
 
 test:
 	go test ./...
@@ -9,9 +11,12 @@ test:
 fmt:
 	go fmt ./...
 
-android:
-	gomobile bind -ldflags="-w -s" -target=android -o openpgp.aar github.com/jerson/openpgp-mobile/mobile
+all: android ios
 
+android: deps
+	mkdir -p output/android
+	gomobile bind -ldflags="-w -s" -target=android -o output/android/openpgp.aar github.com/jerson/openpgp-mobile/openpgp
 
-ios:
-	gomobile bind -ldflags="-w -s" -target=ios -o openpgp.framework github.com/jerson/openpgp-mobile/mobile
+ios: deps
+	mkdir -p output/ios
+	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/Openpgp.framework github.com/jerson/openpgp-mobile/openpgp

@@ -3,4 +3,6 @@
 *.framework
 *.jar
 *.zip
+.DS_Store
 vendor/
+output/

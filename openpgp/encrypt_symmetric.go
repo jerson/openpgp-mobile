@@ -6,7 +6,7 @@ import (
 	"github.com/keybase/go-crypto/openpgp/armor"
 )
 
-func (o *OpenPGP) EncryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
+func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
 
 	var output string
 	buf := bytes.NewBuffer(nil)

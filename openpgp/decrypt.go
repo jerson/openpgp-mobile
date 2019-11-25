@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func (o *OpenPGP) Decrypt(message, privateKey, passphrase string) (string, error) {
+func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string) (string, error) {
 
 	entityList, err := o.readPrivateKey(privateKey, passphrase)
 	if err != nil {
