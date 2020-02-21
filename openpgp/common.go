@@ -3,14 +3,15 @@ package openpgp
 import (
 	"crypto"
 	"errors"
+	"strings"
+
 	"github.com/keybase/go-crypto/openpgp"
 	"github.com/keybase/go-crypto/openpgp/armor"
 	"github.com/keybase/go-crypto/openpgp/packet"
-	"strings"
 )
 
 var headers = map[string]string{
-	"Version": "react-native-fast-openpgp",
+	"Version": "fast-openpgp",
 }
 var messageHeader = "PGP MESSAGE"
 
