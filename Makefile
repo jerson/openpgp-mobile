@@ -3,7 +3,7 @@
 default: fmt test
 
 deps: 
-	dep ensure -vendor-only
+	go mod download
 
 test:
 	go test ./...
@@ -12,6 +12,10 @@ fmt:
 	go fmt ./...
 
 all: android ios
+
+gomobile:
+	go get golang.org/x/mobile/cmd/gomobile
+	gomobile init
 
 android: deps
 	mkdir -p output/android
