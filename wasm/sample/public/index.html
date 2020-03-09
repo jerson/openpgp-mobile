@@ -1,0 +1,22 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script src="wasm_exec.js"></script>
+    <script>
+        const go = new Go();
+        let mod, inst;
+        WebAssembly.instantiateStreaming(fetch("openpgp.wasm"), go.importObject).then(
+            async result => {
+                mod = result.module;
+                inst = result.instance;
+                await go.run(inst);
+            }
+        );
+    </script>
+</head>
+<body>
+<button onClick="OpenPGPHash('sample','sha512',(err,result)=>{ alert('Hash: '+result)});">Hash: Sha512</button>
+<button onClick="OpenPGPGenerate(1024,(err,result)=>{ alert('PublicKet: '+result.publicKey)});">Generate KeyPair</button>
+
+</body>
+</html>
