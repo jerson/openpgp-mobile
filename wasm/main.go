@@ -70,7 +70,6 @@ func DecryptSymmetric(this js.Value, i []js.Value) interface{} {
 	})
 }
 
-
 func Generate(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
 		resultKeyPair, err := instance.Generate(getOptions(i[0]))
@@ -88,9 +87,9 @@ func Generate(this js.Value, i []js.Value) interface{} {
 func getKeyOptions(options js.Value) *openpgp.KeyOptions {
 
 	return &openpgp.KeyOptions{
-		Hash:            options.Get("hash").String(),
-		Cipher:          options.Get("cipher").String(),
-		Compression:     options.Get("compression").String(),
+		Hash:             options.Get("hash").String(),
+		Cipher:           options.Get("cipher").String(),
+		Compression:      options.Get("compression").String(),
 		CompressionLevel: options.Get("compressionLevel").Int(),
 		RSABits:          options.Get("rsaBits").Int(),
 	}
