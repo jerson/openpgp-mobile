@@ -96,6 +96,7 @@ func Generate(options C.Options) C.KeyPair {
 }
 
 func getKeyOptions(options C.KeyOptions) *openpgp.KeyOptions {
+
 	compressionLevel, _ := strconv.Atoi(C.GoString(options.compressionLevel))
 	rsaBits, _ := strconv.Atoi(C.GoString(options.rsaBits))
 
@@ -109,6 +110,7 @@ func getKeyOptions(options C.KeyOptions) *openpgp.KeyOptions {
 }
 
 func getOptions(options C.Options) *openpgp.Options {
+
 	return &openpgp.Options{
 		KeyOptions: getKeyOptions(options.keyOptions),
 		Name:       C.GoString(options.name),

@@ -15,8 +15,7 @@
     </script>
 </head>
 <body>
-<button onClick="OpenPGPHash('sample','sha512',(err,result)=>{ alert('Hash: '+result)});">Hash: Sha512</button>
-<button onClick="OpenPGPGenerate(1024,(err,result)=>{ alert('PublicKet: '+result.publicKey)});">Generate KeyPair</button>
+<button onClick="OpenPGPGenerate({name:'sample',email:'sample@sample.com',comment:''},(a,b)=>{ alert('Result: '+JSON.stringify(b,null,' '))});">Generate KeyPair</button>
 
 </body>
 </html>

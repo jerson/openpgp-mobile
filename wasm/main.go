@@ -86,6 +86,10 @@ func Generate(this js.Value, i []js.Value) interface{} {
 
 func getKeyOptions(options js.Value) *openpgp.KeyOptions {
 
+	if options.IsUndefined() || options.IsNull() {
+		return &openpgp.KeyOptions{}
+	}
+
 	return &openpgp.KeyOptions{
 		Hash:             options.Get("hash").String(),
 		Cipher:           options.Get("cipher").String(),
@@ -96,6 +100,13 @@ func getKeyOptions(options js.Value) *openpgp.KeyOptions {
 }
 
 func getOptions(options js.Value) *openpgp.Options {
+
+	if options.IsUndefined() || options.IsNull() {
+		return &openpgp.Options{
+			KeyOptions: &openpgp.KeyOptions{},
+		}
+	}
+
 	return &openpgp.Options{
 		KeyOptions: getKeyOptions(options.Get("keyOptions")),
 		Name:       options.Get("name").String(),
