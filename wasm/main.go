@@ -86,16 +86,26 @@ func Generate(this js.Value, i []js.Value) interface{} {
 
 func getKeyOptions(data js.Value) *openpgp.KeyOptions {
 
-	var options *openpgp.KeyOptions
+	options := &openpgp.KeyOptions{}
 	if data.IsUndefined() || data.IsNull() {
 		return options
 	}
 
-	options.Hash = data.Get("hash").String()
-	options.Cipher = data.Get("cipher").String()
-	options.Compression = data.Get("compression").String()
-	options.CompressionLevel = data.Get("compressionLevel").Int()
-	options.RSABits = data.Get("rsaBits").Int()
+	if !data.Get("hash").IsNull() && !data.Get("hash").IsUndefined() {
+		options.Hash = data.Get("hash").String()
+	}
+	if !data.Get("cipher").IsNull() && !data.Get("cipher").IsUndefined() {
+		options.Cipher = data.Get("cipher").String()
+	}
+	if !data.Get("compression").IsNull() && !data.Get("compression").IsUndefined() {
+		options.Compression = data.Get("compression").String()
+	}
+	if !data.Get("compressionLevel").IsNull() && !data.Get("compressionLevel").IsUndefined() {
+		options.CompressionLevel = data.Get("compressionLevel").Int()
+	}
+	if !data.Get("rsaBits").IsNull() && !data.Get("rsaBits").IsUndefined() {
+		options.RSABits = data.Get("rsaBits").Int()
+	}
 
 	return options
 
@@ -103,16 +113,26 @@ func getKeyOptions(data js.Value) *openpgp.KeyOptions {
 
 func getOptions(data js.Value) *openpgp.Options {
 
-	var options *openpgp.Options
+	options := &openpgp.Options{}
 	if data.IsUndefined() || data.IsNull() {
 		return options
 	}
 
-	options.Name = data.Get("name").String()
-	options.Comment = data.Get("comment").String()
-	options.Email = data.Get("email").String()
-	options.Passphrase = data.Get("passphrase").String()
-	options.KeyOptions = getKeyOptions(data.Get("keyOptions"))
+	if !data.Get("name").IsNull() && !data.Get("name").IsUndefined() {
+		options.Name = data.Get("name").String()
+	}
+	if !data.Get("comment").IsNull() && !data.Get("comment").IsUndefined() {
+		options.Comment = data.Get("comment").String()
+	}
+	if !data.Get("email").IsNull() && !data.Get("email").IsUndefined() {
+		options.Email = data.Get("email").String()
+	}
+	if !data.Get("passphrase").IsNull() && !data.Get("passphrase").IsUndefined() {
+		options.Passphrase = data.Get("passphrase").String()
+	}
+	if !data.Get("keyOptions").IsNull() && !data.Get("keyOptions").IsUndefined() {
+		options.KeyOptions = getKeyOptions(data.Get("keyOptions"))
+	}
 
 	return options
 }
