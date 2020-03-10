@@ -45,7 +45,7 @@ binding_darwin_386:
 binding_darwin_amd64:
 	GOOS=darwin GOARCH=amd64 BINDING_FILE=openpgp.dylib TAG=darwin ./cross_build.sh
 
-binding_linux: binding_linux_386 binding_linux_amd64 binding_linux_arm64 binding_linux_arm7
+binding_linux: binding_linux_386 binding_linux_amd64 binding_linux_arm64 binding_linux_armv7
 
 binding_linux_386:
 	GOOS=linux GOARCH=386 BINDING_FILE=openpgp.so TAG=main ./cross_build.sh
@@ -56,8 +56,8 @@ binding_linux_amd64:
 binding_linux_arm64:
 	GOOS=linux GOARCH=arm64 BINDING_FILE=openpgp.so TAG=arm ./cross_build.sh
 
-binding_linux_arm7:
-	GOOS=linux GOARCH=arm7 BINDING_FILE=openpgp.so TAG=arm ./cross_build.sh
+binding_linux_armv7:
+	GOOS=linux GOARCH=armv7 BINDING_FILE=openpgp.so TAG=arm ./cross_build.sh
 
 binding_windows: binding_windows_386 binding_windows_amd64
 
