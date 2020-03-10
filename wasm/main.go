@@ -84,36 +84,37 @@ func Generate(this js.Value, i []js.Value) interface{} {
 	})
 }
 
-func getKeyOptions(options js.Value) *openpgp.KeyOptions {
+func getKeyOptions(data js.Value) *openpgp.KeyOptions {
 
-	if options.IsUndefined() || options.IsNull() {
-		return &openpgp.KeyOptions{}
+	var options *openpgp.KeyOptions
+	if data.IsUndefined() || data.IsNull() {
+		return options
 	}
 
-	return &openpgp.KeyOptions{
-		Hash:             options.Get("hash").String(),
-		Cipher:           options.Get("cipher").String(),
-		Compression:      options.Get("compression").String(),
-		CompressionLevel: options.Get("compressionLevel").Int(),
-		RSABits:          options.Get("rsaBits").Int(),
-	}
+	options.Hash = data.Get("hash").String()
+	options.Cipher = data.Get("cipher").String()
+	options.Compression = data.Get("compression").String()
+	options.CompressionLevel = data.Get("compressionLevel").Int()
+	options.RSABits = data.Get("rsaBits").Int()
+
+	return options
+
 }
 
-func getOptions(options js.Value) *openpgp.Options {
+func getOptions(data js.Value) *openpgp.Options {
 
-	if options.IsUndefined() || options.IsNull() {
-		return &openpgp.Options{
-			KeyOptions: &openpgp.KeyOptions{},
-		}
+	var options *openpgp.Options
+	if data.IsUndefined() || data.IsNull() {
+		return options
 	}
 
-	return &openpgp.Options{
-		KeyOptions: getKeyOptions(options.Get("keyOptions")),
-		Name:       options.Get("name").String(),
-		Comment:    options.Get("comment").String(),
-		Email:      options.Get("email").String(),
-		Passphrase: options.Get("passphrase").String(),
-	}
+	options.Name = data.Get("name").String()
+	options.Comment = data.Get("comment").String()
+	options.Email = data.Get("email").String()
+	options.Passphrase = data.Get("passphrase").String()
+	options.KeyOptions = getKeyOptions(data.Get("keyOptions"))
+
+	return options
 }
 
 func registerCallbacks() {
