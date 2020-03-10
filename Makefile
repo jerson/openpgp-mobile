@@ -39,12 +39,7 @@ swig:
 
 binding_all: binding_darwin binding_windows binding_linux
 
-binding_darwin: binding_darwin_386 binding_darwin_amd64
-
-binding_darwin_386:
-	GOOS=darwin GOARCH=386 TAG=darwin \
-	ARGS="-e BINDING_FILE=darwin_386_openpgp.dylib" \
-	CMD="make binding" ./cross_build.sh
+binding_darwin: binding_darwin_amd64
 
 binding_darwin_amd64:
 	GOOS=darwin GOARCH=amd64 TAG=darwin \
