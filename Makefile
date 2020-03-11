@@ -14,7 +14,7 @@ fmt:
 clean:
 	rm -rf output
 
-all: clean binding archive android ios wasm
+all: clean binding android ios wasm
 
 gomobile:
 	go get golang.org/x/mobile/cmd/gomobile
@@ -37,14 +37,7 @@ ios: deps
 swig:
 	swig -go -cgo -c++ -intgosize 64 binding/openpgp_bridge/openpgp_bridge.i
 
-binding_all: binding_darwin binding_windows binding_linux
-
-binding_darwin: binding_darwin_amd64
-
-binding_darwin_amd64:
-	GOOS=darwin GOARCH=amd64 TAG=darwin \
-	ARGS="-e BINDING_FILE=darwin_amd64_openpgp.dylib" \
-	CMD="make binding" ./cross_build.sh
+binding_all: binding_windows binding_linux
 
 binding_linux: binding_linux_386 binding_linux_amd64 binding_linux_arm64 binding_linux_armv7
 
