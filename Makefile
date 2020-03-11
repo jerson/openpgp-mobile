@@ -17,7 +17,7 @@ clean:
 all: clean binding android ios wasm
 
 gomobile:
-	go get golang.org/x/mobile/cmd/gomobile
+	GO111MODULE=off go get golang.org/x/mobile/cmd/gomobile
 	gomobile init
 
 .PHONY: wasm
