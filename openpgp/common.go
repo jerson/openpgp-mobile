@@ -3,6 +3,7 @@ package openpgp
 import (
 	"crypto"
 	"errors"
+	"strconv"
 	"strings"
 
 	"github.com/keybase/go-crypto/openpgp"
@@ -21,6 +22,16 @@ type KeyOptions struct {
 	Compression      string
 	CompressionLevel int
 	RSABits          int
+}
+
+func (k *KeyOptions) SetCompressionLevel(value string) (err error) {
+	k.CompressionLevel, err = strconv.Atoi(value)
+	return err
+}
+
+func (k *KeyOptions) SetRSABits(value string) (err error) {
+	k.RSABits, err = strconv.Atoi(value)
+	return err
 }
 
 func generatePacketConfig(options *KeyOptions) *packet.Config {
