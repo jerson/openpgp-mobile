@@ -3,9 +3,10 @@ package openpgp
 import (
 	"bytes"
 	"errors"
+	"io/ioutil"
+
 	"github.com/keybase/go-crypto/openpgp"
 	"github.com/keybase/go-crypto/openpgp/armor"
-	"io/ioutil"
 )
 
 func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {

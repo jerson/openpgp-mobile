@@ -1,10 +1,11 @@
 package openpgp
 
 import (
-	"github.com/keybase/go-crypto/openpgp"
-	"github.com/keybase/go-crypto/openpgp/armor"
 	"io/ioutil"
 	"strings"
+
+	"github.com/keybase/go-crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp/armor"
 )
 
 func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string) (string, error) {

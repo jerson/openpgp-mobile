@@ -24,14 +24,12 @@ type KeyOptions struct {
 	RSABits          int
 }
 
-func (k *KeyOptions) SetCompressionLevel(value string) (err error) {
-	k.CompressionLevel, err = strconv.Atoi(value)
-	return err
+func (k *KeyOptions) SetCompressionLevelFromString(value string) {
+	k.CompressionLevel, _ = strconv.Atoi(value)
 }
 
-func (k *KeyOptions) SetRSABits(value string) (err error) {
-	k.RSABits, err = strconv.Atoi(value)
-	return err
+func (k *KeyOptions) SetRSABitsFromString(value string) {
+	k.RSABits, _ = strconv.Atoi(value)
 }
 
 func generatePacketConfig(options *KeyOptions) *packet.Config {

@@ -2,6 +2,7 @@ package openpgp
 
 import (
 	"bytes"
+
 	"github.com/keybase/go-crypto/openpgp"
 )
 
