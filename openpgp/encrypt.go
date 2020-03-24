@@ -10,7 +10,7 @@ import (
 
 func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
 
-	entityList, err := o.readPublicKey(publicKey)
+	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
 		return "", err
 	}

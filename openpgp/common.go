@@ -92,22 +92,26 @@ func hashTo(hash string) crypto.Hash {
 	}
 }
 
-func (o *FastOpenPGP) readSignKey(publicKey, privateKey, passphrase string) (*openpgp.Entity, error) {
+func (o *FastOpenPGP) readSignKeys(publicKey, privateKey, passphrase string) (openpgp.EntityList, error) {
 
-	entityListPublic, err := o.readPublicKey(publicKey)
+	entityListPublic, err := o.readPublicKeys(publicKey)
 	if err != nil {
 		return nil, err
 	}
 
-	entityListPrivate, err := o.readPrivateKey(privateKey, passphrase)
+	entityListPrivate, err := o.readPrivateKeys(privateKey, passphrase)
 	if err != nil {
 		return nil, err
 	}
-	entityListPublic[0].PrivateKey = entityListPrivate[0].PrivateKey
-	return entityListPublic[0], nil
+
+	for i := 0; i < len(entityListPublic); i++ {
+		entityListPublic[i].PrivateKey = entityListPrivate[i].PrivateKey
+	}
+
+	return entityListPublic, nil
 }
 
-func (o *FastOpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList, error) {
+func (o *FastOpenPGP) readPrivateKeys(key, passphrase string) (openpgp.EntityList, error) {
 
 	var entityList openpgp.EntityList
 
@@ -135,7 +139,7 @@ func (o *FastOpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList
 	return entityList, nil
 }
 
-func (o *FastOpenPGP) readPublicKey(key string) (openpgp.EntityList, error) {
+func (o *FastOpenPGP) readPublicKeys(key string) (openpgp.EntityList, error) {
 
 	entityList, err := o.readArmoredKeyRing(key)
 	if err != nil {

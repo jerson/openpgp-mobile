@@ -1,7 +1,7 @@
 package openpgp
 
 func (o *FastOpenPGP) Verify(signature, message, publicKey string) (bool, error) {
-	entityList, err := o.readPublicKey(publicKey)
+	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
 		return false, err
 	}
@@ -14,8 +14,7 @@ func (o *FastOpenPGP) Verify(signature, message, publicKey string) (bool, error)
 	hash := sig.Hash.New()
 	hash.Write([]byte(message))
 
-	entity := entityList[0]
-	err = entity.PrimaryKey.VerifySignature(hash, sig)
+	err = entityList[0].PrimaryKey.VerifySignature(hash, sig)
 	if err != nil {
 		return false, err
 	}

@@ -10,7 +10,7 @@ import (
 
 func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string) (string, error) {
 
-	entityList, err := o.readPrivateKey(privateKey, passphrase)
+	entityList, err := o.readPrivateKeys(privateKey, passphrase)
 	if err != nil {
 		return "", err
 	}
