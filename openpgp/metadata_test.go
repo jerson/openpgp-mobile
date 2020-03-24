@@ -17,3 +17,16 @@ func TestFastOpenPGP_GetPublicKeyMetadata(t *testing.T) {
 
 	t.Log("output:", output)
 }
+
+func TestFastOpenPGP_GetPrivateKeyMetadata(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	output, err := openPGP.GetPrivateKeyMetadata(privateKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, _ := json.MarshalIndent(output, "", " ")
+	t.Log(string(data))
+
+	t.Log("output:", output)
+}
