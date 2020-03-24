@@ -155,18 +155,22 @@ func (o *FastOpenPGP) readArmoredKeyRing(keys string) (openpgp.EntityList, error
 	keysSplit := strings.Split(keys, flag)
 	var entityList openpgp.EntityList
 
-	for _, keyPart := range keysSplit {
-		keyPart = strings.TrimSpace(keyPart)
-		if keyPart == "" {
-			continue
-		}
-		key := fmt.Sprintf("%s %s", flag, keyPart)
+	if len(keysSplit) < 1 {
+		return openpgp.ReadArmoredKeyRing(strings.NewReader(keys))
+	} else {
+		for _, keyPart := range keysSplit {
+			keyPart = strings.TrimSpace(keyPart)
+			if keyPart == "" {
+				continue
+			}
+			key := fmt.Sprintf("%s %s", flag, keyPart)
 
-		entityListItem, err := openpgp.ReadArmoredKeyRing(strings.NewReader(key))
-		if err != nil {
-			return entityList, err
+			entityListItem, err := openpgp.ReadArmoredKeyRing(strings.NewReader(key))
+			if err != nil {
+				return entityList, err
+			}
+			entityList = append(entityList, entityListItem[0])
 		}
-		entityList = append(entityList, entityListItem[0])
 	}
 
 	return entityList, nil
