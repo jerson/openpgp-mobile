@@ -15,6 +15,14 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
 		return "", err
 	}
 
+	result, err := encrypt(message, entityList)
+	if err != nil {
+		return "", err
+	}
+	return result, nil
+}
+
+func encrypt(message string, entityList []*openpgp.Entity) (string, error) {
 	buf := new(bytes.Buffer)
 	w, err := openpgp.Encrypt(buf, entityList, nil, nil, nil)
 	if err != nil {
@@ -47,7 +55,6 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	outputString := pubKeyBuf.String()
 
 	return outputString, nil

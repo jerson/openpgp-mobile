@@ -1,6 +1,9 @@
 package openpgp
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestFastOpenPGP_Encrypt(t *testing.T) {
 
@@ -10,5 +13,59 @@ func TestFastOpenPGP_Encrypt(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Log("output:", output)
+	outputDecrypted, err := openPGP.Decrypt(output, privateKey, passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("output:", output, outputDecrypted)
+}
+
+func TestFastOpenPGP_EncryptMultipleKey(t *testing.T) {
+
+	options := &Options{
+		Email:      "sample@sample.com",
+		Name:       "Test2",
+		Comment:    "sample",
+		Passphrase: passphrase,
+		KeyOptions: &KeyOptions{
+			CompressionLevel: 9,
+			RSABits:          2048,
+			Cipher:           "aes256",
+			Compression:      "zlib",
+			Hash:             "sha512",
+		},
+	}
+
+	openPGP := NewFastOpenPGP()
+	keyPair1, err := openPGP.Generate(options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	keyPair2, err := openPGP.Generate(options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	keys := []string{publicKey, keyPair1.PublicKey, keyPair2.PublicKey}
+	keysString := strings.Join(keys, "\n")
+	output, err := openPGP.Encrypt(inputMessage, keysString)
+	if err != nil {
+		t.Fatal(err)
+	}
+	output1, err := openPGP.Decrypt(output, privateKey, passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("output1:", output1)
+	output2, err := openPGP.Decrypt(output, keyPair2.PrivateKey, passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("output2:", output2)
+	output3, err := openPGP.Decrypt(output, keyPair1.PrivateKey, passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("output3:", output3)
+
 }

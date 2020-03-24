@@ -3,6 +3,7 @@ package openpgp
 import (
 	"crypto"
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -108,25 +109,25 @@ func (o *FastOpenPGP) readSignKey(publicKey, privateKey, passphrase string) (*op
 
 func (o *FastOpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList, error) {
 
-	var entity *openpgp.Entity
 	var entityList openpgp.EntityList
 
-	entityList, err := openpgp.ReadArmoredKeyRing(strings.NewReader(key))
+	entityList, err := o.readArmoredKeyRing(key)
 	if err != nil {
 		return entityList, err
 	}
-	entity = entityList[0]
 
-	if entity.PrivateKey.Encrypted {
-		passphraseByte := []byte(passphrase)
-		err = entity.PrivateKey.Decrypt(passphraseByte)
-		if err != nil {
-			return entityList, err
-		}
-		for _, subKey := range entity.Subkeys {
-			err = subKey.PrivateKey.Decrypt(passphraseByte)
+	for _, entity := range entityList {
+		if entity.PrivateKey.Encrypted {
+			passphraseByte := []byte(passphrase)
+			err = entity.PrivateKey.Decrypt(passphraseByte)
 			if err != nil {
 				return entityList, err
+			}
+			for _, subKey := range entity.Subkeys {
+				err = subKey.PrivateKey.Decrypt(passphraseByte)
+				if err != nil {
+					return entityList, err
+				}
 			}
 		}
 	}
@@ -136,13 +137,37 @@ func (o *FastOpenPGP) readPrivateKey(key, passphrase string) (openpgp.EntityList
 
 func (o *FastOpenPGP) readPublicKey(key string) (openpgp.EntityList, error) {
 
-	entityList, err := openpgp.ReadArmoredKeyRing(strings.NewReader(key))
+	entityList, err := o.readArmoredKeyRing(key)
 	if err != nil {
 		return entityList, err
 	}
 
 	return entityList, nil
 }
+
+func (o *FastOpenPGP) readArmoredKeyRing(keys string) (openpgp.EntityList, error) {
+
+	flag := "-----BEGIN"
+	keysSplit := strings.Split(keys, flag)
+	var entityList openpgp.EntityList
+
+	for _, keyPart := range keysSplit {
+		keyPart = strings.TrimSpace(keyPart)
+		if keyPart == "" {
+			continue
+		}
+		key := fmt.Sprintf("%s %s", flag, keyPart)
+
+		entityListItem, err := openpgp.ReadArmoredKeyRing(strings.NewReader(key))
+		if err != nil {
+			return entityList, err
+		}
+		entityList = append(entityList, entityListItem[0])
+	}
+
+	return entityList, nil
+}
+
 func (o *FastOpenPGP) readSignature(message string) (*packet.Signature, error) {
 
 	block, err := armor.Decode(strings.NewReader(message))
