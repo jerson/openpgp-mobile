@@ -14,10 +14,10 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
       
-    - name: wasm
+    - name: test
       uses: docker://jerson/go:1.13
       with:
-        args: sh -c "make wasm"
+        args: sh -c "make test"
       
     - name: binding
       uses: docker://jerson/go:1.13
