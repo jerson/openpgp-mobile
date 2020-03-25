@@ -23,10 +23,10 @@ jobs:
     - name: wasm
       uses: docker://jerson/go:1.13
       with:
-        args: make wasm
+        args: sh -c 'make wasm'
       
     - name: binding
       uses: docker://jerson/go:1.13
       with:
-        args: make binding
+        args: sh -c 'make binding'
       
