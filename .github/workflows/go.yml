@@ -22,5 +22,11 @@ jobs:
     - name: binding
       uses: docker://jerson/go:1.13
       with:
-        args: sh -c make binding"
+        args: sh -c "make binding"
+      
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: output
+        path: output
       
