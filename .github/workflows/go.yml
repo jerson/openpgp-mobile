@@ -14,12 +14,12 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
       
-    - name: test
+    - name: Test
       uses: docker://jerson/go:1.13
       with:
         args: sh -c "make test"
       
-    - name: binding
+    - name: Binding
       uses: docker://jerson/go:1.13
       with:
         args: sh -c "make binding"
