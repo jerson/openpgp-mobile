@@ -8,6 +8,10 @@ import (
 )
 
 func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {
+	return o.SignBytes([]byte(message), publicKey, privateKey, passphrase)
+}
+
+func (o *FastOpenPGP) SignBytes(message []byte, publicKey, privateKey, passphrase string) (string, error) {
 
 	entityList, err := o.readSignKeys(publicKey, privateKey, passphrase)
 	if err != nil {
@@ -18,7 +22,7 @@ func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string) (s
 	}
 
 	writer := new(bytes.Buffer)
-	reader := bytes.NewReader([]byte(message))
+	reader := bytes.NewReader(message)
 	err = openpgp.ArmoredDetachSign(writer, entityList[0], reader, nil)
 	if err != nil {
 		return "", err

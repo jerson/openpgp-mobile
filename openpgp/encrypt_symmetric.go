@@ -8,6 +8,10 @@ import (
 )
 
 func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
+	return o.EncryptSymmetricBytes([]byte(message), passphrase, options)
+}
+
+func (o *FastOpenPGP) EncryptSymmetricBytes(message []byte, passphrase string, options *KeyOptions) (string, error) {
 
 	var output string
 	buf := bytes.NewBuffer(nil)
@@ -24,7 +28,7 @@ func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, options *KeyO
 	}
 	defer pt.Close()
 
-	_, err = pt.Write([]byte(message))
+	_, err = pt.Write(message)
 	if err != nil {
 		return output, err
 	}

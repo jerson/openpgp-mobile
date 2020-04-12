@@ -3,6 +3,9 @@ package openpgp
 import "errors"
 
 func (o *FastOpenPGP) Verify(signature, message, publicKey string) (bool, error) {
+	return o.VerifyBytes(signature, []byte(message), publicKey)
+}
+func (o *FastOpenPGP) VerifyBytes(signature string, message []byte, publicKey string) (bool, error) {
 	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
 		return false, err
@@ -17,7 +20,7 @@ func (o *FastOpenPGP) Verify(signature, message, publicKey string) (bool, error)
 	}
 
 	hash := sig.Hash.New()
-	hash.Write([]byte(message))
+	hash.Write(message)
 
 	publicKeyItem := entityList[0].PrimaryKey
 	if publicKeyItem == nil {

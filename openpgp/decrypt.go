@@ -1,21 +1,25 @@
 package openpgp
 
 import (
-	"io/ioutil"
-	"strings"
-
+	"bytes"
 	"github.com/keybase/go-crypto/openpgp"
 	"github.com/keybase/go-crypto/openpgp/armor"
+	"io/ioutil"
 )
 
 func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string) (string, error) {
+	return o.DecryptBytes([]byte(message), privateKey, passphrase)
+}
+
+func (o *FastOpenPGP) DecryptBytes(message []byte, privateKey, passphrase string) (string, error) {
 
 	entityList, err := o.readPrivateKeys(privateKey, passphrase)
 	if err != nil {
 		return "", err
 	}
 
-	dec, err := armor.Decode(strings.NewReader(message))
+	buf := bytes.NewBuffer(message)
+	dec, err := armor.Decode(buf)
 	if err != nil {
 		return "", err
 	}

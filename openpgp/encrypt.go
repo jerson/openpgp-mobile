@@ -9,6 +9,10 @@ import (
 )
 
 func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
+	return o.EncryptBytes([]byte(message), publicKey)
+}
+
+func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string) (string, error) {
 
 	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
@@ -22,13 +26,13 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
 	return result, nil
 }
 
-func encrypt(message string, entityList []*openpgp.Entity) (string, error) {
+func encrypt(message []byte, entityList []*openpgp.Entity) (string, error) {
 	buf := new(bytes.Buffer)
 	w, err := openpgp.Encrypt(buf, entityList, nil, nil, nil)
 	if err != nil {
 		return "", err
 	}
-	_, err = w.Write([]byte(message))
+	_, err = w.Write(message)
 	if err != nil {
 		return "", err
 	}

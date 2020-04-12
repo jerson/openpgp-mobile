@@ -10,9 +10,13 @@ import (
 )
 
 func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
+	return o.DecryptSymmetricBytes([]byte(message), passphrase, options)
+}
+
+func (o *FastOpenPGP) DecryptSymmetricBytes(message []byte, passphrase string, options *KeyOptions) (string, error) {
 
 	var output string
-	buf := bytes.NewBufferString(message)
+	buf := bytes.NewBuffer(message)
 
 	armorBlock, err := armor.Decode(buf)
 	if err != nil {
