@@ -16,6 +16,7 @@ var headers = map[string]string{
 	"Version": "fast-openpgp",
 }
 var messageHeader = "PGP MESSAGE"
+var signatureHeader = "PGP SIGNATURE"
 
 type KeyOptions struct {
 	Hash             string
