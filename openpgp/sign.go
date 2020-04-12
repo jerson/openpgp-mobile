@@ -10,7 +10,11 @@ import (
 )
 
 func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {
-	output, err := o.sign([]byte(message), publicKey, privateKey, passphrase)
+	return o.SignBytesToString([]byte(message), publicKey, privateKey, passphrase)
+}
+
+func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, passphrase string) (string, error) {
+	output, err := o.sign(message, publicKey, privateKey, passphrase)
 	if err != nil {
 		return "", err
 	}
