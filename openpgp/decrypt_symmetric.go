@@ -3,6 +3,7 @@ package openpgp
 import (
 	"bytes"
 	"errors"
+	"io"
 	"io/ioutil"
 
 	"github.com/keybase/go-crypto/openpgp"
@@ -10,19 +11,27 @@ import (
 )
 
 func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
-	return o.DecryptSymmetricBytes([]byte(message), passphrase, options)
-}
-
-func (o *FastOpenPGP) DecryptSymmetricBytes(message []byte, passphrase string, options *KeyOptions) (string, error) {
-
-	var output string
-	buf := bytes.NewBuffer(message)
-
-	armorBlock, err := armor.Decode(buf)
+	buf := bytes.NewReader([]byte(message))
+	dec, err := armor.Decode(buf)
 	if err != nil {
-		return output, err
+		return "", err
 	}
 
+	output, err := o.decryptSymmetric(dec.Body, passphrase, options)
+	if err != nil {
+		return "", err
+	}
+	return string(output), nil
+}
+
+func (o *FastOpenPGP) DecryptSymmetricBytes(message []byte, passphrase string, options *KeyOptions) ([]byte, error) {
+	buf := bytes.NewReader(message)
+	return o.decryptSymmetric(buf, passphrase, options)
+}
+
+func (o *FastOpenPGP) decryptSymmetric(reader io.Reader, passphrase string, options *KeyOptions) ([]byte, error) {
+
+	config := generatePacketConfig(options)
 	failed := false
 	prompt := func(keys []openpgp.Key, symmetric bool) ([]byte, error) {
 		if failed {
@@ -32,17 +41,13 @@ func (o *FastOpenPGP) DecryptSymmetricBytes(message []byte, passphrase string, o
 		return []byte(passphrase), nil
 	}
 
-	config := generatePacketConfig(options)
-	md, err := openpgp.ReadMessage(armorBlock.Body, nil, prompt, config)
+	md, err := openpgp.ReadMessage(reader, nil, prompt, config)
 	if err != nil {
-		return output, err
+		return nil, err
 	}
-
-	result, err := ioutil.ReadAll(md.UnverifiedBody)
+	output, err := ioutil.ReadAll(md.UnverifiedBody)
 	if err != nil {
-		return output, err
+		return nil, err
 	}
-
-	output = string(result)
 	return output, nil
 }

@@ -4,35 +4,42 @@ import (
 	"bytes"
 	"github.com/keybase/go-crypto/openpgp"
 	"github.com/keybase/go-crypto/openpgp/armor"
+	"io"
 	"io/ioutil"
 )
 
 func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string) (string, error) {
-	return o.DecryptBytes([]byte(message), privateKey, passphrase)
-}
-
-func (o *FastOpenPGP) DecryptBytes(message []byte, privateKey, passphrase string) (string, error) {
-
-	entityList, err := o.readPrivateKeys(privateKey, passphrase)
-	if err != nil {
-		return "", err
-	}
-
-	buf := bytes.NewBuffer(message)
+	buf := bytes.NewReader([]byte(message))
 	dec, err := armor.Decode(buf)
 	if err != nil {
 		return "", err
 	}
 
-	md, err := openpgp.ReadMessage(dec.Body, entityList, nil, nil)
+	output, err := o.decrypt(dec.Body, privateKey, passphrase)
 	if err != nil {
 		return "", err
+	}
+	return string(output), nil
+}
+
+func (o *FastOpenPGP) DecryptBytes(message []byte, privateKey, passphrase string) ([]byte, error) {
+	buf := bytes.NewReader(message)
+	return o.decrypt(buf, privateKey, passphrase)
+}
+
+func (o *FastOpenPGP) decrypt(reader io.Reader, privateKey, passphrase string) ([]byte, error) {
+	entityList, err := o.readPrivateKeys(privateKey, passphrase)
+	if err != nil {
+		return nil, err
+	}
+
+	md, err := openpgp.ReadMessage(reader, entityList, nil, nil)
+	if err != nil {
+		return nil, err
 	}
 	output, err := ioutil.ReadAll(md.UnverifiedBody)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	outputString := string(output)
-
-	return outputString, nil
+	return output, nil
 }

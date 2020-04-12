@@ -9,57 +9,56 @@ import (
 )
 
 func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
-	return o.EncryptBytes([]byte(message), publicKey)
+	output, err := o.encrypt([]byte(message), publicKey)
+	if err != nil {
+		return "", err
+	}
+
+	buf := bytes.NewBuffer(nil)
+	writer, err := armor.Encode(buf, messageHeader, headers)
+	if err != nil {
+		return "", err
+	}
+	_, err = writer.Write(output)
+	if err != nil {
+		return "", err
+	}
+	err = writer.Close()
+	if err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }
 
-func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string) (string, error) {
+func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string) ([]byte, error) {
+	return o.encrypt(message, publicKey)
+}
+
+func (o *FastOpenPGP) encrypt(message []byte, publicKey string) ([]byte, error) {
 
 	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	result, err := encrypt(message, entityList)
-	if err != nil {
-		return "", err
-	}
-	return result, nil
-}
-
-func encrypt(message []byte, entityList []*openpgp.Entity) (string, error) {
 	buf := new(bytes.Buffer)
 	w, err := openpgp.Encrypt(buf, entityList, nil, nil, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	_, err = w.Write(message)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	err = w.Close()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	output, err := ioutil.ReadAll(buf)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	pubKeyBuf := bytes.NewBuffer(nil)
-	pubKeyWriter, err := armor.Encode(pubKeyBuf, messageHeader, headers)
-	if err != nil {
-		return "", err
-	}
-	_, err = pubKeyWriter.Write(output)
-	if err != nil {
-		return "", err
-	}
-	err = pubKeyWriter.Close()
-	if err != nil {
-		return "", err
-	}
-	outputString := pubKeyBuf.String()
-
-	return outputString, nil
+	return output, nil
 }
