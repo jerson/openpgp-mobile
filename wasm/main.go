@@ -3,6 +3,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"errors"
 	"syscall/js"
 
@@ -46,7 +47,7 @@ func EncryptBytes(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
-		return string(output), err
+		return base64.StdEncoding.EncodeToString(output), err
 	})
 }
 
@@ -58,7 +59,11 @@ func Decrypt(this js.Value, i []js.Value) interface{} {
 
 func DecryptBytes(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		output, err := instance.DecryptBytes([]byte(i[0].String()), i[1].String(), i[2].String())
+		data, err := base64.StdEncoding.DecodeString(i[0].String())
+		if err != nil {
+			return nil, err
+		}
+		output, err := instance.DecryptBytes(data, i[1].String(), i[2].String())
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +83,7 @@ func SignBytes(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
-		return string(output), err
+		return base64.StdEncoding.EncodeToString(output), err
 	})
 }
 
@@ -96,7 +101,11 @@ func Verify(this js.Value, i []js.Value) interface{} {
 
 func VerifyBytes(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		return instance.VerifyBytes(i[0].String(), []byte(i[1].String()), i[2].String())
+		data, err := base64.StdEncoding.DecodeString(i[1].String())
+		if err != nil {
+			return nil, err
+		}
+		return instance.VerifyBytes(i[0].String(), data, i[2].String())
 	})
 }
 
@@ -112,7 +121,7 @@ func EncryptSymmetricBytes(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
-		return string(output), err
+		return base64.StdEncoding.EncodeToString(output), err
 	})
 }
 
@@ -124,7 +133,11 @@ func DecryptSymmetric(this js.Value, i []js.Value) interface{} {
 
 func DecryptSymmetricBytes(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		output, err := instance.DecryptSymmetricBytes([]byte(i[0].String()), i[1].String(), getKeyOptions(i[2]))
+		data, err := base64.StdEncoding.DecodeString(i[0].String())
+		if err != nil {
+			return nil, err
+		}
+		output, err := instance.DecryptSymmetricBytes(data, i[1].String(), getKeyOptions(i[2]))
 		if err != nil {
 			return nil, err
 		}
