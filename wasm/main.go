@@ -40,9 +40,29 @@ func Encrypt(this js.Value, i []js.Value) interface{} {
 	})
 }
 
+func EncryptBytes(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		output, err := instance.EncryptBytes([]byte(i[0].String()), i[1].String())
+		if err != nil {
+			return nil, err
+		}
+		return string(output), err
+	})
+}
+
 func Decrypt(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
 		return instance.Decrypt(i[0].String(), i[1].String(), i[2].String())
+	})
+}
+
+func DecryptBytes(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		output, err := instance.DecryptBytes([]byte(i[0].String()), i[1].String(), i[2].String())
+		if err != nil {
+			return nil, err
+		}
+		return string(output), err
 	})
 }
 
@@ -52,9 +72,31 @@ func Sign(this js.Value, i []js.Value) interface{} {
 	})
 }
 
+func SignBytes(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		output, err := instance.SignBytes([]byte(i[0].String()), i[1].String(), i[2].String(), i[3].String())
+		if err != nil {
+			return nil, err
+		}
+		return string(output), err
+	})
+}
+
+func SignBytesToString(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		return instance.SignBytesToString([]byte(i[0].String()), i[1].String(), i[2].String(), i[3].String())
+	})
+}
+
 func Verify(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
 		return instance.Verify(i[0].String(), i[1].String(), i[2].String())
+	})
+}
+
+func VerifyBytes(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		return instance.VerifyBytes(i[0].String(), []byte(i[1].String()), i[2].String())
 	})
 }
 
@@ -64,9 +106,29 @@ func EncryptSymmetric(this js.Value, i []js.Value) interface{} {
 	})
 }
 
+func EncryptSymmetricBytes(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		output, err := instance.EncryptSymmetricBytes([]byte(i[0].String()), i[1].String(), getKeyOptions(i[2]))
+		if err != nil {
+			return nil, err
+		}
+		return string(output), err
+	})
+}
+
 func DecryptSymmetric(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
 		return instance.DecryptSymmetric(i[0].String(), i[1].String(), getKeyOptions(i[2]))
+	})
+}
+
+func DecryptSymmetricBytes(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		output, err := instance.DecryptSymmetricBytes([]byte(i[0].String()), i[1].String(), getKeyOptions(i[2]))
+		if err != nil {
+			return nil, err
+		}
+		return string(output), err
 	})
 }
 
@@ -139,11 +201,18 @@ func getOptions(data js.Value) *openpgp.Options {
 
 func registerCallbacks() {
 	js.Global().Set("OpenPGPEncrypt", js.FuncOf(Encrypt))
+	js.Global().Set("OpenPGPEncryptBytes", js.FuncOf(EncryptBytes))
 	js.Global().Set("OpenPGPDecrypt", js.FuncOf(Decrypt))
+	js.Global().Set("OpenPGPDecryptBytes", js.FuncOf(DecryptBytes))
 	js.Global().Set("OpenPGPSign", js.FuncOf(Sign))
+	js.Global().Set("OpenPGPSignBytes", js.FuncOf(SignBytes))
+	js.Global().Set("OpenPGPSignBytesToString", js.FuncOf(SignBytesToString))
 	js.Global().Set("OpenPGPVerify", js.FuncOf(Verify))
+	js.Global().Set("OpenPGPVerifyBytes", js.FuncOf(VerifyBytes))
 	js.Global().Set("OpenPGPEncryptSymmetric", js.FuncOf(EncryptSymmetric))
+	js.Global().Set("OpenPGPEncryptSymmetricBytes", js.FuncOf(EncryptSymmetricBytes))
 	js.Global().Set("OpenPGPDecryptSymmetric", js.FuncOf(DecryptSymmetric))
+	js.Global().Set("OpenPGPDecryptSymmetricBytes", js.FuncOf(DecryptSymmetricBytes))
 	js.Global().Set("OpenPGPGenerate", js.FuncOf(Generate))
 }
 
