@@ -3,6 +3,7 @@
 *.framework
 *.jar
 *.zip
+*.cov
 .DS_Store
 vendor/
 output/
