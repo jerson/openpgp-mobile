@@ -6,7 +6,7 @@ deps:
 	go mod download
 
 test:
-	go test ./...
+	go test ./... -coverprofile=profile.cov -cover -short -count 1
 
 fmt:
 	go fmt ./...
