@@ -40,4 +40,11 @@ jobs:
         with:
           name: output
           path: output
-      
+
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shogo82148/actions-goveralls@v1
+        with:
+          parallel-finished: true
