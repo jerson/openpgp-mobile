@@ -5,8 +5,8 @@ import (
 	"errors"
 	"io/ioutil"
 
-	"github.com/keybase/go-crypto/openpgp"
-	"github.com/keybase/go-crypto/openpgp/armor"
+	"golang.org/x/crypto/openpgp"
+	"golang.org/x/crypto/openpgp/armor"
 )
 
 func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {

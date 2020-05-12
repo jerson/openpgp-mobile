@@ -4,12 +4,11 @@ import (
 	"crypto"
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/openpgp"
+	"golang.org/x/crypto/openpgp/armor"
+	"golang.org/x/crypto/openpgp/packet"
 	"strconv"
 	"strings"
-
-	"github.com/keybase/go-crypto/openpgp"
-	"github.com/keybase/go-crypto/openpgp/armor"
-	"github.com/keybase/go-crypto/openpgp/packet"
 )
 
 var headers = map[string]string{

@@ -2,9 +2,11 @@ package openpgp
 
 import (
 	"bytes"
+	"github.com/keybase/go-crypto/openpgp/packet"
+	"golang.org/x/crypto/openpgp/armor"
 
-	"github.com/keybase/go-crypto/openpgp"
-	"github.com/keybase/go-crypto/openpgp/armor"
+	keybaseOpenPGP "github.com/keybase/go-crypto/openpgp"
+	"golang.org/x/crypto/openpgp"
 )
 
 type KeyPair struct {
@@ -23,8 +25,8 @@ type Options struct {
 func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 
 	var keyPair *KeyPair
-	config := generatePacketConfig(options.KeyOptions)
-	entity, err := openpgp.NewEntity(options.Name, options.Comment, options.Email, config)
+	config := generatePacketConfigKeybase(options.KeyOptions)
+	entity, err := keybaseOpenPGP.NewEntity(options.Name, options.Comment, options.Email, config)
 	if err != nil {
 		return keyPair, err
 	}
@@ -73,4 +75,48 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	keyPair.PublicKey = publicKeyBuf.String()
 
 	return keyPair, nil
+}
+
+func generatePacketConfigKeybase(options *KeyOptions) *packet.Config {
+
+	if options == nil {
+		return &packet.Config{}
+	}
+
+	config := &packet.Config{
+		DefaultHash:            hashTo(options.Hash),
+		DefaultCipher:          cipherToFunctionKeybase(options.Cipher),
+		DefaultCompressionAlgo: compressionToAlgoKeybase(options.Compression),
+		CompressionConfig: &packet.CompressionConfig{
+			Level: options.CompressionLevel,
+		},
+		RSABits: options.RSABits,
+	}
+	return config
+}
+
+func cipherToFunctionKeybase(cipher string) packet.CipherFunction {
+	switch cipher {
+	case "aes256":
+		return packet.CipherAES256
+	case "aes192":
+		return packet.CipherAES192
+	case "aes128":
+		return packet.CipherAES128
+	default:
+		return packet.CipherAES128
+	}
+}
+
+func compressionToAlgoKeybase(algo string) packet.CompressionAlgo {
+	switch algo {
+	case "zlib":
+		return packet.CompressionZLIB
+	case "none":
+		return packet.CompressionNone
+	case "zip":
+		return packet.CompressionZIP
+	default:
+		return packet.CompressionNone
+	}
 }

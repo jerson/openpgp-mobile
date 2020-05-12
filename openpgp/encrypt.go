@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"io/ioutil"
 
-	"github.com/keybase/go-crypto/openpgp"
-	"github.com/keybase/go-crypto/openpgp/armor"
+	"golang.org/x/crypto/openpgp"
+	"golang.org/x/crypto/openpgp/armor"
 )
 
 func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
