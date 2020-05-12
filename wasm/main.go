@@ -43,7 +43,11 @@ func Encrypt(this js.Value, i []js.Value) interface{} {
 
 func EncryptBytes(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		output, err := instance.EncryptBytes([]byte(i[0].String()), i[1].String())
+		input, err := base64.StdEncoding.DecodeString(i[0].String())
+		if err != nil {
+			return nil, err
+		}
+		output, err := instance.EncryptBytes(input, i[1].String())
 		if err != nil {
 			return nil, err
 		}
@@ -67,7 +71,7 @@ func DecryptBytes(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
-		return string(output), err
+		return base64.StdEncoding.EncodeToString(output), err
 	})
 }
 
@@ -79,7 +83,11 @@ func Sign(this js.Value, i []js.Value) interface{} {
 
 func SignBytes(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		output, err := instance.SignBytes([]byte(i[0].String()), i[1].String(), i[2].String(), i[3].String())
+		input, err := base64.StdEncoding.DecodeString(i[0].String())
+		if err != nil {
+			return nil, err
+		}
+		output, err := instance.SignBytes(input, i[1].String(), i[2].String(), i[3].String())
 		if err != nil {
 			return nil, err
 		}
@@ -89,7 +97,11 @@ func SignBytes(this js.Value, i []js.Value) interface{} {
 
 func SignBytesToString(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		return instance.SignBytesToString([]byte(i[0].String()), i[1].String(), i[2].String(), i[3].String())
+		input, err := base64.StdEncoding.DecodeString(i[0].String())
+		if err != nil {
+			return nil, err
+		}
+		return instance.SignBytesToString(input, i[1].String(), i[2].String(), i[3].String())
 	})
 }
 
@@ -117,7 +129,11 @@ func EncryptSymmetric(this js.Value, i []js.Value) interface{} {
 
 func EncryptSymmetricBytes(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		output, err := instance.EncryptSymmetricBytes([]byte(i[0].String()), i[1].String(), getKeyOptions(i[2]))
+		input, err := base64.StdEncoding.DecodeString(i[0].String())
+		if err != nil {
+			return nil, err
+		}
+		output, err := instance.EncryptSymmetricBytes(input, i[1].String(), getKeyOptions(i[2]))
 		if err != nil {
 			return nil, err
 		}
@@ -141,7 +157,7 @@ func DecryptSymmetricBytes(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
-		return string(output), err
+		return base64.StdEncoding.EncodeToString(output), err
 	})
 }
 
