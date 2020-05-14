@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/jerson/openpgp-mobile/openpgp"
 	"strconv"
+	"unsafe"
 )
 
 var instance = openpgp.NewFastOpenPGP()
@@ -29,6 +30,16 @@ func Encrypt(message, publicKey *C.char) *C.char {
 	return C.CString(result)
 }
 
+//export EncryptBytes
+func EncryptBytes(message unsafe.Pointer, messageSize C.int, publicKey *C.char) (unsafe.Pointer, C.int) {
+	result, err := instance.EncryptBytes(C.GoBytes(message, messageSize), C.GoString(publicKey))
+	if err != nil {
+		errorThrow(err)
+		return nil, C.int(0)
+	}
+	return C.CBytes(result), C.int(len(result))
+}
+
 //export Decrypt
 func Decrypt(message, privateKey, passphrase *C.char) *C.char {
 	result, err := instance.Decrypt(C.GoString(message), C.GoString(privateKey), C.GoString(passphrase))
@@ -37,6 +48,16 @@ func Decrypt(message, privateKey, passphrase *C.char) *C.char {
 		return nil
 	}
 	return C.CString(result)
+}
+
+//export DecryptBytes
+func DecryptBytes(message unsafe.Pointer, messageSize C.int, privateKey, passphrase *C.char) (unsafe.Pointer, C.int) {
+	result, err := instance.DecryptBytes(C.GoBytes(message, messageSize), C.GoString(privateKey), C.GoString(passphrase))
+	if err != nil {
+		errorThrow(err)
+		return nil, C.int(0)
+	}
+	return C.CBytes(result), C.int(len(result))
 }
 
 //export Sign
@@ -49,9 +70,42 @@ func Sign(message, publicKey, privateKey, passphrase *C.char) *C.char {
 	return C.CString(result)
 }
 
+//export SignBytes
+func SignBytes(message unsafe.Pointer, messageSize C.int, publicKey, privateKey, passphrase *C.char) (unsafe.Pointer, C.int) {
+	result, err := instance.SignBytes(C.GoBytes(message, messageSize), C.GoString(publicKey), C.GoString(privateKey), C.GoString(passphrase))
+	if err != nil {
+		errorThrow(err)
+		return nil, C.int(0)
+	}
+	return C.CBytes(result), C.int(len(result))
+}
+
+//export SignBytesToString
+func SignBytesToString(message unsafe.Pointer, messageSize C.int, publicKey, privateKey, passphrase *C.char) *C.char {
+	result, err := instance.SignBytesToString(C.GoBytes(message, messageSize), C.GoString(publicKey), C.GoString(privateKey), C.GoString(passphrase))
+	if err != nil {
+		errorThrow(err)
+		return nil
+	}
+	return C.CString(result)
+}
+
 //export Verify
 func Verify(signature, message, publicKey *C.char) *C.char {
 	result, err := instance.Verify(C.GoString(signature), C.GoString(message), C.GoString(publicKey))
+	if err != nil {
+		errorThrow(err)
+		return nil
+	}
+	if result {
+		return C.CString("1")
+	}
+	return C.CString("")
+}
+
+//export VerifyBytes
+func VerifyBytes(signature *C.char, message unsafe.Pointer, messageSize C.int, publicKey *C.char) *C.char {
+	result, err := instance.VerifyBytes(C.GoString(signature), C.GoBytes(message, messageSize), C.GoString(publicKey))
 	if err != nil {
 		errorThrow(err)
 		return nil
@@ -73,6 +127,17 @@ func EncryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char
 	return C.CString(result)
 }
 
+//export EncryptSymmetricBytes
+func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options C.KeyOptions) (unsafe.Pointer, C.int) {
+
+	result, err := instance.EncryptSymmetricBytes(C.GoBytes(message, messageSize), C.GoString(passphrase), getKeyOptions(options))
+	if err != nil {
+		errorThrow(err)
+		return nil, C.int(0)
+	}
+	return C.CBytes(result), C.int(len(result))
+}
+
 //export DecryptSymmetric
 func DecryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char {
 	result, err := instance.DecryptSymmetric(C.GoString(message), C.GoString(passphrase), getKeyOptions(options))
@@ -81,6 +146,16 @@ func DecryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char
 		return nil
 	}
 	return C.CString(result)
+}
+
+//export DecryptSymmetricBytes
+func DecryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options C.KeyOptions) (unsafe.Pointer, C.int) {
+	result, err := instance.DecryptSymmetricBytes(C.GoBytes(message, messageSize), C.GoString(passphrase), getKeyOptions(options))
+	if err != nil {
+		errorThrow(err)
+		return nil, C.int(0)
+	}
+	return C.CBytes(result), C.int(len(result))
 }
 
 //export Generate
