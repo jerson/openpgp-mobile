@@ -22,9 +22,14 @@ func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string) (string, e
 	return string(output), nil
 }
 
-func (o *FastOpenPGP) DecryptBytes(message []byte, privateKey, passphrase string) ([]byte, error) {
+func (o *FastOpenPGP) DecryptBytes(message []byte, privateKey, passphrase string) (string, error) {
 	buf := bytes.NewReader(message)
-	return o.decrypt(buf, privateKey, passphrase)
+
+	output, err := o.decrypt(buf, privateKey, passphrase)
+	if err != nil {
+		return "", err
+	}
+	return string(output), nil
 }
 
 func (o *FastOpenPGP) decrypt(reader io.Reader, privateKey, passphrase string) ([]byte, error) {

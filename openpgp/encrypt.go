@@ -30,8 +30,8 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
 	return buf.String(), nil
 }
 
-func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string) ([]byte, error) {
-	return o.encrypt(message, publicKey)
+func (o *FastOpenPGP) EncryptBytes(message string, publicKey string) ([]byte, error) {
+	return o.encrypt([]byte(message), publicKey)
 }
 
 func (o *FastOpenPGP) encrypt(message []byte, publicKey string) ([]byte, error) {
