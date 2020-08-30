@@ -43,41 +43,48 @@ binding_linux: binding_linux_386 binding_linux_amd64 binding_linux_arm64 binding
 
 binding_linux_386:
 	GOOS=linux GOARCH=386 TAG=main \
-	ARGS="-e BINDING_FILE=linux_386_openpgp.so" \
+	ARGS="-e BINDING_FILE=openpgp_linux_386.so" \
 	CMD="make binding" ./cross_build.sh
 
 binding_linux_amd64:
 	GOOS=linux GOARCH=amd64 TAG=main \
-	ARGS="-e BINDING_FILE=linux_amd64_openpgp.so" \
+	ARGS="-e BINDING_FILE=openpgp_linux_amd64.so" \
 	CMD="make binding" ./cross_build.sh
 
 binding_linux_arm64:
 	GOOS=linux GOARCH=arm64 TAG=arm \
-	ARGS="-e BINDING_FILE=linux_arm64_openpgp.so" \
+	ARGS="-e BINDING_FILE=openpgp_linux_arm64.so" \
 	CMD="make binding" ./cross_build.sh
 
 binding_linux_armv7:
 	GOOS=linux GOARCH=armv7 TAG=arm \
-	ARGS="-e BINDING_FILE=linux_armv7_openpgp.so" \
+	ARGS="-e BINDING_FILE=openpgp_linux_armv7.so" \
 	CMD="make binding" ./cross_build.sh
 
 binding_windows: binding_windows_386 binding_windows_amd64
 
 binding_windows_386:
 	GOOS=windows GOARCH=386 \
-	ARGS="-e BINDING_FILE=windows_386_openpgp.dll" \
+	ARGS="-e BINDING_FILE=openpgp_windows_386.dll" \
 	TAG=main CMD="make binding" ./cross_build.sh
 
 binding_windows_amd64:
 	GOOS=windows GOARCH=amd64 TAG=main \
-	ARGS="-e BINDING_FILE=windows_amd64_openpgp.dll" \
+	ARGS="-e BINDING_FILE=openpgp_windows_amd64.dll" \
 	CMD="make binding" ./cross_build.sh
 
 binding_darwin: binding_darwin_amd64
 
 binding_darwin_amd64:
 	GOOS=darwin GOARCH=amd64 TAG=darwin \
-	ARGS="-e BINDING_FILE=darwin_amd64_openpgp.dylib" \
+	ARGS="-e BINDING_FILE=openpgp_darwin_amd64.dylib" \
+	CMD="make binding" ./cross_build.sh
+
+binding_ios: binding_ios_arm64
+
+binding_ios_arm64:
+	GOOS=darwin GOARCH=arm64 TAG=darwin \
+	ARGS="-e BINDING_FILE=openpgp_ios_arm64.dylib" \
 	CMD="make binding" ./cross_build.sh
 
 binding: deps
