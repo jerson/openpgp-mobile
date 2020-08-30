@@ -20,6 +20,35 @@ func TestFastOpenPGP_Encrypt(t *testing.T) {
 	t.Log("output:", output, outputDecrypted)
 }
 
+func TestFastOpenPGP_SignEncrypt(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	signature, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log("signature:", signature)
+
+	output, err := openPGP.Encrypt(signature, publicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("encrypted:", output)
+
+	decrypted, err := openPGP.Decrypt(output, privateKey, passphrase)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("decrypted:", decrypted)
+
+	verified, err := openPGP.Verify(decrypted, inputMessage, publicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("verified:", verified)
+}
+
 func TestFastOpenPGP_EncryptMultipleKey(t *testing.T) {
 
 	options := &Options{
