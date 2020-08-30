@@ -37,7 +37,7 @@ ios: deps
 swig:
 	swig -go -cgo -c++ -intgosize 64 binding/openpgp_bridge/openpgp_bridge.i
 
-binding_all: binding_windows binding_linux
+binding_all: binding_windows binding_linux binding_darwin
 
 binding_linux: binding_linux_386 binding_linux_amd64 binding_linux_arm64 binding_linux_armv7
 
@@ -71,6 +71,13 @@ binding_windows_386:
 binding_windows_amd64:
 	GOOS=windows GOARCH=amd64 TAG=main \
 	ARGS="-e BINDING_FILE=windows_amd64_openpgp.dll" \
+	CMD="make binding" ./cross_build.sh
+
+binding_darwin: binding_darwin_amd64
+
+binding_darwin_amd64:
+	GOOS=darwin GOARCH=amd64 TAG=darwin \
+	ARGS="-e BINDING_FILE=darwin_amd64_openpgp.dylib" \
 	CMD="make binding" ./cross_build.sh
 
 binding: deps
