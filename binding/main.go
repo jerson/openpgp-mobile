@@ -1,9 +1,11 @@
 package main
 
 //#include <stdint.h>
+//#include <stdlib.h>
 //typedef struct { char *publicKey; char *privateKey; } KeyPair;
 //typedef struct { char *hash; char *cipher; char *compression; char *compressionLevel; char *rsaBits; } KeyOptions;
-//typedef struct { char *name; char *comment; char *email; char *passphrase; KeyOptions keyOptions; } Options;
+//typedef struct { char *name; char *comment; char *email; char *passphrase; KeyOptions *keyOptions; } Options;
+//typedef struct  { KeyPair* keyPair; char* error; } Generate_return;
 import "C"
 import (
 	"fmt"
@@ -117,7 +119,7 @@ func VerifyBytes(signature *C.char, message unsafe.Pointer, messageSize C.int, p
 }
 
 //export EncryptSymmetric
-func EncryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char {
+func EncryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.char {
 
 	result, err := instance.EncryptSymmetric(C.GoString(message), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
@@ -128,7 +130,7 @@ func EncryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char
 }
 
 //export EncryptSymmetricBytes
-func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options C.KeyOptions) (unsafe.Pointer, C.int) {
+func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options *C.KeyOptions) (unsafe.Pointer, C.int) {
 
 	result, err := instance.EncryptSymmetricBytes(C.GoBytes(message, messageSize), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
@@ -139,7 +141,7 @@ func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase
 }
 
 //export DecryptSymmetric
-func DecryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char {
+func DecryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.char {
 	result, err := instance.DecryptSymmetric(C.GoString(message), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
 		errorThrow(err)
@@ -149,7 +151,7 @@ func DecryptSymmetric(message, passphrase *C.char, options C.KeyOptions) *C.char
 }
 
 //export DecryptSymmetricBytes
-func DecryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options C.KeyOptions) (unsafe.Pointer, C.int) {
+func DecryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options *C.KeyOptions) (unsafe.Pointer, C.int) {
 	result, err := instance.DecryptSymmetricBytes(C.GoBytes(message, messageSize), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
 		errorThrow(err)
@@ -159,40 +161,54 @@ func DecryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase
 }
 
 //export Generate
-func Generate(options C.Options) C.KeyPair {
-	result, err := instance.Generate(getOptions(options))
+func Generate(optionsInput *C.Options, output *C.Generate_return) *C.Generate_return {
+	defer C.free(unsafe.Pointer(optionsInput))
+	result, err := instance.Generate(getOptions(optionsInput))
 	if err != nil {
-		errorThrow(err)
-		return C.KeyPair{C.CString(""), C.CString("")}
-
+		output.error = C.CString(err.Error())
+		output.keyPair = nil
+		return output
 	}
-	return C.KeyPair{C.CString(result.PublicKey), C.CString(result.PrivateKey)}
+	output.error = nil
+	output.keyPair = &C.KeyPair{C.CString(result.PublicKey),C.CString(result.PrivateKey)}
+	return output
 
 }
 
-func getKeyOptions(options C.KeyOptions) *openpgp.KeyOptions {
-
-	compressionLevel, _ := strconv.Atoi(C.GoString(options.compressionLevel))
-	rsaBits, _ := strconv.Atoi(C.GoString(options.rsaBits))
-
-	return &openpgp.KeyOptions{
-		Hash:             C.GoString(options.hash),
-		Cipher:           C.GoString(options.cipher),
-		Compression:      C.GoString(options.compression),
-		CompressionLevel: compressionLevel,
-		RSABits:          rsaBits,
+func getKeyOptions(options *C.KeyOptions) *openpgp.KeyOptions {
+	if options == nil {
+		return &openpgp.KeyOptions{}
 	}
+
+	result := &openpgp.KeyOptions{
+		Hash:        C.GoString(options.hash),
+		Cipher:      C.GoString(options.cipher),
+		Compression: C.GoString(options.compression),
+	}
+	if options.compressionLevel != nil {
+		result.CompressionLevel, _ = strconv.Atoi(C.GoString(options.compressionLevel))
+	}
+	if options.rsaBits != nil {
+		result.RSABits, _ = strconv.Atoi(C.GoString(options.rsaBits))
+	}
+	return result
 }
 
-func getOptions(options C.Options) *openpgp.Options {
+func getOptions(options *C.Options) *openpgp.Options {
+	if options == nil {
+		return &openpgp.Options{}
+	}
 
-	return &openpgp.Options{
-		KeyOptions: getKeyOptions(options.keyOptions),
+	result := &openpgp.Options{
 		Name:       C.GoString(options.name),
 		Comment:    C.GoString(options.comment),
 		Email:      C.GoString(options.email),
 		Passphrase: C.GoString(options.passphrase),
 	}
+	if options.keyOptions != nil {
+		result.KeyOptions = getKeyOptions(options.keyOptions)
+	}
+	return result
 }
 
 func main() {}
