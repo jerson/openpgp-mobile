@@ -5,10 +5,9 @@ package main
 //typedef struct { char *publicKey; char *privateKey; } KeyPair;
 //typedef struct { char *hash; char *cipher; char *compression; char *compressionLevel; char *rsaBits; } KeyOptions;
 //typedef struct { char *name; char *comment; char *email; char *passphrase; KeyOptions *keyOptions; } Options;
-//typedef struct  { KeyPair* keyPair; char* error; } Generate_return;
+//typedef struct  { KeyPair* keyPair; char* error; } KeyPairReturn;
 import "C"
 import (
-	"fmt"
 	"github.com/jerson/openpgp-mobile/openpgp"
 	"strconv"
 	"unsafe"
@@ -16,17 +15,11 @@ import (
 
 var instance = openpgp.NewFastOpenPGP()
 
-func errorThrow(err error) {
-	fmt.Println(err.Error())
-
-	//openpgp_bridge.ErrorGenerateThrow(err.Error())
-}
 
 //export Encrypt
 func Encrypt(message, publicKey *C.char) *C.char {
 	result, err := instance.Encrypt(C.GoString(message), C.GoString(publicKey))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	return C.CString(result)
@@ -36,7 +29,6 @@ func Encrypt(message, publicKey *C.char) *C.char {
 func EncryptBytes(message unsafe.Pointer, messageSize C.int, publicKey *C.char) (unsafe.Pointer, C.int) {
 	result, err := instance.EncryptBytes(C.GoBytes(message, messageSize), C.GoString(publicKey))
 	if err != nil {
-		errorThrow(err)
 		return nil, C.int(0)
 	}
 	return C.CBytes(result), C.int(len(result))
@@ -46,7 +38,6 @@ func EncryptBytes(message unsafe.Pointer, messageSize C.int, publicKey *C.char) 
 func Decrypt(message, privateKey, passphrase *C.char) *C.char {
 	result, err := instance.Decrypt(C.GoString(message), C.GoString(privateKey), C.GoString(passphrase))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	return C.CString(result)
@@ -56,7 +47,6 @@ func Decrypt(message, privateKey, passphrase *C.char) *C.char {
 func DecryptBytes(message unsafe.Pointer, messageSize C.int, privateKey, passphrase *C.char) (unsafe.Pointer, C.int) {
 	result, err := instance.DecryptBytes(C.GoBytes(message, messageSize), C.GoString(privateKey), C.GoString(passphrase))
 	if err != nil {
-		errorThrow(err)
 		return nil, C.int(0)
 	}
 	return C.CBytes(result), C.int(len(result))
@@ -66,7 +56,6 @@ func DecryptBytes(message unsafe.Pointer, messageSize C.int, privateKey, passphr
 func Sign(message, publicKey, privateKey, passphrase *C.char) *C.char {
 	result, err := instance.Sign(C.GoString(message), C.GoString(publicKey), C.GoString(privateKey), C.GoString(passphrase))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	return C.CString(result)
@@ -76,7 +65,6 @@ func Sign(message, publicKey, privateKey, passphrase *C.char) *C.char {
 func SignBytes(message unsafe.Pointer, messageSize C.int, publicKey, privateKey, passphrase *C.char) (unsafe.Pointer, C.int) {
 	result, err := instance.SignBytes(C.GoBytes(message, messageSize), C.GoString(publicKey), C.GoString(privateKey), C.GoString(passphrase))
 	if err != nil {
-		errorThrow(err)
 		return nil, C.int(0)
 	}
 	return C.CBytes(result), C.int(len(result))
@@ -86,7 +74,6 @@ func SignBytes(message unsafe.Pointer, messageSize C.int, publicKey, privateKey,
 func SignBytesToString(message unsafe.Pointer, messageSize C.int, publicKey, privateKey, passphrase *C.char) *C.char {
 	result, err := instance.SignBytesToString(C.GoBytes(message, messageSize), C.GoString(publicKey), C.GoString(privateKey), C.GoString(passphrase))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	return C.CString(result)
@@ -96,7 +83,6 @@ func SignBytesToString(message unsafe.Pointer, messageSize C.int, publicKey, pri
 func Verify(signature, message, publicKey *C.char) *C.char {
 	result, err := instance.Verify(C.GoString(signature), C.GoString(message), C.GoString(publicKey))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	if result {
@@ -109,7 +95,6 @@ func Verify(signature, message, publicKey *C.char) *C.char {
 func VerifyBytes(signature *C.char, message unsafe.Pointer, messageSize C.int, publicKey *C.char) *C.char {
 	result, err := instance.VerifyBytes(C.GoString(signature), C.GoBytes(message, messageSize), C.GoString(publicKey))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	if result {
@@ -123,7 +108,6 @@ func EncryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.cha
 
 	result, err := instance.EncryptSymmetric(C.GoString(message), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	return C.CString(result)
@@ -134,7 +118,6 @@ func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase
 
 	result, err := instance.EncryptSymmetricBytes(C.GoBytes(message, messageSize), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
-		errorThrow(err)
 		return nil, C.int(0)
 	}
 	return C.CBytes(result), C.int(len(result))
@@ -144,7 +127,6 @@ func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase
 func DecryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.char {
 	result, err := instance.DecryptSymmetric(C.GoString(message), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
-		errorThrow(err)
 		return nil
 	}
 	return C.CString(result)
@@ -154,22 +136,20 @@ func DecryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.cha
 func DecryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase *C.char, options *C.KeyOptions) (unsafe.Pointer, C.int) {
 	result, err := instance.DecryptSymmetricBytes(C.GoBytes(message, messageSize), C.GoString(passphrase), getKeyOptions(options))
 	if err != nil {
-		errorThrow(err)
 		return nil, C.int(0)
 	}
 	return C.CBytes(result), C.int(len(result))
 }
 
 //export Generate
-func Generate(optionsInput *C.Options, output *C.Generate_return) *C.Generate_return {
+func Generate(optionsInput *C.Options) *C.KeyPairReturn {
+	output := (*C.KeyPairReturn)(C.malloc(C.size_t(C.sizeof_KeyPairReturn)))
 	defer C.free(unsafe.Pointer(optionsInput))
 	result, err := instance.Generate(getOptions(optionsInput))
 	if err != nil {
 		output.error = C.CString(err.Error())
-		output.keyPair = nil
 		return output
 	}
-	output.error = nil
 	output.keyPair = &C.KeyPair{C.CString(result.PublicKey),C.CString(result.PrivateKey)}
 	return output
 
