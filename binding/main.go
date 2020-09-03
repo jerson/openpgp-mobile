@@ -28,6 +28,7 @@ func Encrypt(message, publicKey *C.char) *C.StringReturn {
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.result = C.CString(result)
 	return output
 }
@@ -43,6 +44,7 @@ func EncryptBytes(message unsafe.Pointer, messageSize C.int, publicKey *C.char) 
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.message = C.CBytes(result)
 	output.size = C.int(len(result))
 	return output
@@ -60,6 +62,7 @@ func Decrypt(message, privateKey, passphrase *C.char) *C.StringReturn {
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.result = C.CString(result)
 	return output
 }
@@ -76,6 +79,7 @@ func DecryptBytes(message unsafe.Pointer, messageSize C.int, privateKey, passphr
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.message = C.CBytes(result)
 	output.size = C.int(len(result))
 	return output
@@ -94,6 +98,7 @@ func Sign(message, publicKey, privateKey, passphrase *C.char) *C.StringReturn {
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.result = C.CString(result)
 	return output
 }
@@ -110,6 +115,7 @@ func SignBytes(message unsafe.Pointer, messageSize C.int, publicKey, privateKey,
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.message = C.CBytes(result)
 	output.size = C.int(len(result))
 	return output
@@ -128,6 +134,7 @@ func SignBytesToString(message unsafe.Pointer, messageSize C.int, publicKey, pri
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.result = C.CString(result)
 	return output
 }
@@ -144,6 +151,7 @@ func Verify(signature, message, publicKey *C.char) *C.StringReturn {
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	if result {
 		output.result = C.CString("1")
 	} else {
@@ -164,6 +172,7 @@ func VerifyBytes(signature *C.char, message unsafe.Pointer, messageSize C.int, p
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	if result {
 		output.result = C.CString("1")
 	} else {
@@ -184,6 +193,7 @@ func EncryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.Str
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.result = C.CString(result)
 	return output
 }
@@ -200,6 +210,7 @@ func EncryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.message = C.CBytes(result)
 	output.size = C.int(len(result))
 	return output
@@ -217,6 +228,7 @@ func DecryptSymmetric(message, passphrase *C.char, options *C.KeyOptions) *C.Str
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.result = C.CString(result)
 	return output
 }
@@ -233,6 +245,7 @@ func DecryptSymmetricBytes(message unsafe.Pointer, messageSize C.int, passphrase
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.message = C.CBytes(result)
 	output.size = C.int(len(result))
 	return output
@@ -247,6 +260,7 @@ func Generate(optionsInput *C.Options) *C.KeyPairReturn {
 		output.error = C.CString(err.Error())
 		return output
 	}
+	output.error = nil
 	output.keyPair = &C.KeyPair{C.CString(result.PublicKey), C.CString(result.PrivateKey)}
 	return output
 
