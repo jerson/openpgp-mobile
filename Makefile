@@ -1,6 +1,5 @@
 BINDING_FILE?=openpgp.so
 PROTO_DIR = ${GOPATH}/src/github.com/gogo/protobuf/protobuf
-DEPLOYER_DIR = ../deployer/pkg/connector
 
 .PHONY: proto
 
@@ -9,9 +8,6 @@ default: fmt test
 deps:
 	go mod download
 	go get -u github.com/gogo/protobuf/protoc-gen-gofast
-	go get -u github.com/gogo/protobuf/protoc-gen-gogofast
-	go get -u github.com/gogo/protobuf/protoc-gen-gogofaster
-	go get -u github.com/gogo/protobuf/protoc-gen-gogoslick
 
 proto: clean
 	protoc -Iproto --gofast_out=grpc:./bridge/model proto/*.proto
