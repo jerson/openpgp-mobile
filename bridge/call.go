@@ -14,7 +14,7 @@ func Call(name string, payload []byte) ([]byte, error) {
 	switch name {
 	case "decrypt":
 		output = instance.decrypt(payload)
-	case "decrypt_bytes":
+	case "decryptBytes":
 		output = instance.decryptBytes(payload)
 
 	}
