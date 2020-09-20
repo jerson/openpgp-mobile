@@ -1,0 +1,28 @@
+syntax = "proto3";
+package model;
+
+option go_package = ".;model";
+
+//import "payloads.proto";
+
+message DecryptRequest {
+  string message = 1;
+  string privateKey = 3;
+  string passphrase = 5;
+}
+
+message DecryptBytesRequest {
+  bytes  message = 1;
+  string privateKey = 3;
+  string passphrase = 5;
+}
+
+message StringResponse {
+  string output = 1;
+  string error = 3;
+}
+message BytesResponse {
+  bytes output = 1;
+  string error = 3;
+}
+

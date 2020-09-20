@@ -8,13 +8,32 @@ package main
 //typedef struct  { KeyPair* keyPair; char* error; } KeyPairReturn;
 //typedef struct  { void* message; int size; char* error; } SliceReturn;
 //typedef struct  { char* result; char* error; } StringReturn;
+//typedef struct  { void* message; int size; char* error; } BytesReturn;
 import "C"
 import (
+	"github.com/jerson/openpgp-mobile/bridge"
 	"github.com/jerson/openpgp-mobile/openpgp"
 	"strconv"
 	"unsafe"
 )
 
+//export Call
+func Call(name *C.char,payload unsafe.Pointer, payloadSize C.int) *C.SliceReturn {
+	output := (*C.BytesReturn)(C.malloc(C.size_t(C.sizeof_BytesReturn)))
+	defer C.free(unsafe.Pointer(name))
+
+	result, err := bridge.Call(C.GoString(name),C.GoBytes(payload, payloadSize))
+	if err != nil {
+		output.error = C.CString(err.Error())
+		return output
+	}
+	output.error = nil
+	output.message = C.CBytes(result)
+	output.size = C.int(len(result))
+	return output
+}
+
+// in near future we should stop to instance here :D
 var instance = openpgp.NewFastOpenPGP()
 
 //export Encrypt
