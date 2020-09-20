@@ -1,16 +1,23 @@
 BINDING_FILE?=openpgp.so
 PROTO_DIR = ${GOPATH}/src/github.com/gogo/protobuf/protobuf
 
-.PHONY: proto
 
 default: fmt test
 
 deps:
 	go mod download
-	go get -u github.com/gogo/protobuf/protoc-gen-gofast
 
-proto: clean
+.PHONY: proto
+proto: proto-dart proto-go
+proto-go:
+	rm -rf bridge/model && mkdir -p bridge/model
+	go get github.com/gogo/protobuf/protoc-gen-gofast
 	protoc -Iproto --gofast_out=grpc:./bridge/model proto/*.proto
+
+proto-dart:
+	rm -rf output/dart && mkdir -p output/dart
+	flutter pub global activate protoc_plugin
+	protoc -Iproto --dart_out=grpc:./output/dart proto/*.proto
 
 test:
 	go test ./... -coverprofile=profile.cov -cover -short -count 1
@@ -20,7 +27,6 @@ fmt:
 
 clean:
 	rm -rf output
-	rm -rf bridge/model && mkdir -p bridge/model
 
 all: clean binding android ios wasm
 
