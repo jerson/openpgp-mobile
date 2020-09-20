@@ -9,15 +9,16 @@ deps:
 
 .PHONY: proto
 proto: proto-dart proto-go
-proto-go:
-	rm -rf bridge/model && mkdir -p bridge/model
+proto-deps:
 	go get github.com/gogo/protobuf/protoc-gen-gofast
-	protoc -Iproto --gofast_out=grpc:./bridge/model proto/*.proto
+	flutter pub global activate protoc_plugin
 
 proto-dart:
 	rm -rf output/dart && mkdir -p output/dart
-	flutter pub global activate protoc_plugin
 	protoc -Iproto --dart_out=grpc:./output/dart proto/*.proto
+proto-go:
+	rm -rf bridge/model && mkdir -p bridge/model
+	protoc -Iproto --gofast_out=grpc:./bridge/model proto/*.proto
 
 test:
 	go test ./... -coverprofile=profile.cov -cover -short -count 1

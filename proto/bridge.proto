@@ -3,17 +3,112 @@ package model;
 
 option go_package = ".;model";
 
+message EncryptRequest {
+  string message = 1;
+  string publicKey = 3;
+}
+message EncryptBytesRequest {
+  bytes  message = 1;
+  string publicKey = 3;
+}
+
 message DecryptRequest {
   string message = 1;
   string privateKey = 3;
   string passphrase = 5;
 }
-
 message DecryptBytesRequest {
   bytes  message = 1;
   string privateKey = 3;
   string passphrase = 5;
 }
+
+message SignRequest {
+  string message = 1;
+  string publicKey = 3;
+  string privateKey = 5;
+  string passphrase = 7;
+}
+message SignBytesRequest {
+  bytes message = 1;
+  string publicKey = 3;
+  string privateKey = 5;
+  string passphrase = 7;
+}
+
+message VerifyRequest {
+  string signature = 1;
+  string message = 3;
+  string publicKey = 5;
+}
+message VerifyBytesRequest {
+  string signature = 1;
+  bytes message = 3;
+  string publicKey = 5;
+}
+
+message EncryptSymmetricRequest {
+  string message = 1;
+  string passphrase = 3;
+  KeyOptions options = 5;
+}
+message EncryptSymmetricBytesRequest {
+  bytes message = 1;
+  string passphrase = 3;
+  KeyOptions options = 5;
+}
+
+message DecryptSymmetricRequest {
+  string message = 1;
+  string passphrase = 3;
+  KeyOptions options = 5;
+}
+message DecryptSymmetricBytesRequest {
+  bytes message = 1;
+  string passphrase = 3;
+  KeyOptions options = 5;
+}
+
+message GenerateRequest {
+  Options options = 5;
+}
+
+enum Hash {
+  HASH_UNSPECIFIED = 0;
+  HASH_SHA256 = 1;
+  HASH_SHA224 = 2;
+  HASH_SHA384 = 3;
+  HASH_SHA512 = 4;
+}
+enum Compression {
+  COMPRESSION_UNSPECIFIED = 0;
+  COMPRESSION_NONE = 1;
+  COMPRESSION_ZLIB = 2;
+  COMPRESSION_ZIP = 3;
+}
+enum Cypher {
+  CYPHER_UNSPECIFIED = 0;
+  CYPHER_AES128 = 1;
+  CYPHER_AES192 = 2;
+  CYPHER_AES256 = 3;
+}
+
+message KeyOptions {
+  Hash hash = 1;
+  Cypher cipher = 3;
+  Compression compression = 5;
+  int32 compressionLevel = 7;
+  int32 rsaBits = 9;
+}
+message Options {
+  string name = 1;
+  string comment = 3;
+  string email = 5;
+  string passphrase = 7;
+  KeyOptions keyOptions = 9;
+}
+
+////////////// RESPONSE BELOW THIS LINE ///////////////
 
 message StringResponse {
   string output = 1;
@@ -22,5 +117,17 @@ message StringResponse {
 message BytesResponse {
   bytes output = 1;
   string error = 3;
+}
+message BoolResponse {
+  bool output = 1;
+  string error = 3;
+}
+message KeyPairResponse {
+  KeyPair output = 1;
+  string error = 3;
+}
+message KeyPair {
+  string publicKey = 1;
+  string privateKey = 3;
 }
 

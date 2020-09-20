@@ -1,6 +1,7 @@
 package bridge
 
 import (
+	"fmt"
 	"github.com/golang/protobuf/proto"
 	"github.com/jerson/openpgp-mobile/bridge/model"
 	"github.com/jerson/openpgp-mobile/openpgp"
@@ -16,7 +17,8 @@ func Call(name string, payload []byte) ([]byte, error) {
 		output = instance.decrypt(payload)
 	case "decryptBytes":
 		output = instance.decryptBytes(payload)
-
+	default:
+		return nil, fmt.Errorf("not implemented: %s", name)
 	}
 
 	return proto.Marshal(output)
