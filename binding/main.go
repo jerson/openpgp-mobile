@@ -18,7 +18,7 @@ import (
 )
 
 //export Call
-func Call(name *C.char,payload unsafe.Pointer, payloadSize C.int) *C.SliceReturn {
+func Call(name *C.char,payload unsafe.Pointer, payloadSize C.int) *C.BytesReturn {
 	output := (*C.BytesReturn)(C.malloc(C.size_t(C.sizeof_BytesReturn)))
 	defer C.free(unsafe.Pointer(name))
 
