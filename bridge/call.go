@@ -1,4 +1,4 @@
-package bridge
+package openpgp_bridge
 
 import (
 	"fmt"
@@ -222,7 +222,7 @@ func (m instance) decryptSymmetric(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.DecryptSymmetric(request.Message, request.Passphrase, request.Options)
+	output, err := m.instance.DecryptSymmetric(request.Message, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -239,7 +239,7 @@ func (m instance) decryptSymmetricBytes(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.DecryptSymmetricBytes(request.Message, request.Passphrase, request.Options)
+	output, err := m.instance.DecryptSymmetricBytes(request.Message, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -256,7 +256,7 @@ func (m instance) encryptSymmetric(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.EncryptSymmetric(request.Message, request.Passphrase, request.Options)
+	output, err := m.instance.EncryptSymmetric(request.Message, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -273,7 +273,7 @@ func (m instance) encryptSymmetricBytes(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.EncryptSymmetricBytes(request.Message, request.Passphrase, request.Options)
+	output, err := m.instance.EncryptSymmetricBytes(request.Message, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -290,11 +290,92 @@ func (m instance) generate(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.Generate(request.Options)
+	output, err := m.instance.Generate(m.parseOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
 	}
-	response.Output = output
+	response.Output = &model.KeyPair{
+		PublicKey:  output.PrivateKey,
+		PrivateKey: output.PrivateKey,
+	}
 	return response
+}
+
+func (m instance) parseOptions(input *model.Options) *openpgp.Options {
+	if input == nil {
+		return &openpgp.Options{
+			KeyOptions: m.parseKeyOptions(nil),
+		}
+	}
+	options := &openpgp.Options{
+		KeyOptions: m.parseKeyOptions(input.KeyOptions),
+		Name:       input.Name,
+		Comment:    input.Comment,
+		Email:      input.Email,
+		Passphrase: input.Passphrase,
+	}
+	return options
+}
+
+func (m instance) parseKeyOptions(input *model.KeyOptions) *openpgp.KeyOptions {
+	if input == nil {
+		return &openpgp.KeyOptions{}
+	}
+	options := &openpgp.KeyOptions{
+		Hash:             m.parseHash(input.Hash),
+		Cipher:           m.parseCipher(input.Cipher),
+		Compression:      m.parseCompression(input.Compression),
+		CompressionLevel: int(input.CompressionLevel),
+		RSABits:          int(input.RsaBits),
+	}
+
+	return options
+}
+
+func (m instance) parseHash(input model.Hash) string {
+	switch input {
+	case model.Hash_HASH_SHA224:
+		return "sha224"
+	case model.Hash_HASH_SHA384:
+		return "sha384"
+	case model.Hash_HASH_SHA512:
+		return "sha512"
+	case model.Hash_HASH_SHA256:
+		fallthrough
+	case model.Hash_HASH_UNSPECIFIED:
+		fallthrough
+	default:
+		return "sha256"
+	}
+}
+
+func (m instance) parseCipher(input model.Cipher) string {
+	switch input {
+	case model.Cipher_CIPHER_AES192:
+		return "aes192"
+	case model.Cipher_CIPHER_AES256:
+		return "aes256"
+	case model.Cipher_CIPHER_AES128:
+		fallthrough
+	case model.Cipher_CIPHER_UNSPECIFIED:
+		fallthrough
+	default:
+		return "aes128"
+	}
+}
+
+func (m instance) parseCompression(input model.Compression) string {
+	switch input {
+	case model.Compression_COMPRESSION_ZIP:
+		return "zip"
+	case model.Compression_COMPRESSION_ZLIB:
+		return "zlib"
+	case model.Compression_COMPRESSION_NONE:
+		fallthrough
+	case model.Compression_COMPRESSION_UNSPECIFIED:
+		fallthrough
+	default:
+		return "none"
+	}
 }

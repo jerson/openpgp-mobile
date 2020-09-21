@@ -86,16 +86,16 @@ enum Compression {
   COMPRESSION_ZLIB = 2;
   COMPRESSION_ZIP = 3;
 }
-enum Cypher {
-  CYPHER_UNSPECIFIED = 0;
-  CYPHER_AES128 = 1;
-  CYPHER_AES192 = 2;
-  CYPHER_AES256 = 3;
+enum Cipher {
+  CIPHER_UNSPECIFIED = 0;
+  CIPHER_AES128 = 1;
+  CIPHER_AES192 = 2;
+  CIPHER_AES256 = 3;
 }
 
 message KeyOptions {
   Hash hash = 1;
-  Cypher cipher = 3;
+  Cipher cipher = 3;
   Compression compression = 5;
   int32 compressionLevel = 7;
   int32 rsaBits = 9;

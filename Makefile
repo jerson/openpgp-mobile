@@ -21,7 +21,7 @@ proto-go:
 	protoc -Iproto --gofast_out=grpc:./bridge/model proto/*.proto
 
 test:
-	go test ./... -coverprofile=profile.cov -cover -short -count 1
+	go test ./openpgp/... -coverprofile=profile.cov -cover -short -count 1
 
 fmt:
 	go fmt ./...

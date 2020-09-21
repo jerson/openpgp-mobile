@@ -58,7 +58,7 @@ func cipherToFunction(cipher string) packet.CipherFunction {
 	case "aes192":
 		return packet.CipherAES192
 	case "aes128":
-		return packet.CipherAES128
+		fallthrough
 	default:
 		return packet.CipherAES128
 	}
@@ -68,10 +68,10 @@ func compressionToAlgo(algo string) packet.CompressionAlgo {
 	switch algo {
 	case "zlib":
 		return packet.CompressionZLIB
-	case "none":
-		return packet.CompressionNone
 	case "zip":
 		return packet.CompressionZIP
+	case "none":
+		fallthrough
 	default:
 		return packet.CompressionNone
 	}
@@ -79,14 +79,14 @@ func compressionToAlgo(algo string) packet.CompressionAlgo {
 
 func hashTo(hash string) crypto.Hash {
 	switch hash {
-	case "sha256":
-		return crypto.SHA256
 	case "sha224":
 		return crypto.SHA224
 	case "sha384":
 		return crypto.SHA384
 	case "sha512":
 		return crypto.SHA512
+	case "sha256":
+		fallthrough
 	default:
 		return crypto.SHA256
 	}

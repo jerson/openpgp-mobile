@@ -102,7 +102,7 @@ func cipherToFunctionKeybase(cipher string) packet.CipherFunction {
 	case "aes192":
 		return packet.CipherAES192
 	case "aes128":
-		return packet.CipherAES128
+		fallthrough
 	default:
 		return packet.CipherAES128
 	}
@@ -112,10 +112,10 @@ func compressionToAlgoKeybase(algo string) packet.CompressionAlgo {
 	switch algo {
 	case "zlib":
 		return packet.CompressionZLIB
-	case "none":
-		return packet.CompressionNone
 	case "zip":
 		return packet.CompressionZIP
+	case "none":
+		fallthrough
 	default:
 		return packet.CompressionNone
 	}
