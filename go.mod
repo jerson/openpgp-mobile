@@ -7,4 +7,5 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/keybase/go-crypto v0.0.0-20200123153347-de78d2cb44f4
 	golang.org/x/crypto v0.0.0-20200602180216-279210d13fed
+	golang.org/x/mobile v0.0.0-20200801112145-973feb4309de // indirect
 )

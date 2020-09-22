@@ -41,6 +41,15 @@ wasm:
 	GOARCH=wasm GOOS=js go build -ldflags="-s -w" -o output/wasm/openpgp.wasm wasm/main.go
 	cp output/wasm/openpgp.wasm wasm/sample/public/openpgp.wasm
 
+.PHONY: bridge
+bridge_android: deps
+	mkdir -p output/android
+	gomobile bind -ldflags="-w -s" -target=android -o output/android/OpenPGPBridge.aar github.com/jerson/openpgp-mobile/bridge
+
+bridge_ios: deps
+	mkdir -p output/ios
+	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/OpenPGPBridge.framework github.com/jerson/openpgp-mobile/bridge
+
 android: deps
 	mkdir -p output/android
 	gomobile bind -ldflags="-w -s" -target=android -o output/android/openpgp.aar github.com/jerson/openpgp-mobile/openpgp

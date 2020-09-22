@@ -15,7 +15,7 @@ func Call(name *C.char, payload unsafe.Pointer, payloadSize C.int) *C.BytesRetur
 	defer C.free(unsafe.Pointer(name))
 	defer C.free(payload)
 
-	result, err := openpgp_bridge.Call(C.GoString(name), C.GoBytes(payload, payloadSize))
+	result, err := openPGPBridge.Call(C.GoString(name), C.GoBytes(payload, payloadSize))
 	if err != nil {
 		output.error = C.CString(err.Error())
 		return output

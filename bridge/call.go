@@ -1,4 +1,4 @@
-package openpgp_bridge
+package openPGPBridge
 
 import (
 	"fmt"

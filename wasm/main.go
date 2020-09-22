@@ -5,7 +5,7 @@ package main
 import (
 	"encoding/base64"
 	"errors"
-	openpgp_bridge "github.com/jerson/openpgp-mobile/bridge"
+	 "github.com/jerson/openpgp-mobile/bridge"
 	"syscall/js"
 
 	"github.com/jerson/openpgp-mobile/openpgp"
@@ -42,7 +42,7 @@ func Call(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
-		output, err := openpgp_bridge.Call(i[0].String(), data)
+		output, err := openPGPBridge.Call(i[0].String(), data)
 		if err != nil {
 			return nil, err
 		}
