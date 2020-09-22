@@ -5,6 +5,7 @@ package main
 import (
 	"encoding/base64"
 	"errors"
+	openpgp_bridge "github.com/jerson/openpgp-mobile/bridge"
 	"syscall/js"
 
 	"github.com/jerson/openpgp-mobile/openpgp"
@@ -33,6 +34,20 @@ func Promise(i []js.Value, fn func() (result interface{}, err error)) interface{
 	}()
 
 	return nil
+}
+
+func Call(this js.Value, i []js.Value) interface{} {
+	return Promise(i, func() (result interface{}, err error) {
+		data, err := base64.StdEncoding.DecodeString(i[1].String())
+		if err != nil {
+			return nil, err
+		}
+		output, err := openpgp_bridge.Call(i[0].String(), data)
+		if err != nil {
+			return nil, err
+		}
+		return base64.StdEncoding.EncodeToString(output), err
+	})
 }
 
 func Encrypt(this js.Value, i []js.Value) interface{} {
@@ -229,6 +244,7 @@ func getOptions(data js.Value) *openpgp.Options {
 }
 
 func registerCallbacks() {
+	js.Global().Set("OpenPGPCall", js.FuncOf(Call))
 	js.Global().Set("OpenPGPEncrypt", js.FuncOf(Encrypt))
 	js.Global().Set("OpenPGPEncryptBytes", js.FuncOf(EncryptBytes))
 	js.Global().Set("OpenPGPDecrypt", js.FuncOf(Decrypt))
