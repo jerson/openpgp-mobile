@@ -1,0 +1,6 @@
+binding_darwin: binding_darwin_amd64
+
+binding_darwin_amd64:
+	GOOS=darwin GOARCH=amd64 TAG=darwin \
+	ARGS="-e BINDING_FILE=darwin/amd64/libopenpgp_bridge.dylib" \
+	CMD="make binding" ./cross_build.sh

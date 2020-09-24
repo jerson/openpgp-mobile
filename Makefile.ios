@@ -1,0 +1,6 @@
+binding_ios: binding_ios_arm64
+
+binding_ios_arm64:
+	GOOS=darwin GOARCH=arm64 TAG=darwin \
+	ARGS="-e BINDING_FILE=darwin/arm64/libopenpgp_bridge.dylib" \
+	CMD="make binding" ./cross_build.sh

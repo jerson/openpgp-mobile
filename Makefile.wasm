@@ -1,0 +1,5 @@
+.PHONY: wasm
+wasm:
+	mkdir -p output/wasm
+	GOARCH=wasm GOOS=js go build -ldflags="-s -w" -o output/wasm/openpgp.wasm wasm/main.go
+	cp output/wasm/openpgp.wasm wasm/sample/public/openpgp.wasm

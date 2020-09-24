@@ -1,0 +1,11 @@
+binding_windows: binding_windows_386 binding_windows_amd64
+
+binding_windows_386:
+	GOOS=windows GOARCH=386 \
+	ARGS="-e BINDING_FILE=windows/386/libopenpgp_bridge.dll" \
+	TAG=main CMD="make binding" ./cross_build.sh
+
+binding_windows_amd64:
+	GOOS=windows GOARCH=amd64 TAG=main \
+	ARGS="-e BINDING_FILE=windows/amd64/libopenpgp_bridge.dll" \
+	CMD="make binding" ./cross_build.sh
