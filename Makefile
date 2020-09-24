@@ -1,5 +1,6 @@
 BINDING_NAME?=libopenpgp_bridge
 BINDING_FILE?=$(BINDING_NAME).so
+BINDING_ARGS?=
 BUILD_MODE?=c-shared
 OUTPUT_DIR?=output
 
@@ -32,7 +33,4 @@ binding_all: binding_windows binding_linux binding_darwin
 
 binding: deps
 	mkdir -p $(OUTPUT_DIR)/binding
-	go build -ldflags="-w -s" -o $(OUTPUT_DIR)/binding/$(BINDING_FILE) -buildmode=$(BUILD_MODE) binding/main.go
-
-swig:
-	swig -go -cgo -c++ -intgosize 64 binding/openpgp_bridge/libopenpgp_bridge.i
+	go build -ldflags="-w -s" -o $(OUTPUT_DIR)/binding/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go

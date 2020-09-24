@@ -1,6 +1,19 @@
-binding_ios: binding_ios_arm64
+ANDROID_NDK_HOME?=$(ANDROID_HOME)/ndk/21.3.6528147
+ANDROID_NDK_TOOLCHAIN?=$(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/linux-x86_64/bin
+IOS_OUTPUT?=ios
+
+binding_ios: binding_ios_arm64 binding_ios_x86_64
+	lipo $(IOS_OUTPUT)/x86_64.a $(IOS_OUTPUT)/arm64.a -create -output $(IOS_OUTPUT)/$(BINDING_NAME).a
+	cp $(IOS_OUTPUT)/arm64.h $(IOS_OUTPUT)/$(BINDING_NAME).h
 
 binding_ios_arm64:
-	GOOS=darwin GOARCH=arm64 TAG=darwin \
-	ARGS="-e BINDING_FILE=darwin/arm64/libopenpgp_bridge.dylib" \
-	CMD="make binding" ./cross_build.sh
+	BINDING_FILE=$(IOS_OUTPUT)/arm64.a BUILD_MODE="c-archive" \
+	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
+	GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
+	make binding
+
+binding_ios_x86_64:
+	BINDING_FILE=$(IOS_OUTPUT)/x86_64.a BUILD_MODE="c-archive" \
+	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
+	make binding
