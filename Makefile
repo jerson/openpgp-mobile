@@ -1,8 +1,9 @@
+BUILD_MODE?=c-shared
+OUTPUT_DIR?=output
 BINDING_NAME?=libopenpgp_bridge
 BINDING_FILE?=$(BINDING_NAME).so
 BINDING_ARGS?=
-BUILD_MODE?=c-shared
-OUTPUT_DIR?=output
+BINDING_OUTPUT?=$(OUTPUT_DIR)/binding
 
 include Makefile.android
 include Makefile.ios
@@ -32,5 +33,5 @@ all: clean binding android ios wasm
 binding_all: binding_windows binding_linux binding_darwin
 
 binding: deps
-	mkdir -p $(OUTPUT_DIR)/binding
-	go build -ldflags="-w -s" -o $(OUTPUT_DIR)/binding/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go
+	mkdir -p $(BINDING_OUTPUT)
+	go build -ldflags="-w -s" -o $(BINDING_OUTPUT)/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go
