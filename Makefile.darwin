@@ -4,6 +4,7 @@ DARWIN_BINDING_OUTPUT?=$(BINDING_OUTPUT)/$(DARWIN_OUTPUT)
 binding_darwin: binding_darwin_x86_64
 
 binding_darwin_x86_64:
-	BINDING_FILE=$(DARWIN_OUTPUT)/$(BINDING_NAME).dylib \
+	BINDING_FILE=$(DARWIN_OUTPUT)/$(BINDING_NAME).a \
+	BUILD_MODE="c-archive" \
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
