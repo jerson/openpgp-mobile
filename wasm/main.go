@@ -44,7 +44,7 @@ func Call(this js.Value, i []js.Value) interface{} {
 }
 
 func registerCallbacks() {
-	js.Global().Set("OpenPGPCall", js.FuncOf(Call))
+	js.Global().Set("openPGPBridgeCall", js.FuncOf(Call))
 }
 
 func main() {
