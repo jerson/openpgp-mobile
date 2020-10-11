@@ -139,6 +139,12 @@ func (o *FastOpenPGP) readPrivateKeys(key, passphrase string) (openpgp.EntityLis
 	return entityList, nil
 }
 
+// ReadPrivateKeys will only be used to check if something is wrong with the key
+func (o *FastOpenPGP) ReadPrivateKeys(key, passphrase string) error {
+	_, err := o.readPrivateKeys(key, passphrase)
+	return err
+}
+
 func (o *FastOpenPGP) readPublicKeys(key string) (openpgp.EntityList, error) {
 
 	entityList, err := o.readArmoredKeyRing(key)
