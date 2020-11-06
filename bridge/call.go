@@ -296,7 +296,7 @@ func (m instance) generate(payload []byte) proto.Message {
 		return response
 	}
 	response.Output = &model.KeyPair{
-		PublicKey:  output.PrivateKey,
+		PublicKey:  output.PublicKey,
 		PrivateKey: output.PrivateKey,
 	}
 	return response
