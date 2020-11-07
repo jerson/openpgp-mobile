@@ -43,4 +43,3 @@ type PrivateKeyMetadata struct {
 	IsSubKey     bool
 	Encrypted    bool
 }
-

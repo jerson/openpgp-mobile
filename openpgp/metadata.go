@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-
 func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, error) {
 	entityList, err := o.readArmoredKeyRing(key)
 	if err != nil {

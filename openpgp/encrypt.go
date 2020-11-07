@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 )
 
-
 func (o *FastOpenPGP) Encrypt(message, publicKey string, signed *Entity, fileHints *FileHints, options *KeyOptions) (string, error) {
 	output, err := o.encrypt([]byte(message), publicKey, signed, fileHints, options)
 	if err != nil {

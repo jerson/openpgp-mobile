@@ -14,7 +14,7 @@ func TestFastOpenPGP_EncryptSymmetric(t *testing.T) {
 		Hash:             "sha512",
 	}
 	openPGP := NewFastOpenPGP()
-	output, err := openPGP.EncryptSymmetric(inputMessage, passphrase,nil, options)
+	output, err := openPGP.EncryptSymmetric(inputMessage, passphrase, nil, options)
 	if err != nil {
 		t.Fatal(err)
 	}
