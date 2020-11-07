@@ -1,9 +1,43 @@
 package openpgp
 
 import (
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
+
+func writeFile(name string, data []byte) error {
+	dir, _ := os.Getwd()
+	path := filepath.Join(dir+"/testdata", name)
+	return ioutil.WriteFile(path, data, 0777)
+}
+func readFile(name string) ([]byte, error) {
+	dir, _ := os.Getwd()
+	path := filepath.Join(dir+"/testdata", name)
+	return ioutil.ReadFile(path)
+}
+func TestFastOpenPGP_EncryptFile(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+
+	inputMessage, err := readFile("sample.zip")
+	if err != nil {
+		t.Fatal(err)
+	}
+	output, err := openPGP.EncryptBytes(inputMessage, publicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	outputFile := "sample.zip.gpg"
+	err = writeFile(outputFile, output)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log("output:", outputFile)
+}
 
 func TestFastOpenPGP_Encrypt(t *testing.T) {
 

@@ -2,10 +2,9 @@ package openpgp
 
 import (
 	"bytes"
-	"io/ioutil"
-
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
+	"io/ioutil"
 )
 
 func (o *FastOpenPGP) Encrypt(message, publicKey string) (string, error) {
@@ -42,7 +41,9 @@ func (o *FastOpenPGP) encrypt(message []byte, publicKey string) ([]byte, error) 
 	}
 
 	buf := new(bytes.Buffer)
-	w, err := openpgp.Encrypt(buf, entityList, nil, nil, nil)
+	w, err := openpgp.Encrypt(buf, entityList, nil, &openpgp.FileHints{
+		IsBinary: true,
+	}, nil)
 	if err != nil {
 		return nil, err
 	}
