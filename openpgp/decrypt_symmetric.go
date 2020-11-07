@@ -31,7 +31,6 @@ func (o *FastOpenPGP) DecryptSymmetricBytes(message []byte, passphrase string, o
 
 func (o *FastOpenPGP) decryptSymmetric(reader io.Reader, passphrase string, options *KeyOptions) ([]byte, error) {
 
-	config := generatePacketConfig(options)
 	failed := false
 	prompt := func(keys []openpgp.Key, symmetric bool) ([]byte, error) {
 		if failed {
@@ -41,7 +40,7 @@ func (o *FastOpenPGP) decryptSymmetric(reader io.Reader, passphrase string, opti
 		return []byte(passphrase), nil
 	}
 
-	md, err := openpgp.ReadMessage(reader, nil, prompt, config)
+	md, err := openpgp.ReadMessage(reader, nil, prompt, generatePacketConfig(options))
 	if err != nil {
 		return nil, err
 	}

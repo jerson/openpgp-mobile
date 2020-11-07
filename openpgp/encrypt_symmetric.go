@@ -8,8 +8,8 @@ import (
 	"golang.org/x/crypto/openpgp/armor"
 )
 
-func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
-	output, err := o.encryptSymmetric([]byte(message), passphrase, options)
+func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, fileHints *FileHints, options *KeyOptions) (string, error) {
+	output, err := o.encryptSymmetric([]byte(message), passphrase, fileHints, options)
 	if err != nil {
 		return "", err
 	}
@@ -30,16 +30,14 @@ func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, options *KeyO
 	return buf.String(), nil
 }
 
-func (o *FastOpenPGP) EncryptSymmetricBytes(message []byte, passphrase string, options *KeyOptions) ([]byte, error) {
-	return o.encryptSymmetric(message, passphrase, options)
+func (o *FastOpenPGP) EncryptSymmetricBytes(message []byte, passphrase string, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
+	return o.encryptSymmetric(message, passphrase, fileHints, options)
 }
 
-func (o *FastOpenPGP) encryptSymmetric(message []byte, passphrase string, options *KeyOptions) ([]byte, error) {
-
-	config := generatePacketConfig(options)
+func (o *FastOpenPGP) encryptSymmetric(message []byte, passphrase string, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
 
 	buf := new(bytes.Buffer)
-	w, err := openpgp.SymmetricallyEncrypt(buf, []byte(passphrase), nil, config)
+	w, err := openpgp.SymmetricallyEncrypt(buf, []byte(passphrase), generateFileHints(fileHints), generatePacketConfig(options))
 	if err != nil {
 		return nil, err
 	}

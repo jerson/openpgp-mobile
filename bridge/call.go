@@ -65,7 +65,7 @@ func (m instance) decrypt(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.Decrypt(request.Message, request.PrivateKey, request.Passphrase)
+	output, err := m.instance.Decrypt(request.Message, request.PrivateKey, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -83,7 +83,7 @@ func (m instance) decryptBytes(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.DecryptBytes(request.Message, request.PrivateKey, request.Passphrase)
+	output, err := m.instance.DecryptBytes(request.Message, request.PrivateKey, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -101,7 +101,7 @@ func (m instance) encrypt(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.Encrypt(request.Message, request.PublicKey)
+	output, err := m.instance.Encrypt(request.Message, request.PublicKey, m.parseEntity(request.Signed), m.parseFileHints(request.FileHints), m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -119,7 +119,7 @@ func (m instance) encryptBytes(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.EncryptBytes(request.Message, request.PublicKey)
+	output, err := m.instance.EncryptBytes(request.Message, request.PublicKey, m.parseEntity(request.Signed), m.parseFileHints(request.FileHints), m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -137,7 +137,7 @@ func (m instance) sign(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.Sign(request.Message, request.PublicKey, request.PrivateKey, request.Passphrase)
+	output, err := m.instance.Sign(request.Message, request.PublicKey, request.PrivateKey, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -154,7 +154,7 @@ func (m instance) signBytes(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.SignBytes(request.Message, request.PublicKey, request.PrivateKey, request.Passphrase)
+	output, err := m.instance.SignBytes(request.Message, request.PublicKey, request.PrivateKey, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -171,7 +171,7 @@ func (m instance) signBytesToString(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.SignBytesToString(request.Message, request.PublicKey, request.PrivateKey, request.Passphrase)
+	output, err := m.instance.SignBytesToString(request.Message, request.PublicKey, request.PrivateKey, request.Passphrase, m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -256,7 +256,7 @@ func (m instance) encryptSymmetric(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.EncryptSymmetric(request.Message, request.Passphrase, m.parseKeyOptions(request.Options))
+	output, err := m.instance.EncryptSymmetric(request.Message, request.Passphrase, m.parseFileHints(request.FileHints), m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -273,7 +273,7 @@ func (m instance) encryptSymmetricBytes(payload []byte) proto.Message {
 		return response
 	}
 
-	output, err := m.instance.EncryptSymmetricBytes(request.Message, request.Passphrase, m.parseKeyOptions(request.Options))
+	output, err := m.instance.EncryptSymmetricBytes(request.Message, request.Passphrase, m.parseFileHints(request.FileHints), m.parseKeyOptions(request.Options))
 	if err != nil {
 		response.Error = err.Error()
 		return response
@@ -328,6 +328,32 @@ func (m instance) parseKeyOptions(input *model.KeyOptions) *openpgp.KeyOptions {
 		Compression:      m.parseCompression(input.Compression),
 		CompressionLevel: int(input.CompressionLevel),
 		RSABits:          int(input.RsaBits),
+	}
+
+	return options
+}
+
+func (m instance) parseFileHints(input *model.FileHints) *openpgp.FileHints {
+	if input == nil {
+		return &openpgp.FileHints{}
+	}
+	options := &openpgp.FileHints{
+		IsBinary: input.IsBinary,
+		FileName: input.FileName,
+		ModTime:  input.ModTime,
+	}
+
+	return options
+}
+
+func (m instance) parseEntity(input *model.Entity) *openpgp.Entity {
+	if input == nil {
+		return nil
+	}
+	options := &openpgp.Entity{
+		PublicKey:  input.PublicKey,
+		PrivateKey: input.PrivateKey,
+		Passphrase: input.Passphrase,
 	}
 
 	return options

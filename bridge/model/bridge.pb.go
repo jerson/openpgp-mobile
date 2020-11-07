@@ -119,11 +119,14 @@ func (Cipher) EnumDescriptor() ([]byte, []int) {
 }
 
 type EncryptRequest struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string   `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	Signed               *Entity     `protobuf:"bytes,7,opt,name=signed,proto3" json:"signed,omitempty"`
+	FileHints            *FileHints  `protobuf:"bytes,9,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *EncryptRequest) Reset()         { *m = EncryptRequest{} }
@@ -173,12 +176,36 @@ func (m *EncryptRequest) GetPublicKey() string {
 	return ""
 }
 
+func (m *EncryptRequest) GetOptions() *KeyOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
+func (m *EncryptRequest) GetSigned() *Entity {
+	if m != nil {
+		return m.Signed
+	}
+	return nil
+}
+
+func (m *EncryptRequest) GetFileHints() *FileHints {
+	if m != nil {
+		return m.FileHints
+	}
+	return nil
+}
+
 type EncryptBytesRequest struct {
-	Message              []byte   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string   `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	Signed               *Entity     `protobuf:"bytes,7,opt,name=signed,proto3" json:"signed,omitempty"`
+	FileHints            *FileHints  `protobuf:"bytes,9,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *EncryptBytesRequest) Reset()         { *m = EncryptBytesRequest{} }
@@ -228,13 +255,35 @@ func (m *EncryptBytesRequest) GetPublicKey() string {
 	return ""
 }
 
+func (m *EncryptBytesRequest) GetOptions() *KeyOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
+func (m *EncryptBytesRequest) GetSigned() *Entity {
+	if m != nil {
+		return m.Signed
+	}
+	return nil
+}
+
+func (m *EncryptBytesRequest) GetFileHints() *FileHints {
+	if m != nil {
+		return m.FileHints
+	}
+	return nil
+}
+
 type DecryptRequest struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PrivateKey           string   `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string   `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PrivateKey           string      `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase           string      `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options              *KeyOptions `protobuf:"bytes,7,opt,name=options,proto3" json:"options,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *DecryptRequest) Reset()         { *m = DecryptRequest{} }
@@ -291,13 +340,21 @@ func (m *DecryptRequest) GetPassphrase() string {
 	return ""
 }
 
+func (m *DecryptRequest) GetOptions() *KeyOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
 type DecryptBytesRequest struct {
-	Message              []byte   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PrivateKey           string   `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string   `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PrivateKey           string      `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase           string      `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options              *KeyOptions `protobuf:"bytes,7,opt,name=options,proto3" json:"options,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *DecryptBytesRequest) Reset()         { *m = DecryptBytesRequest{} }
@@ -354,14 +411,22 @@ func (m *DecryptBytesRequest) GetPassphrase() string {
 	return ""
 }
 
+func (m *DecryptBytesRequest) GetOptions() *KeyOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
 type SignRequest struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string   `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	PrivateKey           string   `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string   `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey           string      `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase           string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options              *KeyOptions `protobuf:"bytes,9,opt,name=options,proto3" json:"options,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *SignRequest) Reset()         { *m = SignRequest{} }
@@ -425,14 +490,22 @@ func (m *SignRequest) GetPassphrase() string {
 	return ""
 }
 
+func (m *SignRequest) GetOptions() *KeyOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
 type SignBytesRequest struct {
-	Message              []byte   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string   `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	PrivateKey           string   `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string   `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey           string      `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase           string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options              *KeyOptions `protobuf:"bytes,9,opt,name=options,proto3" json:"options,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *SignBytesRequest) Reset()         { *m = SignBytesRequest{} }
@@ -494,6 +567,13 @@ func (m *SignBytesRequest) GetPassphrase() string {
 		return m.Passphrase
 	}
 	return ""
+}
+
+func (m *SignBytesRequest) GetOptions() *KeyOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
 }
 
 type VerifyRequest struct {
@@ -626,6 +706,7 @@ type EncryptSymmetricRequest struct {
 	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	Passphrase           string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
 	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	FileHints            *FileHints  `protobuf:"bytes,7,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -685,10 +766,18 @@ func (m *EncryptSymmetricRequest) GetOptions() *KeyOptions {
 	return nil
 }
 
+func (m *EncryptSymmetricRequest) GetFileHints() *FileHints {
+	if m != nil {
+		return m.FileHints
+	}
+	return nil
+}
+
 type EncryptSymmetricBytesRequest struct {
 	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	Passphrase           string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
 	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	FileHints            *FileHints  `protobuf:"bytes,7,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -744,6 +833,13 @@ func (m *EncryptSymmetricBytesRequest) GetPassphrase() string {
 func (m *EncryptSymmetricBytesRequest) GetOptions() *KeyOptions {
 	if m != nil {
 		return m.Options
+	}
+	return nil
+}
+
+func (m *EncryptSymmetricBytesRequest) GetFileHints() *FileHints {
+	if m != nil {
+		return m.FileHints
 	}
 	return nil
 }
@@ -921,15 +1017,33 @@ func (m *GenerateRequest) GetOptions() *Options {
 	return nil
 }
 
+// KeyOptions collects a number of parameters along with sensible defaults.
 type KeyOptions struct {
-	Hash                 Hash        `protobuf:"varint,1,opt,name=hash,proto3,enum=model.Hash" json:"hash,omitempty"`
-	Cipher               Cipher      `protobuf:"varint,3,opt,name=cipher,proto3,enum=model.Cipher" json:"cipher,omitempty"`
-	Compression          Compression `protobuf:"varint,5,opt,name=compression,proto3,enum=model.Compression" json:"compression,omitempty"`
-	CompressionLevel     int32       `protobuf:"varint,7,opt,name=compressionLevel,proto3" json:"compressionLevel,omitempty"`
-	RsaBits              int32       `protobuf:"varint,9,opt,name=rsaBits,proto3" json:"rsaBits,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	// Hash is the default hash function to be used.
+	// If zero, SHA-256 is used.
+	Hash Hash `protobuf:"varint,1,opt,name=hash,proto3,enum=model.Hash" json:"hash,omitempty"`
+	// Cipher is the cipher to be used.
+	// If zero, AES-128 is used.
+	Cipher Cipher `protobuf:"varint,3,opt,name=cipher,proto3,enum=model.Cipher" json:"cipher,omitempty"`
+	// Compression is the compression algorithm to be
+	// applied to the plaintext before encryption. If zero, no
+	// compression is done.
+	Compression Compression `protobuf:"varint,5,opt,name=compression,proto3,enum=model.Compression" json:"compression,omitempty"`
+	// CompressionLevel is the compression level to use. It must be set to
+	// between -1 and 9, with -1 causing the compressor to use the
+	// default compression level, 0 causing the compressor to use
+	// no compression and 1 to 9 representing increasing (better,
+	// slower) compression levels. If Level is less than -1 or
+	// more then 9, a non-nil error will be returned during
+	// encryption. See the constants above for convenient common
+	// settings for Level.
+	CompressionLevel int32 `protobuf:"varint,7,opt,name=compressionLevel,proto3" json:"compressionLevel,omitempty"`
+	// RSABits is the number of bits in new RSA keys made with NewEntity.
+	// If zero, then 2048 bit keys are created.
+	RsaBits              int32    `protobuf:"varint,9,opt,name=rsaBits,proto3" json:"rsaBits,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *KeyOptions) Reset()         { *m = KeyOptions{} }
@@ -1079,6 +1193,141 @@ func (m *Options) GetKeyOptions() *KeyOptions {
 	return nil
 }
 
+type FileHints struct {
+	// IsBinary can be set to hint that the contents are binary data.
+	IsBinary bool `protobuf:"varint,1,opt,name=isBinary,proto3" json:"isBinary,omitempty"`
+	// FileName hints at the name of the file that should be written. It's
+	// truncated to 255 bytes if longer. It may be empty to suggest that the
+	// file should not be written to disk. It may be equal to "_CONSOLE" to
+	// suggest the data should not be written to disk.
+	FileName string `protobuf:"bytes,3,opt,name=fileName,proto3" json:"fileName,omitempty"`
+	// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
+	ModTime              string   `protobuf:"bytes,5,opt,name=modTime,proto3" json:"modTime,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *FileHints) Reset()         { *m = FileHints{} }
+func (m *FileHints) String() string { return proto.CompactTextString(m) }
+func (*FileHints) ProtoMessage()    {}
+func (*FileHints) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1d3ed31acb30cd14, []int{15}
+}
+func (m *FileHints) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FileHints) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FileHints.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FileHints) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FileHints.Merge(m, src)
+}
+func (m *FileHints) XXX_Size() int {
+	return m.Size()
+}
+func (m *FileHints) XXX_DiscardUnknown() {
+	xxx_messageInfo_FileHints.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FileHints proto.InternalMessageInfo
+
+func (m *FileHints) GetIsBinary() bool {
+	if m != nil {
+		return m.IsBinary
+	}
+	return false
+}
+
+func (m *FileHints) GetFileName() string {
+	if m != nil {
+		return m.FileName
+	}
+	return ""
+}
+
+func (m *FileHints) GetModTime() string {
+	if m != nil {
+		return m.ModTime
+	}
+	return ""
+}
+
+// An Entity represents the components of an OpenPGP key: a primary public key
+// (which must be a signing key), one or more identities claimed by that key,
+// and zero or more subkeys, which may be encryption keys.
+type Entity struct {
+	PublicKey            string   `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey           string   `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase           string   `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Entity) Reset()         { *m = Entity{} }
+func (m *Entity) String() string { return proto.CompactTextString(m) }
+func (*Entity) ProtoMessage()    {}
+func (*Entity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1d3ed31acb30cd14, []int{16}
+}
+func (m *Entity) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Entity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Entity.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Entity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Entity.Merge(m, src)
+}
+func (m *Entity) XXX_Size() int {
+	return m.Size()
+}
+func (m *Entity) XXX_DiscardUnknown() {
+	xxx_messageInfo_Entity.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Entity proto.InternalMessageInfo
+
+func (m *Entity) GetPublicKey() string {
+	if m != nil {
+		return m.PublicKey
+	}
+	return ""
+}
+
+func (m *Entity) GetPrivateKey() string {
+	if m != nil {
+		return m.PrivateKey
+	}
+	return ""
+}
+
+func (m *Entity) GetPassphrase() string {
+	if m != nil {
+		return m.Passphrase
+	}
+	return ""
+}
+
 type StringResponse struct {
 	Output               string   `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
 	Error                string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
@@ -1091,7 +1340,7 @@ func (m *StringResponse) Reset()         { *m = StringResponse{} }
 func (m *StringResponse) String() string { return proto.CompactTextString(m) }
 func (*StringResponse) ProtoMessage()    {}
 func (*StringResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1d3ed31acb30cd14, []int{15}
+	return fileDescriptor_1d3ed31acb30cd14, []int{17}
 }
 func (m *StringResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1146,7 +1395,7 @@ func (m *BytesResponse) Reset()         { *m = BytesResponse{} }
 func (m *BytesResponse) String() string { return proto.CompactTextString(m) }
 func (*BytesResponse) ProtoMessage()    {}
 func (*BytesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1d3ed31acb30cd14, []int{16}
+	return fileDescriptor_1d3ed31acb30cd14, []int{18}
 }
 func (m *BytesResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1201,7 +1450,7 @@ func (m *BoolResponse) Reset()         { *m = BoolResponse{} }
 func (m *BoolResponse) String() string { return proto.CompactTextString(m) }
 func (*BoolResponse) ProtoMessage()    {}
 func (*BoolResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1d3ed31acb30cd14, []int{17}
+	return fileDescriptor_1d3ed31acb30cd14, []int{19}
 }
 func (m *BoolResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1256,7 +1505,7 @@ func (m *KeyPairResponse) Reset()         { *m = KeyPairResponse{} }
 func (m *KeyPairResponse) String() string { return proto.CompactTextString(m) }
 func (*KeyPairResponse) ProtoMessage()    {}
 func (*KeyPairResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1d3ed31acb30cd14, []int{18}
+	return fileDescriptor_1d3ed31acb30cd14, []int{20}
 }
 func (m *KeyPairResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1311,7 +1560,7 @@ func (m *KeyPair) Reset()         { *m = KeyPair{} }
 func (m *KeyPair) String() string { return proto.CompactTextString(m) }
 func (*KeyPair) ProtoMessage()    {}
 func (*KeyPair) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1d3ed31acb30cd14, []int{19}
+	return fileDescriptor_1d3ed31acb30cd14, []int{21}
 }
 func (m *KeyPair) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1354,6 +1603,188 @@ func (m *KeyPair) GetPrivateKey() string {
 	return ""
 }
 
+type PublicKeyMetadata struct {
+	KeyID                string   `protobuf:"bytes,1,opt,name=keyID,proto3" json:"keyID,omitempty"`
+	KeyIDShort           string   `protobuf:"bytes,3,opt,name=keyIDShort,proto3" json:"keyIDShort,omitempty"`
+	CreationTime         string   `protobuf:"bytes,5,opt,name=creationTime,proto3" json:"creationTime,omitempty"`
+	Fingerprint          string   `protobuf:"bytes,7,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	KeyIDNumeric         string   `protobuf:"bytes,9,opt,name=keyIDNumeric,proto3" json:"keyIDNumeric,omitempty"`
+	IsSubKey             bool     `protobuf:"varint,11,opt,name=isSubKey,proto3" json:"isSubKey,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PublicKeyMetadata) Reset()         { *m = PublicKeyMetadata{} }
+func (m *PublicKeyMetadata) String() string { return proto.CompactTextString(m) }
+func (*PublicKeyMetadata) ProtoMessage()    {}
+func (*PublicKeyMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1d3ed31acb30cd14, []int{22}
+}
+func (m *PublicKeyMetadata) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *PublicKeyMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_PublicKeyMetadata.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *PublicKeyMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PublicKeyMetadata.Merge(m, src)
+}
+func (m *PublicKeyMetadata) XXX_Size() int {
+	return m.Size()
+}
+func (m *PublicKeyMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_PublicKeyMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PublicKeyMetadata proto.InternalMessageInfo
+
+func (m *PublicKeyMetadata) GetKeyID() string {
+	if m != nil {
+		return m.KeyID
+	}
+	return ""
+}
+
+func (m *PublicKeyMetadata) GetKeyIDShort() string {
+	if m != nil {
+		return m.KeyIDShort
+	}
+	return ""
+}
+
+func (m *PublicKeyMetadata) GetCreationTime() string {
+	if m != nil {
+		return m.CreationTime
+	}
+	return ""
+}
+
+func (m *PublicKeyMetadata) GetFingerprint() string {
+	if m != nil {
+		return m.Fingerprint
+	}
+	return ""
+}
+
+func (m *PublicKeyMetadata) GetKeyIDNumeric() string {
+	if m != nil {
+		return m.KeyIDNumeric
+	}
+	return ""
+}
+
+func (m *PublicKeyMetadata) GetIsSubKey() bool {
+	if m != nil {
+		return m.IsSubKey
+	}
+	return false
+}
+
+type PrivateKeyMetadata struct {
+	KeyID                string   `protobuf:"bytes,1,opt,name=keyID,proto3" json:"keyID,omitempty"`
+	KeyIDShort           string   `protobuf:"bytes,3,opt,name=keyIDShort,proto3" json:"keyIDShort,omitempty"`
+	CreationTime         string   `protobuf:"bytes,5,opt,name=creationTime,proto3" json:"creationTime,omitempty"`
+	Fingerprint          string   `protobuf:"bytes,7,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	KeyIDNumeric         string   `protobuf:"bytes,9,opt,name=keyIDNumeric,proto3" json:"keyIDNumeric,omitempty"`
+	IsSubKey             bool     `protobuf:"varint,11,opt,name=isSubKey,proto3" json:"isSubKey,omitempty"`
+	Encrypted            bool     `protobuf:"varint,13,opt,name=encrypted,proto3" json:"encrypted,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PrivateKeyMetadata) Reset()         { *m = PrivateKeyMetadata{} }
+func (m *PrivateKeyMetadata) String() string { return proto.CompactTextString(m) }
+func (*PrivateKeyMetadata) ProtoMessage()    {}
+func (*PrivateKeyMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1d3ed31acb30cd14, []int{23}
+}
+func (m *PrivateKeyMetadata) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *PrivateKeyMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_PrivateKeyMetadata.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *PrivateKeyMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PrivateKeyMetadata.Merge(m, src)
+}
+func (m *PrivateKeyMetadata) XXX_Size() int {
+	return m.Size()
+}
+func (m *PrivateKeyMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_PrivateKeyMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PrivateKeyMetadata proto.InternalMessageInfo
+
+func (m *PrivateKeyMetadata) GetKeyID() string {
+	if m != nil {
+		return m.KeyID
+	}
+	return ""
+}
+
+func (m *PrivateKeyMetadata) GetKeyIDShort() string {
+	if m != nil {
+		return m.KeyIDShort
+	}
+	return ""
+}
+
+func (m *PrivateKeyMetadata) GetCreationTime() string {
+	if m != nil {
+		return m.CreationTime
+	}
+	return ""
+}
+
+func (m *PrivateKeyMetadata) GetFingerprint() string {
+	if m != nil {
+		return m.Fingerprint
+	}
+	return ""
+}
+
+func (m *PrivateKeyMetadata) GetKeyIDNumeric() string {
+	if m != nil {
+		return m.KeyIDNumeric
+	}
+	return ""
+}
+
+func (m *PrivateKeyMetadata) GetIsSubKey() bool {
+	if m != nil {
+		return m.IsSubKey
+	}
+	return false
+}
+
+func (m *PrivateKeyMetadata) GetEncrypted() bool {
+	if m != nil {
+		return m.Encrypted
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterEnum("model.Hash", Hash_name, Hash_value)
 	proto.RegisterEnum("model.Compression", Compression_name, Compression_value)
@@ -1373,65 +1804,84 @@ func init() {
 	proto.RegisterType((*GenerateRequest)(nil), "model.GenerateRequest")
 	proto.RegisterType((*KeyOptions)(nil), "model.KeyOptions")
 	proto.RegisterType((*Options)(nil), "model.Options")
+	proto.RegisterType((*FileHints)(nil), "model.FileHints")
+	proto.RegisterType((*Entity)(nil), "model.Entity")
 	proto.RegisterType((*StringResponse)(nil), "model.StringResponse")
 	proto.RegisterType((*BytesResponse)(nil), "model.BytesResponse")
 	proto.RegisterType((*BoolResponse)(nil), "model.BoolResponse")
 	proto.RegisterType((*KeyPairResponse)(nil), "model.KeyPairResponse")
 	proto.RegisterType((*KeyPair)(nil), "model.KeyPair")
+	proto.RegisterType((*PublicKeyMetadata)(nil), "model.PublicKeyMetadata")
+	proto.RegisterType((*PrivateKeyMetadata)(nil), "model.PrivateKeyMetadata")
 }
 
 func init() { proto.RegisterFile("bridge.proto", fileDescriptor_1d3ed31acb30cd14) }
 
 var fileDescriptor_1d3ed31acb30cd14 = []byte{
-	// 761 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0x5d, 0x4f, 0x1a, 0x4b,
-	0x18, 0x76, 0xe5, 0xeb, 0xf0, 0xf2, 0xb5, 0x8e, 0x46, 0x39, 0x39, 0x86, 0x73, 0x42, 0x72, 0x1a,
-	0x43, 0x13, 0x12, 0x57, 0x6d, 0x6c, 0x6c, 0x9b, 0x08, 0x52, 0x21, 0x2a, 0x90, 0xdd, 0xb4, 0x49,
-	0xbd, 0x69, 0x57, 0x9c, 0xc2, 0x56, 0x76, 0x67, 0x3b, 0x33, 0x98, 0x70, 0xd7, 0x9b, 0xde, 0xf4,
-	0x17, 0xf4, 0xb2, 0x3f, 0xa7, 0x97, 0xfe, 0x84, 0xc6, 0xfe, 0x91, 0x86, 0x61, 0x56, 0x96, 0x45,
-	0x05, 0xa3, 0x89, 0x77, 0xbc, 0xcf, 0xfb, 0xf5, 0xcc, 0x33, 0xef, 0xbb, 0x03, 0x24, 0x4f, 0xa8,
-	0x75, 0xda, 0xc6, 0x45, 0x97, 0x12, 0x4e, 0x50, 0xc4, 0x26, 0xa7, 0xb8, 0x9b, 0xaf, 0x42, 0xba,
-	0xe2, 0xb4, 0x68, 0xdf, 0xe5, 0x3a, 0xfe, 0xdc, 0xc3, 0x8c, 0xa3, 0x2c, 0xc4, 0x6c, 0xcc, 0x98,
-	0xd9, 0xc6, 0x59, 0xe5, 0x3f, 0x65, 0x2d, 0xae, 0x7b, 0x26, 0x5a, 0x85, 0xb8, 0xdb, 0x3b, 0xe9,
-	0x5a, 0xad, 0x03, 0xdc, 0xcf, 0x86, 0x84, 0x6f, 0x04, 0xe4, 0x8f, 0x60, 0x51, 0x56, 0x2a, 0xf5,
-	0x39, 0x66, 0x37, 0x94, 0x4b, 0xce, 0x5a, 0xee, 0x13, 0xa4, 0xf7, 0xf0, 0x8c, 0xc4, 0x72, 0x00,
-	0x2e, 0xb5, 0xce, 0x4d, 0x8e, 0x47, 0xa5, 0x7c, 0x88, 0xf0, 0x9b, 0x8c, 0xb9, 0x1d, 0x6a, 0x32,
-	0x9c, 0x8d, 0x48, 0xff, 0x15, 0x92, 0x27, 0xb0, 0x28, 0x7b, 0xcd, 0x48, 0xfd, 0xbe, 0x0d, 0xbf,
-	0x2a, 0x90, 0x30, 0xac, 0xb6, 0x73, 0x4f, 0xcd, 0x03, 0x3c, 0x22, 0x53, 0x78, 0xc4, 0x26, 0x78,
-	0x7c, 0x53, 0x40, 0x1d, 0xf0, 0x78, 0x88, 0x1b, 0xbb, 0x37, 0x19, 0x0c, 0xa9, 0xb7, 0x98, 0x5a,
-	0x1f, 0xfb, 0x1e, 0x91, 0x55, 0x88, 0x33, 0xab, 0xed, 0x98, 0xbc, 0x47, 0x3d, 0x5d, 0x46, 0x80,
-	0x9f, 0x66, 0xe8, 0x16, 0xcd, 0x22, 0x93, 0x83, 0x85, 0x86, 0x6d, 0xc6, 0x0e, 0x7d, 0xa7, 0x5e,
-	0xc9, 0x59, 0x7b, 0x7d, 0x51, 0x60, 0x45, 0x2e, 0x85, 0xd1, 0xb7, 0x6d, 0xcc, 0xa9, 0xd5, 0x9a,
-	0x6d, 0x9c, 0x47, 0x42, 0x85, 0x82, 0x42, 0xa1, 0xa7, 0x10, 0x23, 0x2e, 0xb7, 0x88, 0xc3, 0x44,
-	0xc7, 0x84, 0xb6, 0x50, 0x14, 0xcb, 0x5c, 0x3c, 0xc0, 0xfd, 0xc6, 0xd0, 0xa1, 0x7b, 0x11, 0x83,
-	0x51, 0x5b, 0x0d, 0x52, 0xb8, 0xc3, 0x94, 0x3f, 0x18, 0x8f, 0x81, 0x14, 0x72, 0xc9, 0x1e, 0x53,
-	0x8a, 0x20, 0x85, 0xc7, 0x90, 0x62, 0x07, 0x32, 0xfb, 0xd8, 0xc1, 0xd4, 0xe4, 0xd8, 0xeb, 0xbc,
-	0x16, 0xcc, 0x4f, 0xcb, 0xfc, 0x89, 0xe4, 0x0b, 0x05, 0x60, 0x54, 0x14, 0xfd, 0x0b, 0xe1, 0x8e,
-	0xc9, 0x3a, 0x82, 0x6f, 0x5a, 0x4b, 0xc8, 0xac, 0xaa, 0xc9, 0x3a, 0xba, 0x70, 0xa0, 0xff, 0x21,
-	0xda, 0xb2, 0xdc, 0x0e, 0xa6, 0x82, 0x75, 0x5a, 0x4b, 0xc9, 0x90, 0xb2, 0x00, 0x75, 0xe9, 0x44,
-	0x9b, 0x90, 0x68, 0x11, 0xdb, 0xa5, 0x98, 0x31, 0x8b, 0x38, 0x82, 0x44, 0x5a, 0x43, 0x5e, 0xec,
-	0xc8, 0xa3, 0xfb, 0xc3, 0x50, 0x01, 0x54, 0x9f, 0x79, 0x88, 0xcf, 0x71, 0x57, 0x2c, 0x76, 0x44,
-	0x9f, 0xc0, 0x07, 0xe2, 0x52, 0x66, 0x96, 0x2c, 0xce, 0xb2, 0x71, 0x11, 0xe2, 0x99, 0xf9, 0x1f,
-	0x0a, 0xc4, 0xbc, 0xf3, 0x20, 0x08, 0x3b, 0xa6, 0xed, 0xcd, 0x81, 0xf8, 0x3d, 0xc8, 0x6c, 0x11,
-	0xdb, 0xc6, 0x0e, 0xf7, 0x36, 0x5d, 0x9a, 0x68, 0x09, 0x22, 0xd8, 0x36, 0xad, 0xae, 0xdc, 0xbc,
-	0xa1, 0x31, 0xed, 0x43, 0x83, 0xd6, 0x01, 0xce, 0xae, 0x14, 0x14, 0x64, 0xae, 0xbd, 0x2f, 0x5f,
-	0x50, 0xfe, 0x15, 0xa4, 0x0d, 0x4e, 0x2d, 0xa7, 0xad, 0x63, 0xe6, 0x12, 0x87, 0x61, 0xb4, 0x0c,
-	0x51, 0xd2, 0xe3, 0x6e, 0x8f, 0x4b, 0xaa, 0xd2, 0x12, 0x94, 0x28, 0x25, 0x54, 0x52, 0x1d, 0x1a,
-	0xf9, 0x97, 0x90, 0x92, 0x93, 0x76, 0x6d, 0x7a, 0x72, 0x4a, 0xfa, 0x0b, 0x48, 0x96, 0x08, 0xe9,
-	0xde, 0x90, 0xfd, 0xd7, 0x94, 0xec, 0x06, 0x64, 0x0e, 0x70, 0xbf, 0x69, 0x5a, 0xf4, 0xaa, 0xc0,
-	0x93, 0xb1, 0x02, 0xa3, 0x71, 0xf3, 0xe2, 0x6e, 0x2f, 0xb8, 0x0f, 0x31, 0x19, 0x38, 0xfe, 0xfd,
-	0x53, 0x6e, 0x7f, 0x12, 0x26, 0xde, 0xc9, 0xc2, 0x07, 0x08, 0x0f, 0x46, 0x15, 0x2d, 0x81, 0x5a,
-	0xdd, 0x35, 0xaa, 0xef, 0xdf, 0xd4, 0x8d, 0x66, 0xa5, 0x5c, 0x7b, 0x5d, 0xab, 0xec, 0xa9, 0x73,
-	0x28, 0x03, 0x09, 0x81, 0x1a, 0xd5, 0x5d, 0x6d, 0xeb, 0x99, 0xaa, 0x8c, 0x01, 0xda, 0xa6, 0x3a,
-	0xef, 0x07, 0x36, 0xb6, 0x37, 0xd5, 0x90, 0x1f, 0xd8, 0x5a, 0xd7, 0xd4, 0x70, 0xe1, 0x0c, 0x12,
-	0xbe, 0xe9, 0x45, 0xff, 0xc0, 0x4a, 0xb9, 0x71, 0xd4, 0xd4, 0x2b, 0x86, 0x51, 0x6b, 0xd4, 0x03,
-	0xfd, 0x96, 0x40, 0xf5, 0x3b, 0xeb, 0x8d, 0x7a, 0x45, 0x55, 0x82, 0xe8, 0xf1, 0x61, 0xad, 0xa4,
-	0xce, 0xa3, 0x45, 0xc8, 0x8c, 0xa1, 0xb5, 0xa6, 0x1a, 0x2a, 0xbc, 0x83, 0xe8, 0x70, 0xad, 0xd0,
-	0x32, 0xa0, 0x72, 0xad, 0x59, 0xad, 0xe8, 0x81, 0x16, 0x0b, 0x90, 0x92, 0xf8, 0x6e, 0xc5, 0x58,
-	0xd7, 0xb6, 0x55, 0x25, 0x00, 0x3d, 0xd7, 0xd4, 0xf9, 0x71, 0x68, 0x70, 0xf4, 0x50, 0xe9, 0xef,
-	0x9f, 0x97, 0x39, 0xe5, 0xe2, 0x32, 0xa7, 0xfc, 0xba, 0xcc, 0x29, 0xdf, 0x7f, 0xe7, 0xe6, 0x8e,
-	0x63, 0xc5, 0x1d, 0x71, 0x67, 0x27, 0x51, 0xf1, 0x87, 0x6e, 0xe3, 0x4f, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0xa6, 0x9f, 0x68, 0xf2, 0xe0, 0x09, 0x00, 0x00,
+	// 1006 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x57, 0xdd, 0x6e, 0x1b, 0x45,
+	0x14, 0xee, 0xc4, 0x71, 0x1c, 0x1f, 0xff, 0x64, 0x33, 0x89, 0x1a, 0x03, 0x91, 0x89, 0x56, 0x02,
+	0x45, 0x41, 0xb2, 0x14, 0x37, 0x45, 0x45, 0x05, 0xa4, 0x38, 0x71, 0x6b, 0x2b, 0xad, 0x6d, 0xed,
+	0x02, 0x12, 0x95, 0x10, 0x6c, 0xec, 0x89, 0x3d, 0xc4, 0xfb, 0xc3, 0xcc, 0xb8, 0xd2, 0xde, 0x71,
+	0xc3, 0x33, 0xc0, 0x05, 0x17, 0x3c, 0x02, 0x42, 0x42, 0xbc, 0x02, 0x17, 0x48, 0x94, 0x37, 0x40,
+	0xe1, 0x9e, 0x67, 0x40, 0x3b, 0x3b, 0xeb, 0xdd, 0x75, 0x89, 0x9d, 0xa8, 0xa8, 0x11, 0xbd, 0xf3,
+	0xf9, 0xce, 0x39, 0x73, 0xbe, 0x73, 0xf6, 0x9b, 0x33, 0x09, 0x14, 0x4f, 0x19, 0x1d, 0x0c, 0x49,
+	0xcd, 0x63, 0xae, 0x70, 0x71, 0xd6, 0x76, 0x07, 0x64, 0xac, 0xff, 0x86, 0xa0, 0xdc, 0x74, 0xfa,
+	0xcc, 0xf7, 0x84, 0x41, 0xbe, 0x9a, 0x10, 0x2e, 0x70, 0x05, 0x72, 0x36, 0xe1, 0xdc, 0x1a, 0x92,
+	0x0a, 0xda, 0x41, 0xbb, 0x79, 0x23, 0x32, 0xf1, 0x36, 0xe4, 0xbd, 0xc9, 0xe9, 0x98, 0xf6, 0x4f,
+	0x88, 0x5f, 0xc9, 0x48, 0x5f, 0x0c, 0xe0, 0x77, 0x20, 0xe7, 0x7a, 0x82, 0xba, 0x0e, 0xaf, 0x64,
+	0x77, 0xd0, 0x6e, 0xa1, 0xbe, 0x5e, 0x93, 0x35, 0x6a, 0x27, 0xc4, 0xef, 0x86, 0x0e, 0x23, 0x8a,
+	0xc0, 0x6f, 0xc1, 0x0a, 0xa7, 0x43, 0x87, 0x0c, 0x2a, 0x39, 0x19, 0x5b, 0x52, 0xb1, 0x4d, 0x47,
+	0x50, 0xe1, 0x1b, 0xca, 0x89, 0x6b, 0x90, 0x3f, 0xa3, 0x63, 0xd2, 0xa2, 0x8e, 0xe0, 0x95, 0xbc,
+	0x8c, 0xd4, 0x54, 0xe4, 0x83, 0x08, 0x37, 0xe2, 0x10, 0xfd, 0x0f, 0x04, 0x1b, 0xaa, 0x9d, 0x86,
+	0x2f, 0x08, 0xbf, 0xa4, 0xa7, 0xe2, 0xff, 0xa9, 0xa7, 0x6f, 0x11, 0x94, 0x8f, 0xc9, 0x15, 0x3f,
+	0x51, 0x15, 0xc0, 0x63, 0xf4, 0xa9, 0x25, 0x48, 0xdc, 0x4f, 0x02, 0x91, 0x7e, 0x8b, 0x73, 0x6f,
+	0xc4, 0x2c, 0x4e, 0x64, 0x4f, 0x81, 0x7f, 0x8a, 0x24, 0x1b, 0xce, 0x2d, 0x6a, 0x58, 0xff, 0x1e,
+	0xc1, 0x86, 0x62, 0x76, 0xc5, 0x69, 0xbf, 0x54, 0x7a, 0x3f, 0x21, 0x28, 0x98, 0x74, 0xe8, 0xbc,
+	0xa8, 0xb0, 0xd3, 0xa4, 0xb3, 0x0b, 0x48, 0xe7, 0xe6, 0x91, 0xce, 0x2f, 0x24, 0xfd, 0x0b, 0x02,
+	0x2d, 0x20, 0xfd, 0x9f, 0xc8, 0xf7, 0xa5, 0x32, 0x27, 0x50, 0xfa, 0x84, 0x30, 0x7a, 0xe6, 0x47,
+	0xac, 0xb7, 0x21, 0x1f, 0x48, 0xde, 0x12, 0x13, 0x16, 0x4d, 0x3c, 0x06, 0x92, 0x3d, 0x65, 0xe6,
+	0x7c, 0x8d, 0xec, 0x4c, 0x4f, 0xfa, 0x97, 0x80, 0xc3, 0x32, 0xa9, 0x09, 0x5d, 0xab, 0x56, 0xf1,
+	0xaa, 0xb5, 0x7e, 0x44, 0xb0, 0xa5, 0xd6, 0x89, 0xe9, 0xdb, 0x36, 0x11, 0x8c, 0xf6, 0xaf, 0x76,
+	0x07, 0xe3, 0xa9, 0x66, 0xe6, 0x4d, 0x75, 0xf1, 0x52, 0x49, 0x6d, 0x8b, 0xdc, 0xe2, 0x6d, 0xf1,
+	0x33, 0x82, 0xed, 0x59, 0xca, 0xd7, 0xb8, 0x9c, 0x37, 0xc6, 0xfb, 0x6b, 0x04, 0x5b, 0x6a, 0x97,
+	0xdc, 0xd0, 0xa8, 0xf5, 0x6f, 0x10, 0x6c, 0xcf, 0x52, 0xb8, 0x81, 0xd1, 0xe9, 0xf7, 0x61, 0xed,
+	0x21, 0x71, 0x08, 0xb3, 0x04, 0x89, 0x2a, 0xef, 0xce, 0xe6, 0x97, 0x55, 0xfe, 0x73, 0xc9, 0xcf,
+	0x10, 0x40, 0x7c, 0x28, 0x7e, 0x13, 0x96, 0x47, 0x16, 0x1f, 0x49, 0xbe, 0xe5, 0x7a, 0x41, 0x65,
+	0xb5, 0x2c, 0x3e, 0x32, 0xa4, 0x23, 0x78, 0xb4, 0xfa, 0xd4, 0x1b, 0x11, 0x26, 0x59, 0x97, 0xa7,
+	0x8f, 0xd6, 0x91, 0x04, 0x0d, 0xe5, 0xc4, 0x07, 0x50, 0xe8, 0xbb, 0xb6, 0xc7, 0x08, 0xe7, 0xd4,
+	0x75, 0x24, 0x89, 0x72, 0x1d, 0x47, 0xb1, 0xb1, 0xc7, 0x48, 0x86, 0xe1, 0x3d, 0xd0, 0x12, 0xe6,
+	0x23, 0xf2, 0x94, 0x8c, 0xa5, 0x16, 0xb2, 0xc6, 0x73, 0x78, 0x30, 0x5c, 0xc6, 0xad, 0x06, 0x55,
+	0x8f, 0x62, 0xd6, 0x88, 0x4c, 0xfd, 0x07, 0x04, 0xb9, 0xa8, 0x1f, 0x0c, 0xcb, 0x8e, 0x65, 0x47,
+	0x3a, 0x90, 0xbf, 0x83, 0xcc, 0xbe, 0x6b, 0xdb, 0xc4, 0x11, 0xd1, 0x26, 0x51, 0x26, 0xde, 0x84,
+	0x2c, 0xb1, 0x2d, 0x3a, 0x56, 0x37, 0x3b, 0x34, 0x16, 0x6e, 0xbd, 0x7d, 0x80, 0xf3, 0xe9, 0x04,
+	0x2f, 0x5f, 0x7c, 0x89, 0x20, 0xfd, 0x33, 0xc8, 0x4f, 0x55, 0x8d, 0x5f, 0x87, 0x55, 0xca, 0x1b,
+	0xd4, 0xb1, 0x98, 0x2f, 0x79, 0xae, 0x1a, 0x53, 0x3b, 0xf0, 0x05, 0x9a, 0xef, 0x04, 0x3d, 0x84,
+	0x64, 0xa7, 0xb6, 0x94, 0x97, 0x3b, 0xf8, 0x88, 0xda, 0xd1, 0xcb, 0x17, 0x99, 0xfa, 0x19, 0xac,
+	0x84, 0x7f, 0x44, 0xa4, 0xf7, 0x15, 0x9a, 0xbf, 0xef, 0xaf, 0xfd, 0xbc, 0xea, 0x1f, 0x42, 0xd9,
+	0x14, 0x8c, 0x3a, 0x43, 0x83, 0x70, 0xcf, 0x75, 0x38, 0xc1, 0xb7, 0x61, 0xc5, 0x9d, 0x08, 0x6f,
+	0x22, 0x54, 0x31, 0x65, 0xc9, 0xc9, 0x32, 0xe6, 0x32, 0x55, 0x24, 0x34, 0xf4, 0x0f, 0xa0, 0xa4,
+	0x2e, 0xcc, 0xbf, 0xa6, 0x17, 0x17, 0xa4, 0xbf, 0x0f, 0xc5, 0x86, 0xeb, 0x8e, 0x2f, 0xc9, 0x5e,
+	0x5d, 0x90, 0xdd, 0x85, 0xb5, 0x13, 0xe2, 0xf7, 0x2c, 0xca, 0xa6, 0x07, 0xbc, 0x9d, 0x3a, 0x20,
+	0xbe, 0x35, 0x51, 0xdc, 0xfc, 0x03, 0x1f, 0x42, 0x4e, 0x05, 0xbe, 0xd8, 0xd8, 0xf5, 0xdf, 0x11,
+	0xac, 0xf7, 0xa2, 0xe8, 0xc7, 0x44, 0x58, 0x03, 0x4b, 0x58, 0x41, 0xd1, 0x73, 0xe2, 0xb7, 0x8f,
+	0xd5, 0x79, 0xa1, 0x11, 0x9c, 0x25, 0x7f, 0x98, 0x23, 0x97, 0x45, 0x7a, 0x4e, 0x20, 0x58, 0x87,
+	0x62, 0x9f, 0x11, 0x2b, 0x90, 0x5d, 0x42, 0x29, 0x29, 0x0c, 0xef, 0x40, 0xe1, 0x8c, 0x3a, 0x43,
+	0xc2, 0x3c, 0x46, 0x1d, 0xa1, 0x14, 0x9e, 0x84, 0x82, 0x53, 0xe4, 0x99, 0x9d, 0x89, 0x4d, 0x18,
+	0xed, 0x4b, 0x91, 0xe7, 0x8d, 0x14, 0x16, 0xca, 0xd8, 0x9c, 0x9c, 0x06, 0x3d, 0x15, 0x22, 0x19,
+	0x87, 0xb6, 0xfe, 0x37, 0x02, 0xdc, 0x9b, 0x36, 0xf8, 0x2a, 0xb4, 0x14, 0x7c, 0x62, 0x12, 0xbe,
+	0x9b, 0x64, 0x50, 0x29, 0x49, 0x67, 0x0c, 0xec, 0x7d, 0x01, 0xcb, 0xc1, 0xd2, 0xc4, 0x9b, 0xa0,
+	0xb5, 0x0e, 0xcd, 0xd6, 0xe7, 0x1f, 0x77, 0xcc, 0x5e, 0xf3, 0xa8, 0xfd, 0xa0, 0xdd, 0x3c, 0xd6,
+	0x6e, 0xe1, 0x35, 0x28, 0x48, 0xd4, 0x6c, 0x1d, 0xd6, 0xef, 0xbe, 0xab, 0xa1, 0x14, 0x50, 0x3f,
+	0xd0, 0x96, 0x92, 0xc0, 0x9d, 0x7b, 0x07, 0x5a, 0x26, 0x09, 0xdc, 0xdd, 0xaf, 0x6b, 0xcb, 0x7b,
+	0xe7, 0x50, 0x48, 0xec, 0x51, 0xfc, 0x06, 0x6c, 0x1d, 0x75, 0x1f, 0xf7, 0x8c, 0xa6, 0x69, 0xb6,
+	0xbb, 0x9d, 0x99, 0x7a, 0x9b, 0xa0, 0x25, 0x9d, 0x9d, 0x6e, 0xa7, 0xa9, 0xa1, 0x59, 0xf4, 0xc9,
+	0xa3, 0x76, 0x43, 0x5b, 0xc2, 0x1b, 0xb0, 0x96, 0x42, 0xdb, 0x3d, 0x2d, 0xb3, 0xf7, 0x29, 0xac,
+	0x84, 0x0b, 0x1e, 0xdf, 0x06, 0x7c, 0xd4, 0xee, 0xb5, 0x9a, 0xc6, 0x4c, 0x89, 0x75, 0x28, 0x29,
+	0xfc, 0xb0, 0x69, 0xee, 0xd7, 0xef, 0x69, 0x68, 0x06, 0x7a, 0xaf, 0xae, 0x2d, 0xa5, 0xa1, 0xa0,
+	0xf5, 0x4c, 0xe3, 0xb5, 0x5f, 0x2f, 0xaa, 0xe8, 0xd9, 0x45, 0x15, 0xfd, 0x79, 0x51, 0x45, 0xdf,
+	0xfd, 0x55, 0xbd, 0xf5, 0x24, 0x57, 0xbb, 0x2f, 0xaf, 0xdd, 0xe9, 0x8a, 0xfc, 0xd7, 0xf3, 0xce,
+	0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0xe3, 0xa4, 0x31, 0xc4, 0x8a, 0x0e, 0x00, 0x00,
 }
 
 func (m *EncryptRequest) Marshal() (dAtA []byte, err error) {
@@ -1457,6 +1907,42 @@ func (m *EncryptRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.FileHints != nil {
+		{
+			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x4a
+	}
+	if m.Signed != nil {
+		{
+			size, err := m.Signed.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
+	}
+	if m.Options != nil {
+		{
+			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
 	}
 	if len(m.PublicKey) > 0 {
 		i -= len(m.PublicKey)
@@ -1499,6 +1985,42 @@ func (m *EncryptBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if m.FileHints != nil {
+		{
+			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x4a
+	}
+	if m.Signed != nil {
+		{
+			size, err := m.Signed.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
+	}
+	if m.Options != nil {
+		{
+			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
 	if len(m.PublicKey) > 0 {
 		i -= len(m.PublicKey)
 		copy(dAtA[i:], m.PublicKey)
@@ -1539,6 +2061,18 @@ func (m *DecryptRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Options != nil {
+		{
+			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
 	}
 	if len(m.Passphrase) > 0 {
 		i -= len(m.Passphrase)
@@ -1588,6 +2122,18 @@ func (m *DecryptBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if m.Options != nil {
+		{
+			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
+	}
 	if len(m.Passphrase) > 0 {
 		i -= len(m.Passphrase)
 		copy(dAtA[i:], m.Passphrase)
@@ -1635,6 +2181,18 @@ func (m *SignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Options != nil {
+		{
+			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x4a
 	}
 	if len(m.Passphrase) > 0 {
 		i -= len(m.Passphrase)
@@ -1690,6 +2248,18 @@ func (m *SignBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Options != nil {
+		{
+			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x4a
 	}
 	if len(m.Passphrase) > 0 {
 		i -= len(m.Passphrase)
@@ -1842,6 +2412,18 @@ func (m *EncryptSymmetricRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if m.FileHints != nil {
+		{
+			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
+	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -1894,6 +2476,18 @@ func (m *EncryptSymmetricBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, e
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.FileHints != nil {
+		{
+			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBridge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
 	}
 	if m.Options != nil {
 		{
@@ -2188,6 +2782,105 @@ func (m *Options) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *FileHints) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FileHints) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FileHints) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.ModTime) > 0 {
+		i -= len(m.ModTime)
+		copy(dAtA[i:], m.ModTime)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.ModTime)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.FileName) > 0 {
+		i -= len(m.FileName)
+		copy(dAtA[i:], m.FileName)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.FileName)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.IsBinary {
+		i--
+		if m.IsBinary {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Entity) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Entity) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Entity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Passphrase) > 0 {
+		i -= len(m.Passphrase)
+		copy(dAtA[i:], m.Passphrase)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.Passphrase)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.PrivateKey) > 0 {
+		i -= len(m.PrivateKey)
+		copy(dAtA[i:], m.PrivateKey)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.PrivateKey)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.PublicKey) > 0 {
+		i -= len(m.PublicKey)
+		copy(dAtA[i:], m.PublicKey)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.PublicKey)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *StringResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -2401,6 +3094,160 @@ func (m *KeyPair) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *PublicKeyMetadata) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *PublicKeyMetadata) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *PublicKeyMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.IsSubKey {
+		i--
+		if m.IsSubKey {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x58
+	}
+	if len(m.KeyIDNumeric) > 0 {
+		i -= len(m.KeyIDNumeric)
+		copy(dAtA[i:], m.KeyIDNumeric)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.KeyIDNumeric)))
+		i--
+		dAtA[i] = 0x4a
+	}
+	if len(m.Fingerprint) > 0 {
+		i -= len(m.Fingerprint)
+		copy(dAtA[i:], m.Fingerprint)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.Fingerprint)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.CreationTime) > 0 {
+		i -= len(m.CreationTime)
+		copy(dAtA[i:], m.CreationTime)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.CreationTime)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.KeyIDShort) > 0 {
+		i -= len(m.KeyIDShort)
+		copy(dAtA[i:], m.KeyIDShort)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.KeyIDShort)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.KeyID) > 0 {
+		i -= len(m.KeyID)
+		copy(dAtA[i:], m.KeyID)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.KeyID)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *PrivateKeyMetadata) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *PrivateKeyMetadata) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *PrivateKeyMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Encrypted {
+		i--
+		if m.Encrypted {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.IsSubKey {
+		i--
+		if m.IsSubKey {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x58
+	}
+	if len(m.KeyIDNumeric) > 0 {
+		i -= len(m.KeyIDNumeric)
+		copy(dAtA[i:], m.KeyIDNumeric)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.KeyIDNumeric)))
+		i--
+		dAtA[i] = 0x4a
+	}
+	if len(m.Fingerprint) > 0 {
+		i -= len(m.Fingerprint)
+		copy(dAtA[i:], m.Fingerprint)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.Fingerprint)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.CreationTime) > 0 {
+		i -= len(m.CreationTime)
+		copy(dAtA[i:], m.CreationTime)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.CreationTime)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.KeyIDShort) > 0 {
+		i -= len(m.KeyIDShort)
+		copy(dAtA[i:], m.KeyIDShort)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.KeyIDShort)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.KeyID) > 0 {
+		i -= len(m.KeyID)
+		copy(dAtA[i:], m.KeyID)
+		i = encodeVarintBridge(dAtA, i, uint64(len(m.KeyID)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintBridge(dAtA []byte, offset int, v uint64) int {
 	offset -= sovBridge(v)
 	base := offset
@@ -2426,6 +3273,18 @@ func (m *EncryptRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
+	if m.Options != nil {
+		l = m.Options.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.Signed != nil {
+		l = m.Signed.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.FileHints != nil {
+		l = m.FileHints.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -2444,6 +3303,18 @@ func (m *EncryptBytesRequest) Size() (n int) {
 	}
 	l = len(m.PublicKey)
 	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.Options != nil {
+		l = m.Options.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.Signed != nil {
+		l = m.Signed.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.FileHints != nil {
+		l = m.FileHints.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
@@ -2470,6 +3341,10 @@ func (m *DecryptRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
+	if m.Options != nil {
+		l = m.Options.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -2492,6 +3367,10 @@ func (m *DecryptBytesRequest) Size() (n int) {
 	}
 	l = len(m.Passphrase)
 	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.Options != nil {
+		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
@@ -2522,6 +3401,10 @@ func (m *SignRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
+	if m.Options != nil {
+		l = m.Options.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -2548,6 +3431,10 @@ func (m *SignBytesRequest) Size() (n int) {
 	}
 	l = len(m.Passphrase)
 	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.Options != nil {
+		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
@@ -2622,6 +3509,10 @@ func (m *EncryptSymmetricRequest) Size() (n int) {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
+	if m.FileHints != nil {
+		l = m.FileHints.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -2644,6 +3535,10 @@ func (m *EncryptSymmetricBytesRequest) Size() (n int) {
 	}
 	if m.Options != nil {
 		l = m.Options.Size()
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.FileHints != nil {
+		l = m.FileHints.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
@@ -2775,6 +3670,53 @@ func (m *Options) Size() (n int) {
 	return n
 }
 
+func (m *FileHints) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.IsBinary {
+		n += 2
+	}
+	l = len(m.FileName)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.ModTime)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Entity) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.PublicKey)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.PrivateKey)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.Passphrase)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *StringResponse) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2867,6 +3809,79 @@ func (m *KeyPair) Size() (n int) {
 	l = len(m.PrivateKey)
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *PublicKeyMetadata) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.KeyID)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.KeyIDShort)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.CreationTime)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.Fingerprint)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.KeyIDNumeric)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.IsSubKey {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *PrivateKeyMetadata) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.KeyID)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.KeyIDShort)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.CreationTime)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.Fingerprint)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	l = len(m.KeyIDNumeric)
+	if l > 0 {
+		n += 1 + l + sovBridge(uint64(l))
+	}
+	if m.IsSubKey {
+		n += 2
+	}
+	if m.Encrypted {
+		n += 2
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -2972,6 +3987,114 @@ func (m *EncryptRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.PublicKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &KeyOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Signed", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Signed == nil {
+				m.Signed = &Entity{}
+			}
+			if err := m.Signed.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FileHints", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FileHints == nil {
+				m.FileHints = &FileHints{}
+			}
+			if err := m.FileHints.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3092,6 +4215,114 @@ func (m *EncryptBytesRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.PublicKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &KeyOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Signed", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Signed == nil {
+				m.Signed = &Entity{}
+			}
+			if err := m.Signed.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FileHints", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FileHints == nil {
+				m.FileHints = &FileHints{}
+			}
+			if err := m.FileHints.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3242,6 +4473,42 @@ func (m *DecryptRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Passphrase = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &KeyOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3394,6 +4661,42 @@ func (m *DecryptBytesRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Passphrase = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &KeyOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3576,6 +4879,42 @@ func (m *SignRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Passphrase = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &KeyOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3760,6 +5099,42 @@ func (m *SignBytesRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Passphrase = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &KeyOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -4217,6 +5592,42 @@ func (m *EncryptSymmetricRequest) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FileHints", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FileHints == nil {
+				m.FileHints = &FileHints{}
+			}
+			if err := m.FileHints.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBridge(dAtA[iNdEx:])
@@ -4370,6 +5781,42 @@ func (m *EncryptSymmetricBytesRequest) Unmarshal(dAtA []byte) error {
 				m.Options = &KeyOptions{}
 			}
 			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FileHints", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FileHints == nil {
+				m.FileHints = &FileHints{}
+			}
+			if err := m.FileHints.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -5165,6 +6612,294 @@ func (m *Options) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *FileHints) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBridge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FileHints: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FileHints: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsBinary", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsBinary = bool(v != 0)
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FileName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FileName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ModTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ModTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBridge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Entity) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBridge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Entity: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Entity: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PublicKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PublicKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PrivateKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PrivateKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Passphrase", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Passphrase = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBridge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *StringResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -5724,6 +7459,494 @@ func (m *KeyPair) Unmarshal(dAtA []byte) error {
 			}
 			m.PrivateKey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBridge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *PublicKeyMetadata) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBridge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: PublicKeyMetadata: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: PublicKeyMetadata: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyID", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyID = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyIDShort", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyIDShort = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreationTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CreationTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fingerprint", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Fingerprint = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyIDNumeric", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyIDNumeric = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsSubKey", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsSubKey = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBridge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *PrivateKeyMetadata) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBridge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: PrivateKeyMetadata: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: PrivateKeyMetadata: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyID", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyID = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyIDShort", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyIDShort = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreationTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CreationTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fingerprint", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Fingerprint = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyIDNumeric", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBridge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBridge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyIDNumeric = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsSubKey", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsSubKey = bool(v != 0)
+		case 13:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Encrypted", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBridge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Encrypted = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBridge(dAtA[iNdEx:])

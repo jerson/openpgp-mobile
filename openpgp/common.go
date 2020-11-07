@@ -7,8 +7,8 @@ import (
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 	"golang.org/x/crypto/openpgp/packet"
-	"strconv"
 	"strings"
+	"time"
 )
 
 var headers = map[string]string{
@@ -17,20 +17,22 @@ var headers = map[string]string{
 var messageHeader = "PGP MESSAGE"
 var signatureHeader = "PGP SIGNATURE"
 
-type KeyOptions struct {
-	Hash             string
-	Cipher           string
-	Compression      string
-	CompressionLevel int
-	RSABits          int
-}
+func generateFileHints(options *FileHints) *openpgp.FileHints {
 
-func (k *KeyOptions) SetCompressionLevelFromString(value string) {
-	k.CompressionLevel, _ = strconv.Atoi(value)
-}
+	if options == nil {
+		return &openpgp.FileHints{}
+	}
+	// by now we skip error, maybe later should be needed return
+	var modTime time.Time
+	if options.ModTime != "" {
+		modTime, _ = time.Parse(time.RFC3339, options.ModTime)
+	}
 
-func (k *KeyOptions) SetRSABitsFromString(value string) {
-	k.RSABits, _ = strconv.Atoi(value)
+	return &openpgp.FileHints{
+		IsBinary: options.IsBinary,
+		FileName: options.FileName,
+		ModTime:  modTime,
+	}
 }
 
 func generatePacketConfig(options *KeyOptions) *packet.Config {

@@ -9,12 +9,12 @@ import (
 	"golang.org/x/crypto/openpgp/armor"
 )
 
-func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string) (string, error) {
-	return o.SignBytesToString([]byte(message), publicKey, privateKey, passphrase)
+func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string, options *KeyOptions) (string, error) {
+	return o.SignBytesToString([]byte(message), publicKey, privateKey, passphrase, options)
 }
 
-func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, passphrase string) (string, error) {
-	output, err := o.sign(message, publicKey, privateKey, passphrase)
+func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) (string, error) {
+	output, err := o.sign(message, publicKey, privateKey, passphrase, options)
 	if err != nil {
 		return "", err
 	}
@@ -35,11 +35,11 @@ func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, p
 	return buf.String(), nil
 }
 
-func (o *FastOpenPGP) SignBytes(message []byte, publicKey, privateKey, passphrase string) ([]byte, error) {
-	return o.sign(message, publicKey, privateKey, passphrase)
+func (o *FastOpenPGP) SignBytes(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
+	return o.sign(message, publicKey, privateKey, passphrase, options)
 }
 
-func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase string) ([]byte, error) {
+func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
 
 	entityList, err := o.readSignKeys(publicKey, privateKey, passphrase)
 	if err != nil {
@@ -51,7 +51,7 @@ func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase str
 
 	writer := new(bytes.Buffer)
 	reader := bytes.NewReader(message)
-	err = openpgp.DetachSign(writer, entityList[0], reader, nil)
+	err = openpgp.DetachSign(writer, entityList[0], reader, generatePacketConfig(options))
 	if err != nil {
 		return nil, err
 	}

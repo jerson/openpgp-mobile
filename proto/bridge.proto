@@ -6,21 +6,29 @@ option go_package = ".;model";
 message EncryptRequest {
   string message = 1;
   string publicKey = 3;
+  KeyOptions options = 5;
+  Entity signed = 7;
+  FileHints fileHints = 9;
 }
 message EncryptBytesRequest {
   bytes  message = 1;
   string publicKey = 3;
+  KeyOptions options = 5;
+  Entity signed = 7;
+  FileHints fileHints = 9;
 }
 
 message DecryptRequest {
   string message = 1;
   string privateKey = 3;
   string passphrase = 5;
+  KeyOptions options = 7;
 }
 message DecryptBytesRequest {
   bytes  message = 1;
   string privateKey = 3;
   string passphrase = 5;
+  KeyOptions options = 7;
 }
 
 message SignRequest {
@@ -28,12 +36,14 @@ message SignRequest {
   string publicKey = 3;
   string privateKey = 5;
   string passphrase = 7;
+  KeyOptions options = 9;
 }
 message SignBytesRequest {
   bytes message = 1;
   string publicKey = 3;
   string privateKey = 5;
   string passphrase = 7;
+  KeyOptions options = 9;
 }
 
 message VerifyRequest {
@@ -51,11 +61,13 @@ message EncryptSymmetricRequest {
   string message = 1;
   string passphrase = 3;
   KeyOptions options = 5;
+  FileHints fileHints = 7;
 }
 message EncryptSymmetricBytesRequest {
   bytes message = 1;
   string passphrase = 3;
   KeyOptions options = 5;
+  FileHints fileHints = 7;
 }
 
 message DecryptSymmetricRequest {
@@ -93,11 +105,29 @@ enum Cipher {
   CIPHER_AES256 = 3;
 }
 
+// KeyOptions collects a number of parameters along with sensible defaults.
 message KeyOptions {
+  // Hash is the default hash function to be used.
+  // If zero, SHA-256 is used.
   Hash hash = 1;
+  // Cipher is the cipher to be used.
+  // If zero, AES-128 is used.
   Cipher cipher = 3;
+  // Compression is the compression algorithm to be
+  // applied to the plaintext before encryption. If zero, no
+  // compression is done.
   Compression compression = 5;
+  // CompressionLevel is the compression level to use. It must be set to
+  // between -1 and 9, with -1 causing the compressor to use the
+  // default compression level, 0 causing the compressor to use
+  // no compression and 1 to 9 representing increasing (better,
+  // slower) compression levels. If Level is less than -1 or
+  // more then 9, a non-nil error will be returned during
+  // encryption. See the constants above for convenient common
+  // settings for Level.
   int32 compressionLevel = 7;
+  // RSABits is the number of bits in new RSA keys made with NewEntity.
+  // If zero, then 2048 bit keys are created.
   int32 rsaBits = 9;
 }
 message Options {
@@ -106,6 +136,27 @@ message Options {
   string email = 5;
   string passphrase = 7;
   KeyOptions keyOptions = 9;
+}
+
+message FileHints {
+  // IsBinary can be set to hint that the contents are binary data.
+  bool isBinary = 1;
+  // FileName hints at the name of the file that should be written. It's
+  // truncated to 255 bytes if longer. It may be empty to suggest that the
+  // file should not be written to disk. It may be equal to "_CONSOLE" to
+  // suggest the data should not be written to disk.
+  string fileName = 3;
+  // ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
+  string modTime = 5;
+}
+
+// An Entity represents the components of an OpenPGP key: a primary public key
+// (which must be a signing key), one or more identities claimed by that key,
+// and zero or more subkeys, which may be encryption keys.
+message Entity {
+  string publicKey = 1;
+  string privateKey = 3;
+  string passphrase = 5;
 }
 
 ////////////// RESPONSE BELOW THIS LINE ///////////////
@@ -129,5 +180,24 @@ message KeyPairResponse {
 message KeyPair {
   string publicKey = 1;
   string privateKey = 3;
+}
+
+message PublicKeyMetadata {
+  string keyID = 1;
+  string keyIDShort = 3;
+  string creationTime = 5;
+  string fingerprint = 7;
+  string keyIDNumeric = 9;
+  bool isSubKey = 11;
+}
+
+message PrivateKeyMetadata {
+  string keyID = 1;
+  string keyIDShort = 3;
+  string creationTime = 5;
+  string fingerprint = 7;
+  string keyIDNumeric = 9;
+  bool isSubKey = 11;
+  bool encrypted = 13;
 }
 

@@ -7,24 +7,6 @@ import (
 	"time"
 )
 
-type PublicKeyMetadata struct {
-	KeyID        string
-	KeyIDShort   string
-	CreationTime string
-	Fingerprint  string
-	KeyIDNumeric string
-	IsSubKey     bool
-}
-
-type PrivateKeyMetadata struct {
-	KeyID        string
-	KeyIDShort   string
-	CreationTime string
-	Fingerprint  string
-	KeyIDNumeric string
-	IsSubKey     bool
-	Encrypted    bool
-}
 
 func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, error) {
 	entityList, err := o.readArmoredKeyRing(key)

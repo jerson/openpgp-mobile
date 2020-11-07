@@ -9,19 +9,6 @@ import (
 	"golang.org/x/crypto/openpgp"
 )
 
-type KeyPair struct {
-	PublicKey  string
-	PrivateKey string
-}
-
-type Options struct {
-	KeyOptions *KeyOptions
-	Name       string
-	Comment    string
-	Email      string
-	Passphrase string
-}
-
 func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 
 	var keyPair *KeyPair

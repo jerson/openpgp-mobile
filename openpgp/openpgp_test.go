@@ -141,11 +141,11 @@ var inputMessage = "hola mundo"
 func TestFastOpenPGP_Complete(t *testing.T) {
 
 	openPGP := NewFastOpenPGP()
-	input, err := openPGP.Encrypt(inputMessage, publicKey)
+	input, err := openPGP.Encrypt(inputMessage, publicKey,nil,nil,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	output, err := openPGP.Decrypt(input, privateKey, passphrase)
+	output, err := openPGP.Decrypt(input, privateKey, passphrase,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +159,7 @@ func TestFastOpenPGP_Complete(t *testing.T) {
 func TestFastOpenPGP_VerifyAndSign(t *testing.T) {
 
 	openPGP := NewFastOpenPGP()
-	input, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase)
+	input, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -197,11 +197,11 @@ func TestFastOpenPGP_GenerateComplete(t *testing.T) {
 	passphrase := options.Passphrase
 
 	// Encrypt and Decrypt
-	encrypted, err := openPGP.Encrypt(input, keyPair.PublicKey)
+	encrypted, err := openPGP.Encrypt(input, keyPair.PublicKey,nil,nil,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	decrypted, err := openPGP.Decrypt(encrypted, keyPair.PrivateKey, passphrase)
+	decrypted, err := openPGP.Decrypt(encrypted, keyPair.PrivateKey, passphrase,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -212,7 +212,7 @@ func TestFastOpenPGP_GenerateComplete(t *testing.T) {
 	t.Logf("%s === %s", input, decrypted)
 
 	// Sign and Verify
-	signed, err := openPGP.Sign(input, keyPair.PublicKey, keyPair.PrivateKey, passphrase)
+	signed, err := openPGP.Sign(input, keyPair.PublicKey, keyPair.PrivateKey, passphrase,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -227,7 +227,7 @@ func TestFastOpenPGP_GenerateComplete(t *testing.T) {
 	t.Logf("verified  == %t", verified)
 
 	// Symmetric
-	encryptedSymmetric, err := openPGP.EncryptSymmetric(input, passphrase, options.KeyOptions)
+	encryptedSymmetric, err := openPGP.EncryptSymmetric(input, passphrase,nil, options.KeyOptions)
 	if err != nil {
 		t.Fatal(err)
 	}
