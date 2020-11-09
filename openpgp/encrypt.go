@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 )
 
-func (o *FastOpenPGP) Encrypt(message, publicKey string, signed *Entity, fileHints *FileHints, options *KeyOptions) (string, error) {
-	output, err := o.encrypt([]byte(message), publicKey, signed, fileHints, options)
+func (o *FastOpenPGP) Encrypt(message, publicKey string, signedEntity *Entity, fileHints *FileHints, options *KeyOptions) (string, error) {
+	output, err := o.encrypt([]byte(message), publicKey, signedEntity, fileHints, options)
 	if err != nil {
 		return "", err
 	}
@@ -29,11 +29,11 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string, signed *Entity, fileHin
 	return buf.String(), nil
 }
 
-func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string, signed *Entity, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
-	return o.encrypt(message, publicKey, signed, fileHints, options)
+func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string, signedEntity *Entity, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
+	return o.encrypt(message, publicKey, signedEntity, fileHints, options)
 }
 
-func (o *FastOpenPGP) encrypt(message []byte, publicKey string, signed *Entity, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
+func (o *FastOpenPGP) encrypt(message []byte, publicKey string, signedEntity *Entity, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
 
 	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
@@ -41,7 +41,7 @@ func (o *FastOpenPGP) encrypt(message []byte, publicKey string, signed *Entity, 
 	}
 
 	buf := new(bytes.Buffer)
-	w, err := openpgp.Encrypt(buf, entityList, o.generateSignedEntity(signed), generateFileHints(fileHints), generatePacketConfig(options))
+	w, err := openpgp.Encrypt(buf, entityList, o.generateSignedEntity(signedEntity), generateFileHints(fileHints), generatePacketConfig(options))
 	if err != nil {
 		return nil, err
 	}

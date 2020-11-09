@@ -19,14 +19,16 @@ func readFile(name string) ([]byte, error) {
 	return ioutil.ReadFile(path)
 }
 func TestFastOpenPGP_EncryptFile(t *testing.T) {
-
+	if testing.Short() {
+		t.Skip("skipped, only call when its necessary")
+	}
 	openPGP := NewFastOpenPGP()
 
 	inputMessage, err := readFile("sample.zip")
 	if err != nil {
 		t.Fatal(err)
 	}
-	output, err := openPGP.EncryptBytes(inputMessage, publicKey, nil, nil, nil)
+	output, err := openPGP.EncryptBytes(inputMessage, publicKey, nil, &FileHints{IsBinary: true}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
