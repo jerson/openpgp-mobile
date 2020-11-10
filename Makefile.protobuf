@@ -1,5 +1,5 @@
 .PHONY: proto
-proto: proto-dart proto-go
+proto: proto_dart proto_go
 proto_deps:
 	go get github.com/gogo/protobuf/protoc-gen-gofast
 	flutter pub global activate protoc_plugin
