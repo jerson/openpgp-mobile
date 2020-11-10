@@ -1,21 +1,24 @@
+LINUX_OUTPUT?=linux
+LINUX_BINDING_NAME?=$(BINDING_NAME).so
+
 binding_linux: binding_linux_386 binding_linux_amd64 binding_linux_arm64 binding_linux_armv7
 
 binding_linux_386:
 	GOOS=linux GOARCH=386 TAG=main \
-	ARGS="-e BINDING_FILE=linux/386/libopenpgp_bridge.so" \
+	ARGS="-e BINDING_FILE=$(LINUX_OUTPUT)/386/$(LINUX_BINDING_NAME)" \
 	CMD="make binding" ./cross_build.sh
 
 binding_linux_amd64:
 	GOOS=linux GOARCH=amd64 TAG=main \
-	ARGS="-e BINDING_FILE=linux/amd64/libopenpgp_bridge.so" \
+	ARGS="-e BINDING_FILE=$(LINUX_OUTPUT)/amd64/$(LINUX_BINDING_NAME)" \
 	CMD="make binding" ./cross_build.sh
 
 binding_linux_arm64:
 	GOOS=linux GOARCH=arm64 TAG=arm \
-	ARGS="-e BINDING_FILE=linux/arm64/libopenpgp_bridge.so" \
+	ARGS="-e BINDING_FILE=$(LINUX_OUTPUT)/arm64/$(LINUX_BINDING_NAME)" \
 	CMD="make binding" ./cross_build.sh
 
 binding_linux_armv7:
 	GOOS=linux GOARCH=armv7 TAG=arm \
-	ARGS="-e BINDING_FILE=linux/armv7/libopenpgp_bridge.so" \
+	ARGS="-e BINDING_FILE=$(LINUX_OUTPUT)/armv7/$(LINUX_BINDING_NAME)" \
 	CMD="make binding" ./cross_build.sh

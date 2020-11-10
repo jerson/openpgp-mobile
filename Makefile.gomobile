@@ -1,19 +1,24 @@
+GOMOBILE_BRIDGE_PACKAGE?=github.com/jerson/openpgp-mobile/bridge
+GOMOBILE_BRIDGE_NAME?=OpenPGPBridge
+GOMOBILE_PACKAGE?=github.com/jerson/openpgp-mobile/openpgp
+GOMOBILE_NAME?=Openpgp
+
 gomobile:
 	GO111MODULE=off go get golang.org/x/mobile/cmd/gomobile
 	gomobile init
 
 gomobile_bridge_android: deps
 	mkdir -p output/android
-	gomobile bind -ldflags="-w -s" -target=android -o output/android/OpenPGPBridge.aar github.com/jerson/openpgp-mobile/bridge
+	gomobile bind -ldflags="-w -s" -target=android -o output/android/$(GOMOBILE_BRIDGE_NAME).aar $(GOMOBILE_BRIDGE_PACKAGE)
 
 gomobile_bridge_ios: deps
 	mkdir -p output/ios
-	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/OpenPGPBridge.framework github.com/jerson/openpgp-mobile/bridge
+	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/$(GOMOBILE_BRIDGE_NAME).framework $(GOMOBILE_BRIDGE_PACKAGE)
 
 gomobile_android: deps
 	mkdir -p output/android
-	gomobile bind -ldflags="-w -s" -target=android -o output/android/openpgp.aar github.com/jerson/openpgp-mobile/openpgp
+	gomobile bind -ldflags="-w -s" -target=android -o output/android/$(GOMOBILE_NAME).aar $(GOMOBILE_PACKAGE)
 
 gomobile_ios: deps
 	mkdir -p output/ios
-	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/Openpgp.framework github.com/jerson/openpgp-mobile/openpgp
+	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/$(GOMOBILE_NAME).framework $(GOMOBILE_PACKAGE)
