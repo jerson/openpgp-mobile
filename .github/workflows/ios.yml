@@ -1,3 +1,5 @@
+name: Build iOS
+
 on:
   push:
     tags:

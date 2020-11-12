@@ -1,3 +1,5 @@
+name: Tests and Coverage
+
 on:
   push:
     branches: [ master ]

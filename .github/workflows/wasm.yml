@@ -1,3 +1,5 @@
+name: Build WASM
+
 on:
   push:
     tags:

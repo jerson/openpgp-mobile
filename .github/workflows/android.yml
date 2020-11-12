@@ -1,3 +1,5 @@
+name: Build Android
+
 on:
   push:
     tags:
