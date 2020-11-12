@@ -6,8 +6,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        go: [ '1.15', '1.14']
+        go: [ '1.15', '1.14', '1.13']
     name: Using Go ${{ matrix.go }}
     steps:
       - uses: actions/checkout@v2
@@ -16,29 +17,14 @@ jobs:
           go-version: ${{ matrix.go }}
       - name: Tests
         run: make test
-
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '^1.15'
-      - name: Tests
-        run: make test
-
       - uses: shogo82148/actions-goveralls@v1
         with:
           path-to-profile: profile.cov
+          flag-name: Go-${{ matrix.go }}
           parallel: true
 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: profile.cov
-          path: profile.cov
-
   finish:
-    needs: coverage
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - uses: shogo82148/actions-goveralls@v1
