@@ -1,21 +1,21 @@
 # openpgp-mobile
 
-- ![.github/workflows/tests.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/tests.yml/badge.svg)
+- ![Tests and Coverage](https://github.com/jerson/openpgp-mobile/workflows/Tests%20and%20Coverage/badge.svg)
 
 - [![Coverage Status](https://coveralls.io/repos/github/jerson/openpgp-mobile/badge.svg)](https://coveralls.io/github/jerson/openpgp-mobile)
 
 # Status
 
-- ![.github/workflows/windows.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/windows.yml/badge.svg)
+- ![Build Windows](https://github.com/jerson/openpgp-mobile/workflows/Build%20Windows/badge.svg)
 
-- ![.github/workflows/wasm.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/wasm.yml/badge.svg)
+- ![Build WASM](https://github.com/jerson/openpgp-mobile/workflows/Build%20WASM/badge.svg)
 
-- ![.github/workflows/linux.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/linux.yml/badge.svg)
+- ![Build Linux](https://github.com/jerson/openpgp-mobile/workflows/Build%20Linux/badge.svg)
 
-- ![.github/workflows/ios.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/ios.yml/badge.svg)
+- ![Build iOS](https://github.com/jerson/openpgp-mobile/workflows/Build%20iOS/badge.svg)
 
-- ![.github/workflows/gomobile.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/gomobile.yml/badge.svg)
+- ![Build GoMobile](https://github.com/jerson/openpgp-mobile/workflows/Build%20GoMobile/badge.svg)
 
-- ![.github/workflows/darwin.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/darwin.yml/badge.svg)
+- ![Build Darwin](https://github.com/jerson/openpgp-mobile/workflows/Build%20Darwin/badge.svg)
 
-- ![.github/workflows/android.yml](https://github.com/jerson/openpgp-mobile/workflows/.github/workflows/android.yml/badge.svg)
+- ![Build Android](https://github.com/jerson/openpgp-mobile/workflows/Build%20Android/badge.svg)
