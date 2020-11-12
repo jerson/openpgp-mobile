@@ -6,6 +6,8 @@
 
 # Status
 
+- ![Build Protobuf](https://github.com/jerson/openpgp-mobile/workflows/Build%20Protobuf/badge.svg)
+
 - ![Build Windows](https://github.com/jerson/openpgp-mobile/workflows/Build%20Windows/badge.svg)
 
 - ![Build WASM](https://github.com/jerson/openpgp-mobile/workflows/Build%20WASM/badge.svg)

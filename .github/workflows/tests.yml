@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go: [ '1.15', '1.14', '1.13']
+        go: [ '1.15', '1.14']
     name: Using Go ${{ matrix.go }}
     steps:
       - uses: actions/checkout@v2

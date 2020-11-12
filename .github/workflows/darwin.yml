@@ -20,7 +20,7 @@ jobs:
       - uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: darwin_libopenpgp_bridge_$tag.tar.gz
+          asset_name: libopenpgp_bridge_darwin_$tag.tar.gz
           file: output.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
