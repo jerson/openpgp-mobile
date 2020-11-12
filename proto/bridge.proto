@@ -200,5 +200,3 @@ message PrivateKeyMetadata {
   bool isSubKey = 11;
   bool encrypted = 13;
 }
-
-//
