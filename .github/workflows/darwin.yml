@@ -1,0 +1,24 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  binding:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15'
+      - name: Build
+        run: make binding_darwin
+      - name: Compress
+        run: tar -czvf output.tar.gz -C output/binding/darwin .
+      - uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: darwin_libopenpgp_bridge_$tag.tar.gz
+          file: output.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true

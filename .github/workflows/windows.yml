@@ -1,0 +1,22 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker-practice/actions-setup-docker@master
+      - name: Build
+        run: make binding_windows
+      - name: Compress
+        run: tar -czvf output.tar.gz -C output/binding/windows .
+      - uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: windows_libopenpgp_bridge_$tag.tar.gz
+          file: output.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
