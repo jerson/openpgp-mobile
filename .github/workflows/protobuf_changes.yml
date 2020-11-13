@@ -1,9 +1,9 @@
-name: Build Protobuf
+name: Build Protobuf on Change
 
 on:
   push:
-    tags:
-      - "v*"
+    paths:
+      - '**.proto'
 
 jobs:
   dart:
@@ -20,15 +20,10 @@ jobs:
           export PATH="$PATH":"$FLUTTER_HOME/.pub-cache/bin"
           make proto_dart_deps
           make proto_dart
-      - name: Compress
-        run: tar -czvf output.tar.gz -C output/dart .
-      - uses: svenstaro/upload-release-action@v2
+      - uses: actions/upload-artifact@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: protobuf_openpgp_bridge_dart_$tag.tar.gz
-          file: output.tar.gz
-          tag: ${{ github.ref }}
-          overwrite: true
+          name: protobuf_openpgp_bridge_dart_latest
+          path: output/dart
   go:
     runs-on: ubuntu-latest
     steps:
@@ -42,12 +37,7 @@ jobs:
         run: |
           make proto_go_deps
           make proto_go
-      - name: Compress
-        run: tar -czvf output.tar.gz -C bridge/model .
-      - uses: svenstaro/upload-release-action@v2
+      - uses: actions/upload-artifact@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: protobuf_openpgp_bridge_go_$tag.tar.gz
-          file: output.tar.gz
-          tag: ${{ github.ref }}
-          overwrite: true
+          name: protobuf_openpgp_bridge_go_latest
+          path: bridge/model
