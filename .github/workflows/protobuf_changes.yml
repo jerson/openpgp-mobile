@@ -22,7 +22,7 @@ jobs:
           make proto_dart
       - uses: actions/upload-artifact@v2
         with:
-          name: protobuf_openpgp_bridge_dart_latest
+          name: protobuf_libopenpgp_bridge_dart_latest
           path: output/dart
   go:
     runs-on: ubuntu-latest
@@ -39,5 +39,5 @@ jobs:
           make proto_go
       - uses: actions/upload-artifact@v2
         with:
-          name: protobuf_openpgp_bridge_go_latest
+          name: protobuf_libopenpgp_bridge_go_latest
           path: bridge/model
