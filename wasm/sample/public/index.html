@@ -1,22 +1,14 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <script src="wasm_exec.js"></script>
-    <script>
-        const go = new Go();
-        let mod, inst;
-        WebAssembly.instantiateStreaming(fetch("openpgp.wasm"), go.importObject).then(
-            async result => {
-                mod = result.module;
-                inst = result.instance;
-                await go.run(inst);
-            }
-        );
-    </script>
+    <script src="caller.js"></script>
 </head>
 <body>
-<button onClick="OpenPGPGenerate({name:'sample',email:'sample@sample.com',comment:''},(a,b)=>{ alert('Result: '+JSON.stringify(b,null,' '))});">
-    Generate KeyPair
+<script>
+
+</script>
+<button onClick="sample();">
+    Send Request
 </button>
 
 </body>
