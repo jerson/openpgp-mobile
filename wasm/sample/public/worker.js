@@ -27,9 +27,14 @@ onmessage = async (e) => {
     if (!loaded) {
         await load();
     }
-    const response = {
+
+    console.log(e.data)
+
+    const response = openPGPBridgeCall(e.data.request)
+    const payload = {
         id: e.data.id,
-        data: 'test'
+        response
     }
-    postMessage(response);
-};
+
+    postMessage(payload);
+}
