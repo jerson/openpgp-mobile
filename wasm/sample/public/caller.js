@@ -39,12 +39,12 @@ const send = (name, request) => {
             reject('callbackMessageError: ' + e)
         }
         const callback = (e) => {
-            myWorker.removeEventListener('message', callback)
             const data = e.data || {}
             if (id !== data.id) {
                 // if not same if we should not reject
                 return
             }
+            myWorker.removeEventListener('message', callback)
             const {error, response} = data;
             if (error) {
                 reject(error)
