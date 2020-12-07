@@ -6,21 +6,27 @@ const sample = async () => {
     GenerateRequest.write({
         options: {
             name: 'sample',
-            email: 'sample@sample.com'
+            comment: '',
+            passphrase: '',
+            email: 'sample@sample.com',
+            keyOptions: {
+                rsaBits: 1024
+            }
         }
     }, pbf)
     const buf = pbf.finish()
-    const rawResponse = await send(buf)
+    console.log('request', buf);
+    const rawResponse = await send('generate', buf)
 
     const response = KeyPairResponse.read(new Pbf(rawResponse))
     if (response.error) {
         throw new Error(response.error)
     }
-    console.log('response', response.keyPair);
+    console.log('response', response.output);
 }
 
 let counter = 0;
-const send = (request) => {
+const send = (name, request) => {
     counter++;
     const id = counter.toString()
 
@@ -36,16 +42,19 @@ const send = (request) => {
             myWorker.removeEventListener('message', callback)
             const data = e.data || {}
             if (id !== data.id) {
-                reject('not same id')
+                // if not same if we should not reject
                 return
             }
-            console.log('Worker said : ', data.response);
-            resolve(data.data);
+            const {error, response} = data;
+            if (error) {
+                reject(error)
+            }
+            resolve(response);
         }
 
         myWorker.addEventListener('message', callback)
         myWorker.addEventListener('error', callbackError)
         myWorker.addEventListener("messageerror", callbackMessageError)
-        myWorker.postMessage({id, request});
+        myWorker.postMessage({id, name, request});
     })
 }

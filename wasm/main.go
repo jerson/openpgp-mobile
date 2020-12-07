@@ -3,7 +3,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"errors"
 	"github.com/jerson/openpgp-mobile/bridge"
 	"syscall/js"
@@ -31,15 +30,17 @@ func Promise(i []js.Value, fn func() (result interface{}, err error)) interface{
 
 func Call(this js.Value, i []js.Value) interface{} {
 	return Promise(i, func() (result interface{}, err error) {
-		data, err := base64.StdEncoding.DecodeString(i[1].String())
+		length := i[2].Int()
+		received := make([]byte, length)
+		js.CopyBytesToGo(received, i[1])
+		output, err := openPGPBridge.Call(i[0].String(), received)
 		if err != nil {
 			return nil, err
 		}
-		output, err := openPGPBridge.Call(i[0].String(), data)
-		if err != nil {
-			return nil, err
-		}
-		return base64.StdEncoding.EncodeToString(output), err
+
+		dst := js.Global().Get("Uint8Array").New(len(output))
+		js.CopyBytesToJS(dst, output)
+		return dst, err
 	})
 }
 

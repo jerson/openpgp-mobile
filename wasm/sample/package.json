@@ -5,13 +5,11 @@
   "license": "MIT",
   "scripts": {
     "start": "node server.js",
-    "pb": "pbjs -t static-module -w commonjs -o ./bridge_all.js ../../proto/bridge.proto",
-    "static": "browserify ./bridge_all.js -o ./public/bridge_pb.js",
-    "proto": "npm run pb && npm run static"
+    "proto": "pbf ../../proto/bridge.proto --browser > ./public/bridge_pb.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "protobufjs": "^6.10.2"
+    "pbf": "^3.2.1"
   }
 }
