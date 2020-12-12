@@ -1,10 +1,10 @@
 IOS_OUTPUT?=ios
 IOS_BINDING_OUTPUT?=$(BINDING_OUTPUT)/$(IOS_OUTPUT)
 
-binding_ios: binding_ios_arm64 binding_ios_x86_64
-	lipo $(IOS_BINDING_OUTPUT)/x86_64.a $(IOS_BINDING_OUTPUT)/arm64.a -create -output $(IOS_BINDING_OUTPUT)/$(BINDING_NAME).a
+binding_ios: binding_ios_arm64 binding_ios_x86_64 binding_ios_armv7
+	lipo $(IOS_BINDING_OUTPUT)/x86_64.a $(IOS_BINDING_OUTPUT)/arm64.a $(IOS_BINDING_OUTPUT)/armv7.a -create -output $(IOS_BINDING_OUTPUT)/$(BINDING_NAME).a
 	cp $(IOS_BINDING_OUTPUT)/arm64.h $(IOS_BINDING_OUTPUT)/$(BINDING_NAME).h
-	rm $(IOS_BINDING_OUTPUT)/arm64.h $(IOS_BINDING_OUTPUT)/arm64.a $(IOS_BINDING_OUTPUT)/x86_64.h $(IOS_BINDING_OUTPUT)/x86_64.a
+	rm $(IOS_BINDING_OUTPUT)/arm64.h $(IOS_BINDING_OUTPUT)/arm64.a $(IOS_BINDING_OUTPUT)/x86_64.h $(IOS_BINDING_OUTPUT)/x86_64.a $(IOS_BINDING_OUTPUT)/armv7.h $(IOS_BINDING_OUTPUT)/armv7.a
 
 binding_ios_arm64:
 	BINDING_FILE=$(IOS_OUTPUT)/arm64.a BUILD_MODE="c-archive" \
@@ -16,4 +16,10 @@ binding_ios_x86_64:
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64.a BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
+	make binding
+
+binding_ios_armv7:
+	BINDING_FILE=$(IOS_OUTPUT)/armv7.a BUILD_MODE="c-archive" \
+	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
+	GOOS=darwin GOARCH=arm CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
 	make binding
