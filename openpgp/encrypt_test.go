@@ -41,6 +41,27 @@ func TestFastOpenPGP_EncryptFile(t *testing.T) {
 	t.Log("output:", outputFile)
 }
 
+func TestFastOpenPGP_EncryptOptions(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	output, err := openPGP.Encrypt(privateKey+privateKey+privateKey, publicKey, nil, nil, &KeyOptions{
+		Hash:             "sha512",
+		Cipher:           "aes256",
+		Compression:      "zlib",
+		CompressionLevel: 9,
+		RSABits:          4096,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = openPGP.Decrypt(output, privateKey, passphrase, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("output:", output)
+}
+
 func TestFastOpenPGP_Encrypt(t *testing.T) {
 
 	openPGP := NewFastOpenPGP()
