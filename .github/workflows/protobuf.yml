@@ -1,13 +1,14 @@
 name: Build Protobuf
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
 
 jobs:
   dart:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Install Protoc
@@ -30,7 +31,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
   go:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Install Protoc

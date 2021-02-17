@@ -1,6 +1,7 @@
 name: Build Darwin
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"

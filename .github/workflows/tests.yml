@@ -1,10 +1,13 @@
 name: Tests and Coverage
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -25,7 +28,7 @@ jobs:
 
   finish:
     needs: tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: shogo82148/actions-goveralls@v1
         with:
