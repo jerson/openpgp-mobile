@@ -8,14 +8,15 @@ on:
 
 jobs:
   binding:
-    runs-on: macos-11.0
+    # macos-11.0 is not available for all, so for now still use macos-10.15
+    runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
         with:
           go-version: '1.16.1'
       - name: Build
-        run: make binding_darwin
+        run: make binding_darwin_github_actions_limit_macos
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/darwin .
       - uses: svenstaro/upload-release-action@v2

@@ -6,6 +6,11 @@ binding_darwin: binding_darwin_x86_64 binding_darwin_arm64
 	lipo $(DARWIN_BINDING_OUTPUT)/x86_64.dylib $(DARWIN_BINDING_OUTPUT)/arm64.dylib -create -output $(DARWIN_BINDING_OUTPUT)/$(BINDING_NAME).dylib
 	rm $(DARWIN_BINDING_OUTPUT)/x86_64.dylib $(DARWIN_BINDING_OUTPUT)/arm64.dylib $(DARWIN_BINDING_OUTPUT)/*.h
 
+# this exists only bc of github actions
+binding_darwin_github_actions_limit_macos: binding_darwin_x86_64
+	mv $(DARWIN_BINDING_OUTPUT)/x86_64.dylib $(DARWIN_BINDING_OUTPUT)/$(BINDING_NAME).dylib
+	rm $(DARWIN_BINDING_OUTPUT)/*.h
+
 binding_darwin_x86_64:
 	BINDING_FILE=$(DARWIN_OUTPUT)/x86_64.dylib \
 	BUILD_MODE="c-shared" \
