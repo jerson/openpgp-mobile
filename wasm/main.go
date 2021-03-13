@@ -38,8 +38,6 @@ func Call(this js.Value, i []js.Value) interface{} {
 			return nil, err
 		}
 
-		//output:= []byte{}
-
 		dst := js.Global().Get("Uint8Array").New(len(output))
 		js.CopyBytesToJS(dst, output)
 		return dst, err
