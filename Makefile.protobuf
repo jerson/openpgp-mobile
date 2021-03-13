@@ -2,7 +2,9 @@
 proto: proto_dart proto_go
 
 proto_go_deps:
-	go get github.com/gogo/protobuf/protoc-gen-gofast
+	go get github.com/gogo/protobuf/proto
+	go get github.com/gogo/protobuf/protoc-gen-gogofaster
+	go get github.com/gogo/protobuf/gogoproto
 
 proto_dart_deps:
 	flutter pub global activate protoc_plugin
@@ -13,7 +15,7 @@ proto_dart:
 
 proto_go:
 	rm -rf bridge/model && mkdir -p bridge/model
-	protoc -Iproto --gofast_out=grpc:./bridge/model proto/*.proto
+	protoc -Iproto --gogofaster_out=./bridge/model proto/*.proto
 
 proto_js:
 	rm -rf output/js && mkdir -p output/js

@@ -2,7 +2,7 @@ package openPGPBridge
 
 import (
 	"fmt"
-	"github.com/golang/protobuf/proto"
+	"github.com/gogo/protobuf/proto"
 	"github.com/jerson/openpgp-mobile/bridge/model"
 	"github.com/jerson/openpgp-mobile/openpgp"
 )

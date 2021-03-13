@@ -4,7 +4,7 @@ package main
 
 import (
 	"errors"
-	"github.com/jerson/openpgp-mobile/bridge"
+	openPGPBridge "github.com/jerson/openpgp-mobile/bridge"
 	"syscall/js"
 )
 
@@ -37,6 +37,8 @@ func Call(this js.Value, i []js.Value) interface{} {
 		if err != nil {
 			return nil, err
 		}
+
+		//output:= []byte{}
 
 		dst := js.Global().Get("Uint8Array").New(len(output))
 		js.CopyBytesToJS(dst, output)

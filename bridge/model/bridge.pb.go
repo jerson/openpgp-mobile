@@ -5,7 +5,7 @@ package model
 
 import (
 	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
+	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -20,7 +20,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Hash int32
 
@@ -119,14 +119,11 @@ func (Cipher) EnumDescriptor() ([]byte, []int) {
 }
 
 type EncryptRequest struct {
-	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	Signed               *Entity     `protobuf:"bytes,7,opt,name=signed,proto3" json:"signed,omitempty"`
-	FileHints            *FileHints  `protobuf:"bytes,9,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message   string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Options   *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	Signed    *Entity     `protobuf:"bytes,7,opt,name=signed,proto3" json:"signed,omitempty"`
+	FileHints *FileHints  `protobuf:"bytes,9,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
 }
 
 func (m *EncryptRequest) Reset()         { *m = EncryptRequest{} }
@@ -198,14 +195,11 @@ func (m *EncryptRequest) GetFileHints() *FileHints {
 }
 
 type EncryptBytesRequest struct {
-	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	Signed               *Entity     `protobuf:"bytes,7,opt,name=signed,proto3" json:"signed,omitempty"`
-	FileHints            *FileHints  `protobuf:"bytes,9,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message   []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Options   *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	Signed    *Entity     `protobuf:"bytes,7,opt,name=signed,proto3" json:"signed,omitempty"`
+	FileHints *FileHints  `protobuf:"bytes,9,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
 }
 
 func (m *EncryptBytesRequest) Reset()         { *m = EncryptBytesRequest{} }
@@ -277,13 +271,10 @@ func (m *EncryptBytesRequest) GetFileHints() *FileHints {
 }
 
 type DecryptRequest struct {
-	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PrivateKey           string      `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string      `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,7,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PrivateKey string      `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase string      `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,7,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *DecryptRequest) Reset()         { *m = DecryptRequest{} }
@@ -348,13 +339,10 @@ func (m *DecryptRequest) GetOptions() *KeyOptions {
 }
 
 type DecryptBytesRequest struct {
-	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PrivateKey           string      `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string      `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,7,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PrivateKey string      `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase string      `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,7,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *DecryptBytesRequest) Reset()         { *m = DecryptBytesRequest{} }
@@ -419,14 +407,11 @@ func (m *DecryptBytesRequest) GetOptions() *KeyOptions {
 }
 
 type SignRequest struct {
-	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	PrivateKey           string      `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,9,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey  string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey string      `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,9,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *SignRequest) Reset()         { *m = SignRequest{} }
@@ -498,14 +483,11 @@ func (m *SignRequest) GetOptions() *KeyOptions {
 }
 
 type SignBytesRequest struct {
-	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	PrivateKey           string      `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,9,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey  string      `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey string      `protobuf:"bytes,5,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,9,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *SignBytesRequest) Reset()         { *m = SignBytesRequest{} }
@@ -577,12 +559,9 @@ func (m *SignBytesRequest) GetOptions() *KeyOptions {
 }
 
 type VerifyRequest struct {
-	Signature            string   `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
-	Message              string   `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string   `protobuf:"bytes,5,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Signature string `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
+	Message   string `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey string `protobuf:"bytes,5,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
 }
 
 func (m *VerifyRequest) Reset()         { *m = VerifyRequest{} }
@@ -640,12 +619,9 @@ func (m *VerifyRequest) GetPublicKey() string {
 }
 
 type VerifyBytesRequest struct {
-	Signature            string   `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
-	Message              []byte   `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	PublicKey            string   `protobuf:"bytes,5,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Signature string `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
+	Message   []byte `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	PublicKey string `protobuf:"bytes,5,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
 }
 
 func (m *VerifyBytesRequest) Reset()         { *m = VerifyBytesRequest{} }
@@ -703,13 +679,10 @@ func (m *VerifyBytesRequest) GetPublicKey() string {
 }
 
 type EncryptSymmetricRequest struct {
-	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	Passphrase           string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	FileHints            *FileHints  `protobuf:"bytes,7,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Passphrase string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	FileHints  *FileHints  `protobuf:"bytes,7,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
 }
 
 func (m *EncryptSymmetricRequest) Reset()         { *m = EncryptSymmetricRequest{} }
@@ -774,13 +747,10 @@ func (m *EncryptSymmetricRequest) GetFileHints() *FileHints {
 }
 
 type EncryptSymmetricBytesRequest struct {
-	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	Passphrase           string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	FileHints            *FileHints  `protobuf:"bytes,7,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Passphrase string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
+	FileHints  *FileHints  `protobuf:"bytes,7,opt,name=fileHints,proto3" json:"fileHints,omitempty"`
 }
 
 func (m *EncryptSymmetricBytesRequest) Reset()         { *m = EncryptSymmetricBytesRequest{} }
@@ -845,12 +815,9 @@ func (m *EncryptSymmetricBytesRequest) GetFileHints() *FileHints {
 }
 
 type DecryptSymmetricRequest struct {
-	Message              string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	Passphrase           string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    string      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Passphrase string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *DecryptSymmetricRequest) Reset()         { *m = DecryptSymmetricRequest{} }
@@ -908,12 +875,9 @@ func (m *DecryptSymmetricRequest) GetOptions() *KeyOptions {
 }
 
 type DecryptSymmetricBytesRequest struct {
-	Message              []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	Passphrase           string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Options              *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Message    []byte      `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Passphrase string      `protobuf:"bytes,3,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Options    *KeyOptions `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *DecryptSymmetricBytesRequest) Reset()         { *m = DecryptSymmetricBytesRequest{} }
@@ -971,10 +935,7 @@ func (m *DecryptSymmetricBytesRequest) GetOptions() *KeyOptions {
 }
 
 type GenerateRequest struct {
-	Options              *Options `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Options *Options `protobuf:"bytes,5,opt,name=options,proto3" json:"options,omitempty"`
 }
 
 func (m *GenerateRequest) Reset()         { *m = GenerateRequest{} }
@@ -1040,10 +1001,7 @@ type KeyOptions struct {
 	CompressionLevel int32 `protobuf:"varint,7,opt,name=compressionLevel,proto3" json:"compressionLevel,omitempty"`
 	// RSABits is the number of bits in new RSA keys made with NewEntity.
 	// If zero, then 2048 bit keys are created.
-	RsaBits              int32    `protobuf:"varint,9,opt,name=rsaBits,proto3" json:"rsaBits,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RsaBits int32 `protobuf:"varint,9,opt,name=rsaBits,proto3" json:"rsaBits,omitempty"`
 }
 
 func (m *KeyOptions) Reset()         { *m = KeyOptions{} }
@@ -1115,14 +1073,11 @@ func (m *KeyOptions) GetRsaBits() int32 {
 }
 
 type Options struct {
-	Name                 string      `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Comment              string      `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
-	Email                string      `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
-	Passphrase           string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	KeyOptions           *KeyOptions `protobuf:"bytes,9,opt,name=keyOptions,proto3" json:"keyOptions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Name       string      `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Comment    string      `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
+	Email      string      `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	Passphrase string      `protobuf:"bytes,7,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	KeyOptions *KeyOptions `protobuf:"bytes,9,opt,name=keyOptions,proto3" json:"keyOptions,omitempty"`
 }
 
 func (m *Options) Reset()         { *m = Options{} }
@@ -1202,10 +1157,7 @@ type FileHints struct {
 	// suggest the data should not be written to disk.
 	FileName string `protobuf:"bytes,3,opt,name=fileName,proto3" json:"fileName,omitempty"`
 	// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
-	ModTime              string   `protobuf:"bytes,5,opt,name=modTime,proto3" json:"modTime,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	ModTime string `protobuf:"bytes,5,opt,name=modTime,proto3" json:"modTime,omitempty"`
 }
 
 func (m *FileHints) Reset()         { *m = FileHints{} }
@@ -1266,12 +1218,9 @@ func (m *FileHints) GetModTime() string {
 // (which must be a signing key), one or more identities claimed by that key,
 // and zero or more subkeys, which may be encryption keys.
 type Entity struct {
-	PublicKey            string   `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	PrivateKey           string   `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	Passphrase           string   `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	PublicKey  string `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey string `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
+	Passphrase string `protobuf:"bytes,5,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
 }
 
 func (m *Entity) Reset()         { *m = Entity{} }
@@ -1329,11 +1278,8 @@ func (m *Entity) GetPassphrase() string {
 }
 
 type StringResponse struct {
-	Output               string   `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
-	Error                string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Output string `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
+	Error  string `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 }
 
 func (m *StringResponse) Reset()         { *m = StringResponse{} }
@@ -1384,11 +1330,8 @@ func (m *StringResponse) GetError() string {
 }
 
 type BytesResponse struct {
-	Output               []byte   `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
-	Error                string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Output []byte `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
+	Error  string `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 }
 
 func (m *BytesResponse) Reset()         { *m = BytesResponse{} }
@@ -1439,11 +1382,8 @@ func (m *BytesResponse) GetError() string {
 }
 
 type BoolResponse struct {
-	Output               bool     `protobuf:"varint,1,opt,name=output,proto3" json:"output,omitempty"`
-	Error                string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Output bool   `protobuf:"varint,1,opt,name=output,proto3" json:"output,omitempty"`
+	Error  string `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 }
 
 func (m *BoolResponse) Reset()         { *m = BoolResponse{} }
@@ -1494,11 +1434,8 @@ func (m *BoolResponse) GetError() string {
 }
 
 type KeyPairResponse struct {
-	Output               *KeyPair `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
-	Error                string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Output *KeyPair `protobuf:"bytes,1,opt,name=output,proto3" json:"output,omitempty"`
+	Error  string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 }
 
 func (m *KeyPairResponse) Reset()         { *m = KeyPairResponse{} }
@@ -1549,11 +1486,8 @@ func (m *KeyPairResponse) GetError() string {
 }
 
 type KeyPair struct {
-	PublicKey            string   `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	PrivateKey           string   `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	PublicKey  string `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PrivateKey string `protobuf:"bytes,3,opt,name=privateKey,proto3" json:"privateKey,omitempty"`
 }
 
 func (m *KeyPair) Reset()         { *m = KeyPair{} }
@@ -1604,15 +1538,12 @@ func (m *KeyPair) GetPrivateKey() string {
 }
 
 type PublicKeyMetadata struct {
-	KeyID                string   `protobuf:"bytes,1,opt,name=keyID,proto3" json:"keyID,omitempty"`
-	KeyIDShort           string   `protobuf:"bytes,3,opt,name=keyIDShort,proto3" json:"keyIDShort,omitempty"`
-	CreationTime         string   `protobuf:"bytes,5,opt,name=creationTime,proto3" json:"creationTime,omitempty"`
-	Fingerprint          string   `protobuf:"bytes,7,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
-	KeyIDNumeric         string   `protobuf:"bytes,9,opt,name=keyIDNumeric,proto3" json:"keyIDNumeric,omitempty"`
-	IsSubKey             bool     `protobuf:"varint,11,opt,name=isSubKey,proto3" json:"isSubKey,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	KeyID        string `protobuf:"bytes,1,opt,name=keyID,proto3" json:"keyID,omitempty"`
+	KeyIDShort   string `protobuf:"bytes,3,opt,name=keyIDShort,proto3" json:"keyIDShort,omitempty"`
+	CreationTime string `protobuf:"bytes,5,opt,name=creationTime,proto3" json:"creationTime,omitempty"`
+	Fingerprint  string `protobuf:"bytes,7,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	KeyIDNumeric string `protobuf:"bytes,9,opt,name=keyIDNumeric,proto3" json:"keyIDNumeric,omitempty"`
+	IsSubKey     bool   `protobuf:"varint,11,opt,name=isSubKey,proto3" json:"isSubKey,omitempty"`
 }
 
 func (m *PublicKeyMetadata) Reset()         { *m = PublicKeyMetadata{} }
@@ -1691,16 +1622,13 @@ func (m *PublicKeyMetadata) GetIsSubKey() bool {
 }
 
 type PrivateKeyMetadata struct {
-	KeyID                string   `protobuf:"bytes,1,opt,name=keyID,proto3" json:"keyID,omitempty"`
-	KeyIDShort           string   `protobuf:"bytes,3,opt,name=keyIDShort,proto3" json:"keyIDShort,omitempty"`
-	CreationTime         string   `protobuf:"bytes,5,opt,name=creationTime,proto3" json:"creationTime,omitempty"`
-	Fingerprint          string   `protobuf:"bytes,7,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
-	KeyIDNumeric         string   `protobuf:"bytes,9,opt,name=keyIDNumeric,proto3" json:"keyIDNumeric,omitempty"`
-	IsSubKey             bool     `protobuf:"varint,11,opt,name=isSubKey,proto3" json:"isSubKey,omitempty"`
-	Encrypted            bool     `protobuf:"varint,13,opt,name=encrypted,proto3" json:"encrypted,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	KeyID        string `protobuf:"bytes,1,opt,name=keyID,proto3" json:"keyID,omitempty"`
+	KeyIDShort   string `protobuf:"bytes,3,opt,name=keyIDShort,proto3" json:"keyIDShort,omitempty"`
+	CreationTime string `protobuf:"bytes,5,opt,name=creationTime,proto3" json:"creationTime,omitempty"`
+	Fingerprint  string `protobuf:"bytes,7,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	KeyIDNumeric string `protobuf:"bytes,9,opt,name=keyIDNumeric,proto3" json:"keyIDNumeric,omitempty"`
+	IsSubKey     bool   `protobuf:"varint,11,opt,name=isSubKey,proto3" json:"isSubKey,omitempty"`
+	Encrypted    bool   `protobuf:"varint,13,opt,name=encrypted,proto3" json:"encrypted,omitempty"`
 }
 
 func (m *PrivateKeyMetadata) Reset()         { *m = PrivateKeyMetadata{} }
@@ -1818,70 +1746,71 @@ func init() {
 func init() { proto.RegisterFile("bridge.proto", fileDescriptor_1d3ed31acb30cd14) }
 
 var fileDescriptor_1d3ed31acb30cd14 = []byte{
-	// 1006 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x57, 0xdd, 0x6e, 0x1b, 0x45,
-	0x14, 0xee, 0xc4, 0x71, 0x1c, 0x1f, 0xff, 0x64, 0x33, 0x89, 0x1a, 0x03, 0x91, 0x89, 0x56, 0x02,
-	0x45, 0x41, 0xb2, 0x14, 0x37, 0x45, 0x45, 0x05, 0xa4, 0x38, 0x71, 0x6b, 0x2b, 0xad, 0x6d, 0xed,
-	0x02, 0x12, 0x95, 0x10, 0x6c, 0xec, 0x89, 0x3d, 0xc4, 0xfb, 0xc3, 0xcc, 0xb8, 0xd2, 0xde, 0x71,
-	0xc3, 0x33, 0xc0, 0x05, 0x17, 0x3c, 0x02, 0x42, 0x42, 0xbc, 0x02, 0x17, 0x48, 0x94, 0x37, 0x40,
-	0xe1, 0x9e, 0x67, 0x40, 0x3b, 0x3b, 0xeb, 0xdd, 0x75, 0x89, 0x9d, 0xa8, 0xa8, 0x11, 0xbd, 0xf3,
-	0xf9, 0xce, 0x39, 0x73, 0xbe, 0x73, 0xf6, 0x9b, 0x33, 0x09, 0x14, 0x4f, 0x19, 0x1d, 0x0c, 0x49,
-	0xcd, 0x63, 0xae, 0x70, 0x71, 0xd6, 0x76, 0x07, 0x64, 0xac, 0xff, 0x86, 0xa0, 0xdc, 0x74, 0xfa,
-	0xcc, 0xf7, 0x84, 0x41, 0xbe, 0x9a, 0x10, 0x2e, 0x70, 0x05, 0x72, 0x36, 0xe1, 0xdc, 0x1a, 0x92,
-	0x0a, 0xda, 0x41, 0xbb, 0x79, 0x23, 0x32, 0xf1, 0x36, 0xe4, 0xbd, 0xc9, 0xe9, 0x98, 0xf6, 0x4f,
-	0x88, 0x5f, 0xc9, 0x48, 0x5f, 0x0c, 0xe0, 0x77, 0x20, 0xe7, 0x7a, 0x82, 0xba, 0x0e, 0xaf, 0x64,
-	0x77, 0xd0, 0x6e, 0xa1, 0xbe, 0x5e, 0x93, 0x35, 0x6a, 0x27, 0xc4, 0xef, 0x86, 0x0e, 0x23, 0x8a,
-	0xc0, 0x6f, 0xc1, 0x0a, 0xa7, 0x43, 0x87, 0x0c, 0x2a, 0x39, 0x19, 0x5b, 0x52, 0xb1, 0x4d, 0x47,
-	0x50, 0xe1, 0x1b, 0xca, 0x89, 0x6b, 0x90, 0x3f, 0xa3, 0x63, 0xd2, 0xa2, 0x8e, 0xe0, 0x95, 0xbc,
-	0x8c, 0xd4, 0x54, 0xe4, 0x83, 0x08, 0x37, 0xe2, 0x10, 0xfd, 0x0f, 0x04, 0x1b, 0xaa, 0x9d, 0x86,
-	0x2f, 0x08, 0xbf, 0xa4, 0xa7, 0xe2, 0xff, 0xa9, 0xa7, 0x6f, 0x11, 0x94, 0x8f, 0xc9, 0x15, 0x3f,
-	0x51, 0x15, 0xc0, 0x63, 0xf4, 0xa9, 0x25, 0x48, 0xdc, 0x4f, 0x02, 0x91, 0x7e, 0x8b, 0x73, 0x6f,
-	0xc4, 0x2c, 0x4e, 0x64, 0x4f, 0x81, 0x7f, 0x8a, 0x24, 0x1b, 0xce, 0x2d, 0x6a, 0x58, 0xff, 0x1e,
-	0xc1, 0x86, 0x62, 0x76, 0xc5, 0x69, 0xbf, 0x54, 0x7a, 0x3f, 0x21, 0x28, 0x98, 0x74, 0xe8, 0xbc,
-	0xa8, 0xb0, 0xd3, 0xa4, 0xb3, 0x0b, 0x48, 0xe7, 0xe6, 0x91, 0xce, 0x2f, 0x24, 0xfd, 0x0b, 0x02,
-	0x2d, 0x20, 0xfd, 0x9f, 0xc8, 0xf7, 0xa5, 0x32, 0x27, 0x50, 0xfa, 0x84, 0x30, 0x7a, 0xe6, 0x47,
-	0xac, 0xb7, 0x21, 0x1f, 0x48, 0xde, 0x12, 0x13, 0x16, 0x4d, 0x3c, 0x06, 0x92, 0x3d, 0x65, 0xe6,
-	0x7c, 0x8d, 0xec, 0x4c, 0x4f, 0xfa, 0x97, 0x80, 0xc3, 0x32, 0xa9, 0x09, 0x5d, 0xab, 0x56, 0xf1,
-	0xaa, 0xb5, 0x7e, 0x44, 0xb0, 0xa5, 0xd6, 0x89, 0xe9, 0xdb, 0x36, 0x11, 0x8c, 0xf6, 0xaf, 0x76,
-	0x07, 0xe3, 0xa9, 0x66, 0xe6, 0x4d, 0x75, 0xf1, 0x52, 0x49, 0x6d, 0x8b, 0xdc, 0xe2, 0x6d, 0xf1,
-	0x33, 0x82, 0xed, 0x59, 0xca, 0xd7, 0xb8, 0x9c, 0x37, 0xc6, 0xfb, 0x6b, 0x04, 0x5b, 0x6a, 0x97,
-	0xdc, 0xd0, 0xa8, 0xf5, 0x6f, 0x10, 0x6c, 0xcf, 0x52, 0xb8, 0x81, 0xd1, 0xe9, 0xf7, 0x61, 0xed,
-	0x21, 0x71, 0x08, 0xb3, 0x04, 0x89, 0x2a, 0xef, 0xce, 0xe6, 0x97, 0x55, 0xfe, 0x73, 0xc9, 0xcf,
-	0x10, 0x40, 0x7c, 0x28, 0x7e, 0x13, 0x96, 0x47, 0x16, 0x1f, 0x49, 0xbe, 0xe5, 0x7a, 0x41, 0x65,
-	0xb5, 0x2c, 0x3e, 0x32, 0xa4, 0x23, 0x78, 0xb4, 0xfa, 0xd4, 0x1b, 0x11, 0x26, 0x59, 0x97, 0xa7,
-	0x8f, 0xd6, 0x91, 0x04, 0x0d, 0xe5, 0xc4, 0x07, 0x50, 0xe8, 0xbb, 0xb6, 0xc7, 0x08, 0xe7, 0xd4,
-	0x75, 0x24, 0x89, 0x72, 0x1d, 0x47, 0xb1, 0xb1, 0xc7, 0x48, 0x86, 0xe1, 0x3d, 0xd0, 0x12, 0xe6,
-	0x23, 0xf2, 0x94, 0x8c, 0xa5, 0x16, 0xb2, 0xc6, 0x73, 0x78, 0x30, 0x5c, 0xc6, 0xad, 0x06, 0x55,
-	0x8f, 0x62, 0xd6, 0x88, 0x4c, 0xfd, 0x07, 0x04, 0xb9, 0xa8, 0x1f, 0x0c, 0xcb, 0x8e, 0x65, 0x47,
-	0x3a, 0x90, 0xbf, 0x83, 0xcc, 0xbe, 0x6b, 0xdb, 0xc4, 0x11, 0xd1, 0x26, 0x51, 0x26, 0xde, 0x84,
-	0x2c, 0xb1, 0x2d, 0x3a, 0x56, 0x37, 0x3b, 0x34, 0x16, 0x6e, 0xbd, 0x7d, 0x80, 0xf3, 0xe9, 0x04,
-	0x2f, 0x5f, 0x7c, 0x89, 0x20, 0xfd, 0x33, 0xc8, 0x4f, 0x55, 0x8d, 0x5f, 0x87, 0x55, 0xca, 0x1b,
-	0xd4, 0xb1, 0x98, 0x2f, 0x79, 0xae, 0x1a, 0x53, 0x3b, 0xf0, 0x05, 0x9a, 0xef, 0x04, 0x3d, 0x84,
-	0x64, 0xa7, 0xb6, 0x94, 0x97, 0x3b, 0xf8, 0x88, 0xda, 0xd1, 0xcb, 0x17, 0x99, 0xfa, 0x19, 0xac,
-	0x84, 0x7f, 0x44, 0xa4, 0xf7, 0x15, 0x9a, 0xbf, 0xef, 0xaf, 0xfd, 0xbc, 0xea, 0x1f, 0x42, 0xd9,
-	0x14, 0x8c, 0x3a, 0x43, 0x83, 0x70, 0xcf, 0x75, 0x38, 0xc1, 0xb7, 0x61, 0xc5, 0x9d, 0x08, 0x6f,
-	0x22, 0x54, 0x31, 0x65, 0xc9, 0xc9, 0x32, 0xe6, 0x32, 0x55, 0x24, 0x34, 0xf4, 0x0f, 0xa0, 0xa4,
-	0x2e, 0xcc, 0xbf, 0xa6, 0x17, 0x17, 0xa4, 0xbf, 0x0f, 0xc5, 0x86, 0xeb, 0x8e, 0x2f, 0xc9, 0x5e,
-	0x5d, 0x90, 0xdd, 0x85, 0xb5, 0x13, 0xe2, 0xf7, 0x2c, 0xca, 0xa6, 0x07, 0xbc, 0x9d, 0x3a, 0x20,
-	0xbe, 0x35, 0x51, 0xdc, 0xfc, 0x03, 0x1f, 0x42, 0x4e, 0x05, 0xbe, 0xd8, 0xd8, 0xf5, 0xdf, 0x11,
-	0xac, 0xf7, 0xa2, 0xe8, 0xc7, 0x44, 0x58, 0x03, 0x4b, 0x58, 0x41, 0xd1, 0x73, 0xe2, 0xb7, 0x8f,
-	0xd5, 0x79, 0xa1, 0x11, 0x9c, 0x25, 0x7f, 0x98, 0x23, 0x97, 0x45, 0x7a, 0x4e, 0x20, 0x58, 0x87,
-	0x62, 0x9f, 0x11, 0x2b, 0x90, 0x5d, 0x42, 0x29, 0x29, 0x0c, 0xef, 0x40, 0xe1, 0x8c, 0x3a, 0x43,
-	0xc2, 0x3c, 0x46, 0x1d, 0xa1, 0x14, 0x9e, 0x84, 0x82, 0x53, 0xe4, 0x99, 0x9d, 0x89, 0x4d, 0x18,
-	0xed, 0x4b, 0x91, 0xe7, 0x8d, 0x14, 0x16, 0xca, 0xd8, 0x9c, 0x9c, 0x06, 0x3d, 0x15, 0x22, 0x19,
-	0x87, 0xb6, 0xfe, 0x37, 0x02, 0xdc, 0x9b, 0x36, 0xf8, 0x2a, 0xb4, 0x14, 0x7c, 0x62, 0x12, 0xbe,
-	0x9b, 0x64, 0x50, 0x29, 0x49, 0x67, 0x0c, 0xec, 0x7d, 0x01, 0xcb, 0xc1, 0xd2, 0xc4, 0x9b, 0xa0,
-	0xb5, 0x0e, 0xcd, 0xd6, 0xe7, 0x1f, 0x77, 0xcc, 0x5e, 0xf3, 0xa8, 0xfd, 0xa0, 0xdd, 0x3c, 0xd6,
-	0x6e, 0xe1, 0x35, 0x28, 0x48, 0xd4, 0x6c, 0x1d, 0xd6, 0xef, 0xbe, 0xab, 0xa1, 0x14, 0x50, 0x3f,
-	0xd0, 0x96, 0x92, 0xc0, 0x9d, 0x7b, 0x07, 0x5a, 0x26, 0x09, 0xdc, 0xdd, 0xaf, 0x6b, 0xcb, 0x7b,
-	0xe7, 0x50, 0x48, 0xec, 0x51, 0xfc, 0x06, 0x6c, 0x1d, 0x75, 0x1f, 0xf7, 0x8c, 0xa6, 0x69, 0xb6,
-	0xbb, 0x9d, 0x99, 0x7a, 0x9b, 0xa0, 0x25, 0x9d, 0x9d, 0x6e, 0xa7, 0xa9, 0xa1, 0x59, 0xf4, 0xc9,
-	0xa3, 0x76, 0x43, 0x5b, 0xc2, 0x1b, 0xb0, 0x96, 0x42, 0xdb, 0x3d, 0x2d, 0xb3, 0xf7, 0x29, 0xac,
-	0x84, 0x0b, 0x1e, 0xdf, 0x06, 0x7c, 0xd4, 0xee, 0xb5, 0x9a, 0xc6, 0x4c, 0x89, 0x75, 0x28, 0x29,
-	0xfc, 0xb0, 0x69, 0xee, 0xd7, 0xef, 0x69, 0x68, 0x06, 0x7a, 0xaf, 0xae, 0x2d, 0xa5, 0xa1, 0xa0,
-	0xf5, 0x4c, 0xe3, 0xb5, 0x5f, 0x2f, 0xaa, 0xe8, 0xd9, 0x45, 0x15, 0xfd, 0x79, 0x51, 0x45, 0xdf,
-	0xfd, 0x55, 0xbd, 0xf5, 0x24, 0x57, 0xbb, 0x2f, 0xaf, 0xdd, 0xe9, 0x8a, 0xfc, 0xd7, 0xf3, 0xce,
-	0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0xe3, 0xa4, 0x31, 0xc4, 0x8a, 0x0e, 0x00, 0x00,
+	// 1015 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x57, 0xcd, 0x6e, 0x23, 0x45,
+	0x10, 0x4e, 0xc7, 0x71, 0x1c, 0x97, 0x7f, 0x32, 0xe9, 0x44, 0x1b, 0x0b, 0x22, 0x13, 0x46, 0x02,
+	0x45, 0x41, 0xb2, 0x14, 0x6f, 0x16, 0x2d, 0x5a, 0x40, 0x8a, 0x13, 0xef, 0xda, 0xca, 0xae, 0x6d,
+	0xcd, 0x00, 0x12, 0x2b, 0x21, 0x98, 0xd8, 0x1d, 0xbb, 0x89, 0xe7, 0x87, 0xee, 0xf6, 0x4a, 0x73,
+	0xe3, 0xc2, 0x9d, 0x1b, 0x17, 0x0e, 0x3c, 0x02, 0x42, 0x42, 0xbc, 0x02, 0x07, 0x24, 0xc2, 0x8d,
+	0x23, 0x4a, 0xee, 0x3c, 0x03, 0x9a, 0x9e, 0x1e, 0x7b, 0xc6, 0x4b, 0xec, 0x44, 0x8b, 0x36, 0x62,
+	0x6f, 0xae, 0xaf, 0xaa, 0xba, 0xbe, 0xaa, 0xf9, 0xba, 0x3a, 0x81, 0xfc, 0x09, 0xa3, 0xbd, 0x3e,
+	0xa9, 0x78, 0xcc, 0x15, 0x2e, 0x4e, 0xdb, 0x6e, 0x8f, 0x0c, 0xf5, 0xdf, 0x10, 0x14, 0xeb, 0x4e,
+	0x97, 0xf9, 0x9e, 0x30, 0xc8, 0x57, 0x23, 0xc2, 0x05, 0x2e, 0x41, 0xc6, 0x26, 0x9c, 0x5b, 0x7d,
+	0x52, 0x42, 0xdb, 0x68, 0x27, 0x6b, 0x44, 0x26, 0xde, 0x82, 0xac, 0x37, 0x3a, 0x19, 0xd2, 0xee,
+	0x31, 0xf1, 0x4b, 0x29, 0xe9, 0x9b, 0x00, 0xf8, 0x1d, 0xc8, 0xb8, 0x9e, 0xa0, 0xae, 0xc3, 0x4b,
+	0xe9, 0x6d, 0xb4, 0x93, 0xab, 0xae, 0x55, 0x64, 0x8d, 0xca, 0x31, 0xf1, 0xdb, 0xa1, 0xc3, 0x88,
+	0x22, 0xf0, 0x5b, 0xb0, 0xcc, 0x69, 0xdf, 0x21, 0xbd, 0x52, 0x46, 0xc6, 0x16, 0x54, 0x6c, 0xdd,
+	0x11, 0x54, 0xf8, 0x86, 0x72, 0xe2, 0x0a, 0x64, 0x4f, 0xe9, 0x90, 0x34, 0xa8, 0x23, 0x78, 0x29,
+	0x2b, 0x23, 0x35, 0x15, 0xf9, 0x30, 0xc2, 0x8d, 0x49, 0x88, 0xfe, 0x07, 0x82, 0x75, 0xd5, 0x4e,
+	0xcd, 0x17, 0x84, 0x5f, 0xd1, 0x53, 0xfe, 0xff, 0xd4, 0xd3, 0x77, 0x08, 0x8a, 0x47, 0xe4, 0x9a,
+	0x9f, 0xa8, 0x0c, 0xe0, 0x31, 0xfa, 0xcc, 0x12, 0x64, 0xd2, 0x4f, 0x0c, 0x91, 0x7e, 0x8b, 0x73,
+	0x6f, 0xc0, 0x2c, 0x4e, 0x64, 0x4f, 0x81, 0x7f, 0x8c, 0xc4, 0x1b, 0xce, 0xcc, 0x6b, 0x58, 0xff,
+	0x1e, 0xc1, 0xba, 0x62, 0x76, 0xcd, 0x69, 0xbf, 0x54, 0x7a, 0x3f, 0x21, 0xc8, 0x99, 0xb4, 0xef,
+	0xbc, 0xa8, 0xb0, 0x93, 0xa4, 0xd3, 0x73, 0x48, 0x67, 0x66, 0x91, 0xce, 0xce, 0x25, 0xfd, 0x0b,
+	0x02, 0x2d, 0x20, 0xfd, 0x9f, 0xc8, 0xf7, 0xa5, 0x32, 0x27, 0x50, 0xf8, 0x84, 0x30, 0x7a, 0xea,
+	0x47, 0xac, 0xb7, 0x20, 0x1b, 0x48, 0xde, 0x12, 0x23, 0x16, 0x4d, 0x7c, 0x02, 0xc4, 0x7b, 0x4a,
+	0xcd, 0xf8, 0x1a, 0xe9, 0xa9, 0x9e, 0xf4, 0x2f, 0x01, 0x87, 0x65, 0x12, 0x13, 0xba, 0x51, 0xad,
+	0xfc, 0x75, 0x6b, 0xfd, 0x88, 0x60, 0x53, 0xad, 0x13, 0xd3, 0xb7, 0x6d, 0x22, 0x18, 0xed, 0x5e,
+	0xef, 0x0e, 0x4e, 0xa6, 0x9a, 0x9a, 0x35, 0xd5, 0xf9, 0x4b, 0x25, 0xb1, 0x2d, 0x32, 0xf3, 0xb7,
+	0xc5, 0xcf, 0x08, 0xb6, 0xa6, 0x29, 0xdf, 0xe0, 0x72, 0xde, 0x1a, 0xef, 0xaf, 0x11, 0x6c, 0xaa,
+	0x5d, 0x72, 0x4b, 0xa3, 0xd6, 0xbf, 0x41, 0xb0, 0x35, 0x4d, 0xe1, 0x16, 0x46, 0xa7, 0x3f, 0x80,
+	0xd5, 0x47, 0xc4, 0x21, 0xcc, 0x12, 0x24, 0xaa, 0xbc, 0x33, 0x9d, 0x5f, 0x54, 0xf9, 0xcf, 0x25,
+	0x9f, 0x23, 0x80, 0xc9, 0xa1, 0xf8, 0x0d, 0x58, 0x1a, 0x58, 0x7c, 0x20, 0xf9, 0x16, 0xab, 0x39,
+	0x95, 0xd5, 0xb0, 0xf8, 0xc0, 0x90, 0x8e, 0xe0, 0xd1, 0xea, 0x52, 0x6f, 0x40, 0x98, 0x64, 0x5d,
+	0x1c, 0x3f, 0x5a, 0x87, 0x12, 0x34, 0x94, 0x13, 0xef, 0x43, 0xae, 0xeb, 0xda, 0x1e, 0x23, 0x9c,
+	0x53, 0xd7, 0x91, 0x24, 0x8a, 0x55, 0x1c, 0xc5, 0x4e, 0x3c, 0x46, 0x3c, 0x0c, 0xef, 0x82, 0x16,
+	0x33, 0x1f, 0x93, 0x67, 0x64, 0x28, 0xb5, 0x90, 0x36, 0x9e, 0xc3, 0x83, 0xe1, 0x32, 0x6e, 0xd5,
+	0xa8, 0x7a, 0x14, 0xd3, 0x46, 0x64, 0xea, 0x3f, 0x20, 0xc8, 0x44, 0xfd, 0x60, 0x58, 0x72, 0x2c,
+	0x3b, 0xd2, 0x81, 0xfc, 0x1d, 0x64, 0x76, 0x5d, 0xdb, 0x26, 0x8e, 0x88, 0x36, 0x89, 0x32, 0xf1,
+	0x06, 0xa4, 0x89, 0x6d, 0xd1, 0xa1, 0xba, 0xd9, 0xa1, 0x31, 0x77, 0xeb, 0xed, 0x01, 0x9c, 0x8d,
+	0x27, 0x78, 0xf5, 0xe2, 0x8b, 0x05, 0xe9, 0x9f, 0x41, 0x76, 0xac, 0x6a, 0xfc, 0x1a, 0xac, 0x50,
+	0x5e, 0xa3, 0x8e, 0xc5, 0x7c, 0xc9, 0x73, 0xc5, 0x18, 0xdb, 0x81, 0x2f, 0xd0, 0x7c, 0x2b, 0xe8,
+	0x21, 0x24, 0x3b, 0xb6, 0xa5, 0xbc, 0xdc, 0xde, 0x47, 0xd4, 0x8e, 0x5e, 0xbe, 0xc8, 0xd4, 0x4f,
+	0x61, 0x39, 0xfc, 0x23, 0x22, 0xb9, 0xaf, 0xd0, 0xec, 0x7d, 0x7f, 0xe3, 0xe7, 0x55, 0xff, 0x10,
+	0x8a, 0xa6, 0x60, 0xd4, 0xe9, 0x1b, 0x84, 0x7b, 0xae, 0xc3, 0x09, 0xbe, 0x03, 0xcb, 0xee, 0x48,
+	0x78, 0x23, 0xa1, 0x8a, 0x29, 0x4b, 0x4e, 0x96, 0x31, 0x97, 0xa9, 0x22, 0xa1, 0xa1, 0x7f, 0x00,
+	0x05, 0x75, 0x61, 0xfe, 0x35, 0x3d, 0x3f, 0x27, 0xfd, 0x7d, 0xc8, 0xd7, 0x5c, 0x77, 0x78, 0x45,
+	0xf6, 0xca, 0x9c, 0xec, 0x36, 0xac, 0x1e, 0x13, 0xbf, 0x63, 0x51, 0x36, 0x3e, 0xe0, 0xed, 0xc4,
+	0x01, 0x93, 0x5b, 0x13, 0xc5, 0xcd, 0x3e, 0xf0, 0x11, 0x64, 0x54, 0xe0, 0x8b, 0x8d, 0x5d, 0xff,
+	0x1d, 0xc1, 0x5a, 0x27, 0x8a, 0x7e, 0x42, 0x84, 0xd5, 0xb3, 0x84, 0x15, 0x14, 0x3d, 0x23, 0x7e,
+	0xf3, 0x48, 0x9d, 0x17, 0x1a, 0xc1, 0x59, 0xf2, 0x87, 0x39, 0x70, 0x59, 0xa4, 0xe7, 0x18, 0x82,
+	0x75, 0xc8, 0x77, 0x19, 0xb1, 0x02, 0xd9, 0xc5, 0x94, 0x92, 0xc0, 0xf0, 0x36, 0xe4, 0x4e, 0xa9,
+	0xd3, 0x27, 0xcc, 0x63, 0xd4, 0x11, 0x4a, 0xe1, 0x71, 0x28, 0x38, 0x45, 0x9e, 0xd9, 0x1a, 0xd9,
+	0x84, 0xd1, 0xae, 0x14, 0x79, 0xd6, 0x48, 0x60, 0xa1, 0x8c, 0xcd, 0xd1, 0x49, 0xd0, 0x53, 0x2e,
+	0x92, 0x71, 0x68, 0xeb, 0x7f, 0x23, 0xc0, 0x9d, 0x71, 0x83, 0xaf, 0x42, 0x4b, 0xc1, 0x27, 0x26,
+	0xe1, 0xbb, 0x49, 0x7a, 0xa5, 0x82, 0x74, 0x4e, 0x80, 0xdd, 0x2f, 0x60, 0x29, 0x58, 0x9a, 0x78,
+	0x03, 0xb4, 0xc6, 0x81, 0xd9, 0xf8, 0xfc, 0xe3, 0x96, 0xd9, 0xa9, 0x1f, 0x36, 0x1f, 0x36, 0xeb,
+	0x47, 0xda, 0x02, 0x5e, 0x85, 0x9c, 0x44, 0xcd, 0xc6, 0x41, 0xf5, 0xde, 0xbb, 0x1a, 0x4a, 0x00,
+	0xd5, 0x7d, 0x6d, 0x31, 0x0e, 0xdc, 0xbd, 0xbf, 0xaf, 0xa5, 0xe2, 0xc0, 0xbd, 0xbd, 0xaa, 0xb6,
+	0xb4, 0x7b, 0x06, 0xb9, 0xd8, 0x1e, 0xc5, 0xaf, 0xc3, 0xe6, 0x61, 0xfb, 0x49, 0xc7, 0xa8, 0x9b,
+	0x66, 0xb3, 0xdd, 0x9a, 0xaa, 0xb7, 0x01, 0x5a, 0xdc, 0xd9, 0x6a, 0xb7, 0xea, 0x1a, 0x9a, 0x46,
+	0x9f, 0x3e, 0x6e, 0xd6, 0xb4, 0x45, 0xbc, 0x0e, 0xab, 0x09, 0xb4, 0xd9, 0xd1, 0x52, 0xbb, 0x9f,
+	0xc2, 0x72, 0xb8, 0xe0, 0xf1, 0x1d, 0xc0, 0x87, 0xcd, 0x4e, 0xa3, 0x6e, 0x4c, 0x95, 0x58, 0x83,
+	0x82, 0xc2, 0x0f, 0xea, 0xe6, 0x5e, 0xf5, 0xbe, 0x86, 0xa6, 0xa0, 0xf7, 0xaa, 0xda, 0x62, 0x12,
+	0x0a, 0x5a, 0x4f, 0xd5, 0xde, 0xfc, 0xf5, 0xa2, 0x8c, 0xce, 0x2f, 0xca, 0xe8, 0xaf, 0x8b, 0x32,
+	0xfa, 0xf6, 0xb2, 0xbc, 0x70, 0x7e, 0x59, 0x5e, 0xf8, 0xf3, 0xb2, 0xbc, 0xf0, 0x34, 0x53, 0x79,
+	0x20, 0xaf, 0xdf, 0xc9, 0xb2, 0xfc, 0x17, 0xf4, 0xee, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x73,
+	0x6d, 0xed, 0x0f, 0x92, 0x0e, 0x00, 0x00,
 }
 
 func (m *EncryptRequest) Marshal() (dAtA []byte, err error) {
@@ -1904,10 +1833,6 @@ func (m *EncryptRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.FileHints != nil {
 		{
 			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
@@ -1981,10 +1906,6 @@ func (m *EncryptBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.FileHints != nil {
 		{
 			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
@@ -2058,10 +1979,6 @@ func (m *DecryptRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2118,10 +2035,6 @@ func (m *DecryptBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2178,10 +2091,6 @@ func (m *SignRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2245,10 +2154,6 @@ func (m *SignBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2312,10 +2217,6 @@ func (m *VerifyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.PublicKey) > 0 {
 		i -= len(m.PublicKey)
 		copy(dAtA[i:], m.PublicKey)
@@ -2360,10 +2261,6 @@ func (m *VerifyBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.PublicKey) > 0 {
 		i -= len(m.PublicKey)
 		copy(dAtA[i:], m.PublicKey)
@@ -2408,10 +2305,6 @@ func (m *EncryptSymmetricRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.FileHints != nil {
 		{
 			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
@@ -2473,10 +2366,6 @@ func (m *EncryptSymmetricBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, e
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.FileHints != nil {
 		{
 			size, err := m.FileHints.MarshalToSizedBuffer(dAtA[:i])
@@ -2538,10 +2427,6 @@ func (m *DecryptSymmetricRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2591,10 +2476,6 @@ func (m *DecryptSymmetricBytesRequest) MarshalToSizedBuffer(dAtA []byte) (int, e
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2644,10 +2525,6 @@ func (m *GenerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Options != nil {
 		{
 			size, err := m.Options.MarshalToSizedBuffer(dAtA[:i])
@@ -2683,10 +2560,6 @@ func (m *KeyOptions) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.RsaBits != 0 {
 		i = encodeVarintBridge(dAtA, i, uint64(m.RsaBits))
 		i--
@@ -2735,10 +2608,6 @@ func (m *Options) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.KeyOptions != nil {
 		{
 			size, err := m.KeyOptions.MarshalToSizedBuffer(dAtA[:i])
@@ -2802,10 +2671,6 @@ func (m *FileHints) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.ModTime) > 0 {
 		i -= len(m.ModTime)
 		copy(dAtA[i:], m.ModTime)
@@ -2853,10 +2718,6 @@ func (m *Entity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Passphrase) > 0 {
 		i -= len(m.Passphrase)
 		copy(dAtA[i:], m.Passphrase)
@@ -2901,10 +2762,6 @@ func (m *StringResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Error) > 0 {
 		i -= len(m.Error)
 		copy(dAtA[i:], m.Error)
@@ -2942,10 +2799,6 @@ func (m *BytesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Error) > 0 {
 		i -= len(m.Error)
 		copy(dAtA[i:], m.Error)
@@ -2983,10 +2836,6 @@ func (m *BoolResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Error) > 0 {
 		i -= len(m.Error)
 		copy(dAtA[i:], m.Error)
@@ -3027,10 +2876,6 @@ func (m *KeyPairResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Error) > 0 {
 		i -= len(m.Error)
 		copy(dAtA[i:], m.Error)
@@ -3073,10 +2918,6 @@ func (m *KeyPair) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.PrivateKey) > 0 {
 		i -= len(m.PrivateKey)
 		copy(dAtA[i:], m.PrivateKey)
@@ -3114,10 +2955,6 @@ func (m *PublicKeyMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.IsSubKey {
 		i--
 		if m.IsSubKey {
@@ -3186,10 +3023,6 @@ func (m *PrivateKeyMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Encrypted {
 		i--
 		if m.Encrypted {
@@ -3285,9 +3118,6 @@ func (m *EncryptRequest) Size() (n int) {
 		l = m.FileHints.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3317,9 +3147,6 @@ func (m *EncryptBytesRequest) Size() (n int) {
 		l = m.FileHints.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3345,9 +3172,6 @@ func (m *DecryptRequest) Size() (n int) {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3372,9 +3196,6 @@ func (m *DecryptBytesRequest) Size() (n int) {
 	if m.Options != nil {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3405,9 +3226,6 @@ func (m *SignRequest) Size() (n int) {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3437,9 +3255,6 @@ func (m *SignBytesRequest) Size() (n int) {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3461,9 +3276,6 @@ func (m *VerifyRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3484,9 +3296,6 @@ func (m *VerifyBytesRequest) Size() (n int) {
 	l = len(m.PublicKey)
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3513,9 +3322,6 @@ func (m *EncryptSymmetricRequest) Size() (n int) {
 		l = m.FileHints.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3541,9 +3347,6 @@ func (m *EncryptSymmetricBytesRequest) Size() (n int) {
 		l = m.FileHints.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3564,9 +3367,6 @@ func (m *DecryptSymmetricRequest) Size() (n int) {
 	if m.Options != nil {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3589,9 +3389,6 @@ func (m *DecryptSymmetricBytesRequest) Size() (n int) {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3604,9 +3401,6 @@ func (m *GenerateRequest) Size() (n int) {
 	if m.Options != nil {
 		l = m.Options.Size()
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3631,9 +3425,6 @@ func (m *KeyOptions) Size() (n int) {
 	}
 	if m.RsaBits != 0 {
 		n += 1 + sovBridge(uint64(m.RsaBits))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3664,9 +3455,6 @@ func (m *Options) Size() (n int) {
 		l = m.KeyOptions.Size()
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3686,9 +3474,6 @@ func (m *FileHints) Size() (n int) {
 	l = len(m.ModTime)
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3711,9 +3496,6 @@ func (m *Entity) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3730,9 +3512,6 @@ func (m *StringResponse) Size() (n int) {
 	l = len(m.Error)
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3751,9 +3530,6 @@ func (m *BytesResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3769,9 +3545,6 @@ func (m *BoolResponse) Size() (n int) {
 	l = len(m.Error)
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3790,9 +3563,6 @@ func (m *KeyPairResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -3809,9 +3579,6 @@ func (m *KeyPair) Size() (n int) {
 	l = len(m.PrivateKey)
 	if l > 0 {
 		n += 1 + l + sovBridge(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3844,9 +3611,6 @@ func (m *PublicKeyMetadata) Size() (n int) {
 	}
 	if m.IsSubKey {
 		n += 2
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -3882,9 +3646,6 @@ func (m *PrivateKeyMetadata) Size() (n int) {
 	}
 	if m.Encrypted {
 		n += 2
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -4102,16 +3863,12 @@ func (m *EncryptRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -4330,16 +4087,12 @@ func (m *EncryptBytesRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -4516,16 +4269,12 @@ func (m *DecryptRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -4704,16 +4453,12 @@ func (m *DecryptBytesRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -4922,16 +4667,12 @@ func (m *SignRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -5142,16 +4883,12 @@ func (m *SignBytesRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -5292,16 +5029,12 @@ func (m *VerifyRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -5444,16 +5177,12 @@ func (m *VerifyBytesRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -5634,16 +5363,12 @@ func (m *EncryptSymmetricRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -5826,16 +5551,12 @@ func (m *EncryptSymmetricBytesRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -5980,16 +5701,12 @@ func (m *DecryptSymmetricRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6136,16 +5853,12 @@ func (m *DecryptSymmetricBytesRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6226,16 +5939,12 @@ func (m *GenerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6375,16 +6084,12 @@ func (m *KeyOptions) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6593,16 +6298,12 @@ func (m *Options) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6731,16 +6432,12 @@ func (m *FileHints) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6881,16 +6578,12 @@ func (m *Entity) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -6999,16 +6692,12 @@ func (m *StringResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -7119,16 +6808,12 @@ func (m *BytesResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -7225,16 +6910,12 @@ func (m *BoolResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -7347,16 +7028,12 @@ func (m *KeyPairResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -7465,16 +7142,12 @@ func (m *KeyPair) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -7699,16 +7372,12 @@ func (m *PublicKeyMetadata) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -7953,16 +7622,12 @@ func (m *PrivateKeyMetadata) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBridge
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBridge
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
