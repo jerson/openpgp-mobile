@@ -19,10 +19,16 @@ jobs:
         run: make binding_darwin_github_actions_limit_macos
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/darwin .
-      - uses: svenstaro/upload-release-action@v2
+      - if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           asset_name: libopenpgp_bridge_darwin_$tag.tar.gz
           file: output.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
+      - if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: libopenpgp_bridge_darwin
+          path: output.tar.gz
