@@ -4,7 +4,7 @@ GOMOBILE_PACKAGE?=github.com/jerson/openpgp-mobile/openpgp
 GOMOBILE_NAME?=Openpgp
 
 gomobile:
-	GO111MODULE=off go get golang.org/x/mobile/cmd/gomobile
+	GO111MODULE=on go get golang.org/x/mobile/cmd/gomobile
 	gomobile init
 
 gomobile_bridge_android:
