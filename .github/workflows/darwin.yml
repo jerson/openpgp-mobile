@@ -2,9 +2,16 @@ name: Build Darwin
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: Version Overwrite
+        required: false
   push:
     tags:
       - "v*"
+
+env:
+  VERSION: ${{ github.event.inputs.version || (startsWith(github.ref, 'refs/tags/') && github.ref || '') }}
 
 jobs:
   binding:
@@ -19,15 +26,15 @@ jobs:
         run: make binding_darwin_github_actions_limit_macos
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/darwin .
-      - if: ${{ startsWith(github.ref, 'refs/tags/') }}
+      - if: ${{ env.VERSION!='' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           asset_name: libopenpgp_bridge_darwin_$tag.tar.gz
           file: output.tar.gz
-          tag: ${{ github.ref }}
+          tag: ${{ env.VERSION }}
           overwrite: true
-      - if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - if: ${{ env.VERSION=='' }}
         uses: actions/upload-artifact@v2
         with:
           name: libopenpgp_bridge_darwin

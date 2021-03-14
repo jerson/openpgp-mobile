@@ -42,7 +42,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           asset_name: libopenpgp_bridge_android_$tag.tar.gz
           file: output.tar.gz
-          tag: ${{ github.ref }}
+          tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
         uses: actions/upload-artifact@v2
