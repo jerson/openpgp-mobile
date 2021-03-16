@@ -19,16 +19,21 @@ gomobile_android:
 	mkdir -p output/android
 	gomobile bind -ldflags="-w -s" -target=android -o output/android/$(GOMOBILE_NAME).aar $(GOMOBILE_PACKAGE)
 
+gomobile_ios:
+	mkdir -p output/ios
+	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/$(GOMOBILE_NAME).framework $(GOMOBILE_PACKAGE)
+
 # sadly here we cant use arm or old frameworks because xcframework dont support it
 # error: Both ios-arm64 and ios-armv7 represent two equivalent library definitions.
 gomobile_ios_frameworks:
-	mkdir -p output/ios/tmp
-	gomobile bind -ldflags="-w -s" -target=ios/arm64 -o output/ios/tmp/arm64.framework $(GOMOBILE_PACKAGE)
-	gomobile bind -ldflags="-w -s" -target=ios/amd64 -o output/ios/tmp/amd64.framework $(GOMOBILE_PACKAGE)
+	mkdir -p output/ios_frameworks
+	gomobile bind -ldflags="-w -s" -target=ios/arm64 -o output/ios_frameworks/arm64.framework $(GOMOBILE_PACKAGE)
+	gomobile bind -ldflags="-w -s" -target=ios/amd64 -o output/ios_frameworks/amd64.framework $(GOMOBILE_PACKAGE)
 
-gomobile_ios: gomobile_ios_frameworks
+gomobile_ios_xcframework: gomobile_ios_frameworks
+	rm -rf output/ios_xcframework || echo "skipped"
+	mkdir -p output/ios_xcframework
 	xcodebuild -create-xcframework \
-	-framework output/ios/tmp/arm64.framework \
-	-framework output/ios/tmp/amd64.framework \
-	-output output/ios/$(GOMOBILE_NAME).xcframework
-	rm -rf output/ios/tmp
+	-framework output/ios_frameworks/arm64.framework \
+	-framework output/ios_frameworks/amd64.framework \
+	-output output/ios_xcframework/$(GOMOBILE_NAME).xcframework
