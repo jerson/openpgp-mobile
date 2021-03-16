@@ -27,13 +27,13 @@ gomobile_ios:
 # error: Both ios-arm64 and ios-armv7 represent two equivalent library definitions.
 gomobile_ios_frameworks:
 	mkdir -p output/ios_frameworks
-	gomobile bind -ldflags="-w -s" -target=ios/arm64 -o output/ios_frameworks/arm64.framework $(GOMOBILE_PACKAGE)
+	gomobile bind -ldflags="-w -s" -target=ios/arm64,ios/arm -o output/ios_frameworks/arm.framework $(GOMOBILE_PACKAGE)
 	gomobile bind -ldflags="-w -s" -target=ios/amd64 -o output/ios_frameworks/amd64.framework $(GOMOBILE_PACKAGE)
 
 gomobile_ios_xcframework: gomobile_ios_frameworks
 	rm -rf output/ios_xcframework || echo "skipped"
 	mkdir -p output/ios_xcframework
 	xcodebuild -create-xcframework \
-	-framework output/ios_frameworks/arm64.framework \
+	-framework output/ios_frameworks/arm.framework \
 	-framework output/ios_frameworks/amd64.framework \
 	-output output/ios_xcframework/$(GOMOBILE_NAME).xcframework
