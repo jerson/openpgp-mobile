@@ -6,6 +6,8 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/keybase/go-crypto v0.0.0-20200123153347-de78d2cb44f4
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
+	golang.org/x/mobile v0.0.0-20210220033013-bdb1ca9a1e08 // indirect
+	golang.org/x/mod v0.4.2 // indirect
 )
 
 replace github.com/keybase/go-crypto => github.com/keybase/go-crypto v0.0.0-20200123153347-de78d2cb44f4

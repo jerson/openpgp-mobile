@@ -19,6 +19,18 @@ gomobile_android:
 	mkdir -p output/android
 	gomobile bind -ldflags="-w -s" -target=android -o output/android/$(GOMOBILE_NAME).aar $(GOMOBILE_PACKAGE)
 
-gomobile_ios:
-	mkdir -p output/ios
-	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/$(GOMOBILE_NAME).framework $(GOMOBILE_PACKAGE)
+gomobile_ios_frameworks:
+	mkdir -p output/ios/tmp
+	gomobile bind -ldflags="-w -s" -target=ios/armv7 -o output/ios/tmp/armv7.framework $(GOMOBILE_PACKAGE) || echo "skipped"
+	gomobile bind -ldflags="-w -s" -target=ios/arm64 -o output/ios/tmp/arm64.framework $(GOMOBILE_PACKAGE) || echo "skipped"
+	gomobile bind -ldflags="-w -s" -target=ios/i386 -o output/ios/tmp/i386.framework $(GOMOBILE_PACKAGE) || echo "skipped"
+	gomobile bind -ldflags="-w -s" -target=ios/x86_64 -o output/ios/tmp/x86_64.framework $(GOMOBILE_PACKAGE) || echo "skipped"
+
+gomobile_ios: gomobile_ios_frameworks
+	xcodebuild -create-xcframework \
+	-framework output/ios/tmp/armv7.framework \
+	-framework output/ios/tmp/arm64.framework \
+	-framework output/ios/tmp/i386.framework \
+	-framework output/ios/tmp/x86_64.framework \
+	-output output/ios/$(GOMOBILE_NAME).xcframework
+	rm -rf output/ios/tmp
