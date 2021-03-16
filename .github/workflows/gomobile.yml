@@ -70,10 +70,6 @@ jobs:
         run: make gomobile_ios
       - name: Compress Framework
         run: tar -czvf output.tar.gz -C output/ios .
-      - name: Build XCFramework
-        run: make gomobile_ios_xcframework
-      - name: Compress XCFramework
-        run: tar -czvf output_xcframework.tar.gz -C output/ios_xcframework .
       - if: ${{ env.VERSION!='' }}
         uses: svenstaro/upload-release-action@v2
         with:
@@ -87,6 +83,10 @@ jobs:
         with:
           name: gomobile_openpgp_ios_framework
           path: output.tar.gz
+      - name: Build XCFramework
+        run: make gomobile_ios_xcframework
+      - name: Compress XCFramework
+        run: tar -czvf output_xcframework.tar.gz -C output/ios_xcframework .
       - if: ${{ env.VERSION!='' }}
         uses: svenstaro/upload-release-action@v2
         with:
