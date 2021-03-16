@@ -23,8 +23,6 @@ gomobile_ios:
 	mkdir -p output/ios
 	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/$(GOMOBILE_NAME).framework $(GOMOBILE_PACKAGE)
 
-# sadly here we cant use arm or old frameworks because xcframework dont support it
-# error: Both ios-arm64 and ios-armv7 represent two equivalent library definitions.
 gomobile_ios_frameworks:
 	mkdir -p output/ios_frameworks
 	gomobile bind -ldflags="-w -s" -target=ios/arm64,ios/arm -o output/ios_frameworks/arm.framework $(GOMOBILE_PACKAGE)
