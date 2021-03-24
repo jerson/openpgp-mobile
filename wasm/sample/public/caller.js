@@ -2,11 +2,16 @@ const myWorker = new Worker('worker.js');
 const sample = async () => {
 
     const builder = new flatbuffers.Builder(0);
+    const name = builder.createString('sample')
+    const comment = builder.createString('sample')
+    const passphrase = builder.createString('sample')
+    const email = builder.createString('sample@sample.com')
+
     model.Options.startOptions(builder);
-    model.Options.addName(builder, builder.createString('sample'));
-    model.Options.addComment(builder, builder.createString('sample'));
-    model.Options.addEmail(builder, builder.createString('sample@sample.com'));
-    model.Options.addPassphrase(builder, builder.createString('sample'));
+    model.Options.addName(builder, name);
+    model.Options.addComment(builder, comment);
+    model.Options.addEmail(builder, email);
+    model.Options.addPassphrase(builder, passphrase);
     const offsetOptions = model.Options.endOptions(builder)
 
     model.GenerateRequest.startGenerateRequest(builder);
@@ -15,21 +20,18 @@ const sample = async () => {
     builder.finish(offset);
 
     const bytes = builder.asUint8Array()
-    let hexString = "> ";
-    for(let i = 0; i < bytes.length; i++){
-        hexString += bytes[i].toString(16);
-    }
-    console.log(hexString);
 
     console.log('request', bytes);
     const rawResponse = await send('generate', bytes)
 
     const responseBuffer = new flatbuffers.ByteBuffer(rawResponse);
-    const response = model.getRootAsKeyPairResponse(responseBuffer, null)
+    const response = model.KeyPairResponse.getRootAsKeyPairResponse(responseBuffer, null)
     if (response.error()) {
         throw new Error(response.error())
     }
-    console.log('response', response.output());
+    const output =  response.output()
+    console.log('privateKey', output.privateKey());
+    console.log('publicKey', output.publicKey());
 }
 
 let counter = 0;

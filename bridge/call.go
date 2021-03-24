@@ -322,9 +322,9 @@ func (m instance) encryptSymmetricBytes(payload []byte) []byte {
 }
 func (m instance) generate(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
-	model.KeyPairResponseStart(response)
 	request := model.GetRootAsGenerateRequest(payload, 0)
 	if request == nil {
+		model.KeyPairResponseStart(response)
 		model.KeyPairResponseAddError(response, response.CreateByteString([]byte("invalid payload")))
 		response.Finish(model.KeyPairResponseEnd(response))
 		return response.FinishedBytes()
@@ -334,17 +334,21 @@ func (m instance) generate(payload []byte) []byte {
 
 	output, err := m.instance.Generate(options)
 	if err != nil {
+		model.KeyPairResponseStart(response)
 		model.KeyPairResponseAddError(response, response.CreateByteString([]byte(err.Error())))
 		response.Finish(model.KeyPairResponseEnd(response))
 		return response.FinishedBytes()
 	}
-	keyPairBuf := flatbuffers.NewBuilder(0)
-	model.KeyPairStart(keyPairBuf)
-	model.KeyPairAddPublicKey(response, response.CreateByteString([]byte(output.PublicKey)))
-	model.KeyPairAddPrivateKey(response, response.CreateByteString([]byte(output.PrivateKey)))
-	keyPairBuf.Finish(model.KeyPairEnd(keyPairBuf))
+	publicKey :=  response.CreateByteString([]byte(output.PublicKey))
+	privateKey :=  response.CreateByteString([]byte(output.PrivateKey))
 
-	model.KeyPairResponseAddOutput(response, keyPairBuf.Head())
+	model.KeyPairStart(response)
+	model.KeyPairAddPublicKey(response,publicKey)
+	model.KeyPairAddPrivateKey(response,privateKey)
+	keyPair := model.KeyPairEnd(response)
+
+	model.KeyPairResponseStart(response)
+	model.KeyPairResponseAddOutput(response, keyPair)
 	response.Finish(model.KeyPairResponseEnd(response))
 	return response.FinishedBytes()
 }
