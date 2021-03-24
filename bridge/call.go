@@ -330,7 +330,9 @@ func (m instance) generate(payload []byte) []byte {
 		return response.FinishedBytes()
 	}
 
-	output, err := m.instance.Generate(m.parseOptions(request.Options(nil)))
+	options := m.parseOptions(request.Options(nil))
+
+	output, err := m.instance.Generate(options)
 	if err != nil {
 		model.KeyPairResponseAddError(response, response.CreateByteString([]byte(err.Error())))
 		response.Finish(model.KeyPairResponseEnd(response))

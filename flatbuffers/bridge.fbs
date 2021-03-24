@@ -138,7 +138,6 @@ table Entity {
   passphrase:string;
 }
 
-////////////// RESPONSE BELOW THIS LINE ///////////////
 table StringResponse {
   output:string;
   error:string;

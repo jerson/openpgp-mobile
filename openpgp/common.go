@@ -50,7 +50,6 @@ func generatePacketConfig(options *KeyOptions) *packet.Config {
 		},
 		RSABits: options.RSABits,
 	}
-	fmt.Println(config)
 	return config
 }
 

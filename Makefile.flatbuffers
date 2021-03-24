@@ -6,13 +6,13 @@ flatbuffers_deps:
 
 flatbuffers_dart:
 	rm -rf output/flatbuffers/dart && mkdir -p output/flatbuffers/dart
-	flatc --dart -o ./output/flatbuffers/dart flatbuffers/*.fbs
+	flatc --dart --gen-mutable -o ./output/flatbuffers/dart flatbuffers/*.fbs
 
 flatbuffers_go:
 	rm -rf bridge/model && mkdir -p bridge/model
-	flatc --go -o ./bridge flatbuffers/*.fbs
+	flatc --go --gen-mutable -o ./bridge flatbuffers/*.fbs
 
 flatbuffers_js:
 	rm -rf output/flatbuffers/js && mkdir -p output/flatbuffers/js
-	flatc --js -o ./output/flatbuffers/js flatbuffers/*.fbs
+	flatc --js --gen-mutable -o ./output/flatbuffers/js flatbuffers/*.fbs
 	cp output/flatbuffers/js/bridge_generated.js wasm/sample/public/bridge_generated.js

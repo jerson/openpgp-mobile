@@ -1,28 +1,35 @@
 const myWorker = new Worker('worker.js');
-
 const sample = async () => {
 
-    let pbf = new Pbf();
-    GenerateRequest.write({
-        options: {
-            name: 'sample',
-            comment: '',
-            passphrase: '',
-            email: 'sample@sample.com',
-            keyOptions: {
-                rsaBits: 1024
-            }
-        }
-    }, pbf)
-    const buf = pbf.finish()
-    console.log('request', buf);
-    const rawResponse = await send('generate', buf)
+    const builder = new flatbuffers.Builder(0);
+    model.Options.startOptions(builder);
+    model.Options.addName(builder, builder.createString('sample'));
+    model.Options.addComment(builder, builder.createString('sample'));
+    model.Options.addEmail(builder, builder.createString('sample@sample.com'));
+    model.Options.addPassphrase(builder, builder.createString('sample'));
+    const offsetOptions = model.Options.endOptions(builder)
 
-    const response = KeyPairResponse.read(new Pbf(rawResponse))
-    if (response.error) {
-        throw new Error(response.error)
+    model.GenerateRequest.startGenerateRequest(builder);
+    model.GenerateRequest.addOptions(builder, offsetOptions);
+    const offset = model.GenerateRequest.endGenerateRequest(builder);
+    builder.finish(offset);
+
+    const bytes = builder.asUint8Array()
+    let hexString = "> ";
+    for(let i = 0; i < bytes.length; i++){
+        hexString += bytes[i].toString(16);
     }
-    console.log('response', response.output);
+    console.log(hexString);
+
+    console.log('request', bytes);
+    const rawResponse = await send('generate', bytes)
+
+    const responseBuffer = new flatbuffers.ByteBuffer(rawResponse);
+    const response = model.getRootAsKeyPairResponse(responseBuffer, null)
+    if (response.error()) {
+        throw new Error(response.error())
+    }
+    console.log('response', response.output());
 }
 
 let counter = 0;
