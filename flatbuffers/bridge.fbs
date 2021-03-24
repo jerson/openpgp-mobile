@@ -1,0 +1,185 @@
+namespace model;
+
+enum Hash : int {
+  HASH_UNSPECIFIED = 0,
+  HASH_SHA256 = 1,
+  HASH_SHA224 = 2,
+  HASH_SHA384 = 3,
+  HASH_SHA512 = 4,
+}
+
+enum Compression : int {
+  COMPRESSION_UNSPECIFIED = 0,
+  COMPRESSION_NONE = 1,
+  COMPRESSION_ZLIB = 2,
+  COMPRESSION_ZIP = 3,
+}
+
+enum Cipher : int {
+  CIPHER_UNSPECIFIED = 0,
+  CIPHER_AES128 = 1,
+  CIPHER_AES192 = 2,
+  CIPHER_AES256 = 3,
+}
+
+table EncryptRequest {
+  message:string;
+  publicKey:string;
+  options:model.KeyOptions;
+  signed:model.Entity;
+  fileHints:model.FileHints;
+}
+
+table EncryptBytesRequest {
+  message:[ubyte];
+  publicKey:string;
+  options:model.KeyOptions;
+  signed:model.Entity;
+  fileHints:model.FileHints;
+}
+
+table DecryptRequest {
+  message:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table DecryptBytesRequest {
+  message:[ubyte];
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table SignRequest {
+  message:string;
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table SignBytesRequest {
+  message:[ubyte];
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table VerifyRequest {
+  signature:string;
+  message:string;
+  publicKey:string;
+}
+
+table VerifyBytesRequest {
+  signature:string;
+  message:[ubyte];
+  publicKey:string;
+}
+
+table EncryptSymmetricRequest {
+  message:string;
+  passphrase:string;
+  options:model.KeyOptions;
+  fileHints:model.FileHints;
+}
+
+table EncryptSymmetricBytesRequest {
+  message:[ubyte];
+  passphrase:string;
+  options:model.KeyOptions;
+  fileHints:model.FileHints;
+}
+
+table DecryptSymmetricRequest {
+  message:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table DecryptSymmetricBytesRequest {
+  message:[ubyte];
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table GenerateRequest {
+  options:model.Options;
+}
+
+table KeyOptions {
+  hash:model.Hash;
+  cipher:model.Cipher;
+  compression:model.Compression;
+  compressionLevel:int;
+  rsaBits:int;
+}
+
+table Options {
+  name:string;
+  comment:string;
+  email:string;
+  passphrase:string;
+  keyOptions:model.KeyOptions;
+}
+
+table FileHints {
+  isBinary:bool;
+  fileName:string;
+  modTime:string;
+}
+
+table Entity {
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+}
+
+////////////// RESPONSE BELOW THIS LINE ///////////////
+table StringResponse {
+  output:string;
+  error:string;
+}
+
+table BytesResponse {
+  output:[ubyte];
+  error:string;
+}
+
+table BoolResponse {
+  output:bool;
+  error:string;
+}
+
+table KeyPairResponse {
+  output:model.KeyPair;
+  error:string;
+}
+
+table KeyPair {
+  publicKey:string;
+  privateKey:string;
+}
+
+table PublicKeyMetadata {
+  keyID:string;
+  keyIDShort:string;
+  creationTime:string;
+  fingerprint:string;
+  keyIDNumeric:string;
+  isSubKey:bool;
+}
+
+table PrivateKeyMetadata {
+  keyID:string;
+  keyIDShort:string;
+  creationTime:string;
+  fingerprint:string;
+  keyIDNumeric:string;
+  isSubKey:bool;
+  encrypted:bool;
+}
+

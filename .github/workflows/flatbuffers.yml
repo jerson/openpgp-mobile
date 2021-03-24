@@ -1,0 +1,87 @@
+name: Build FlatBuffers
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version Overwrite
+        required: false
+  push:
+    paths:
+      - '**.fbs'
+    tags:
+      - "v*"
+
+env:
+  VERSION: ${{ github.event.inputs.version || (startsWith(github.ref, 'refs/tags/') && github.ref || '') }}
+
+jobs:
+  dart:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Protoc
+        run: sudo apt install -y flatbuffers-compiler
+      - name: Build
+        run: make flatbuffers_dart
+      - name: Compress
+        run: tar -czvf output.tar.gz -C output/flatbuffers/dart .
+      - if: ${{ env.VERSION!='' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: flatbuffers_libopenpgp_bridge_dart_$tag.tar.gz
+          file: output.tar.gz
+          tag: ${{ env.VERSION }}
+          overwrite: true
+      - if: ${{ env.VERSION=='' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: flatbuffers_libopenpgp_bridge_dart
+          path: output.tar.gz
+  go:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Protoc
+        run: sudo apt install -y flatbuffers-compiler
+      - name: Build
+        run: make flatbuffers_go
+      - name: Compress
+        run: tar -czvf output.tar.gz -C bridge/model .
+      - if: ${{ env.VERSION!='' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: flatbuffers_libopenpgp_bridge_go_$tag.tar.gz
+          file: output.tar.gz
+          tag: ${{ env.VERSION }}
+          overwrite: true
+      - if: ${{ env.VERSION=='' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: flatbuffers_libopenpgp_bridge_go
+          path: output.tar.gz
+  js:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Protoc
+        run: sudo apt install -y flatbuffers-compiler
+      - name: Build
+        run: make flatbuffers_js
+      - name: Compress
+        run: tar -czvf output.tar.gz -C output/flatbuffers/js .
+      - if: ${{ env.VERSION!='' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: flatbuffers_libopenpgp_bridge_js_$tag.tar.gz
+          file: output.tar.gz
+          tag: ${{ env.VERSION }}
+          overwrite: true
+      - if: ${{ env.VERSION=='' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: flatbuffers_libopenpgp_bridge_js
+          path: output.tar.gz

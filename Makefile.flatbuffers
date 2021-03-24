@@ -1,0 +1,18 @@
+.PHONY: flatbuffers
+flatbuffers: flatbuffers_dart flatbuffers_go
+
+flatbuffers_deps:
+	brew install flatbuffers || echo "please install flatbuffers manually or use brew"
+
+flatbuffers_dart:
+	rm -rf output/flatbuffers/dart && mkdir -p output/flatbuffers/dart
+	flatc --dart -o ./output/flatbuffers/dart flatbuffers/*.fbs
+
+flatbuffers_go:
+	rm -rf bridge/model && mkdir -p bridge/model
+	flatc --go -o ./bridge flatbuffers/*.fbs
+
+flatbuffers_js:
+	rm -rf output/flatbuffers/js && mkdir -p output/flatbuffers/js
+	flatc --js -o ./output/flatbuffers/js flatbuffers/*.fbs
+	cp output/flatbuffers/js/bridge_generated.js wasm/sample/public/bridge_generated.js
