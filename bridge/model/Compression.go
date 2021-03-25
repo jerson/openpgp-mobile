@@ -7,24 +7,21 @@ import "strconv"
 type Compression int32
 
 const (
-	CompressionCOMPRESSION_UNSPECIFIED Compression = 0
-	CompressionCOMPRESSION_NONE        Compression = 1
-	CompressionCOMPRESSION_ZLIB        Compression = 2
-	CompressionCOMPRESSION_ZIP         Compression = 3
+	CompressionNONE Compression = 0
+	CompressionZLIB Compression = 1
+	CompressionZIP  Compression = 2
 )
 
 var EnumNamesCompression = map[Compression]string{
-	CompressionCOMPRESSION_UNSPECIFIED: "COMPRESSION_UNSPECIFIED",
-	CompressionCOMPRESSION_NONE:        "COMPRESSION_NONE",
-	CompressionCOMPRESSION_ZLIB:        "COMPRESSION_ZLIB",
-	CompressionCOMPRESSION_ZIP:         "COMPRESSION_ZIP",
+	CompressionNONE: "NONE",
+	CompressionZLIB: "ZLIB",
+	CompressionZIP:  "ZIP",
 }
 
 var EnumValuesCompression = map[string]Compression{
-	"COMPRESSION_UNSPECIFIED": CompressionCOMPRESSION_UNSPECIFIED,
-	"COMPRESSION_NONE":        CompressionCOMPRESSION_NONE,
-	"COMPRESSION_ZLIB":        CompressionCOMPRESSION_ZLIB,
-	"COMPRESSION_ZIP":         CompressionCOMPRESSION_ZIP,
+	"NONE": CompressionNONE,
+	"ZLIB": CompressionZLIB,
+	"ZIP":  CompressionZIP,
 }
 
 func (v Compression) String() string {

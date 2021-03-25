@@ -7,27 +7,24 @@ import "strconv"
 type Hash int32
 
 const (
-	HashHASH_UNSPECIFIED Hash = 0
-	HashHASH_SHA256      Hash = 1
-	HashHASH_SHA224      Hash = 2
-	HashHASH_SHA384      Hash = 3
-	HashHASH_SHA512      Hash = 4
+	HashSHA256 Hash = 0
+	HashSHA224 Hash = 1
+	HashSHA384 Hash = 2
+	HashSHA512 Hash = 3
 )
 
 var EnumNamesHash = map[Hash]string{
-	HashHASH_UNSPECIFIED: "HASH_UNSPECIFIED",
-	HashHASH_SHA256:      "HASH_SHA256",
-	HashHASH_SHA224:      "HASH_SHA224",
-	HashHASH_SHA384:      "HASH_SHA384",
-	HashHASH_SHA512:      "HASH_SHA512",
+	HashSHA256: "SHA256",
+	HashSHA224: "SHA224",
+	HashSHA384: "SHA384",
+	HashSHA512: "SHA512",
 }
 
 var EnumValuesHash = map[string]Hash{
-	"HASH_UNSPECIFIED": HashHASH_UNSPECIFIED,
-	"HASH_SHA256":      HashHASH_SHA256,
-	"HASH_SHA224":      HashHASH_SHA224,
-	"HASH_SHA384":      HashHASH_SHA384,
-	"HASH_SHA512":      HashHASH_SHA512,
+	"SHA256": HashSHA256,
+	"SHA224": HashSHA224,
+	"SHA384": HashSHA384,
+	"SHA512": HashSHA512,
 }
 
 func (v Hash) String() string {

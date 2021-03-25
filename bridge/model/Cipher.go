@@ -7,24 +7,21 @@ import "strconv"
 type Cipher int32
 
 const (
-	CipherCIPHER_UNSPECIFIED Cipher = 0
-	CipherCIPHER_AES128      Cipher = 1
-	CipherCIPHER_AES192      Cipher = 2
-	CipherCIPHER_AES256      Cipher = 3
+	CipherAES128 Cipher = 0
+	CipherAES192 Cipher = 1
+	CipherAES256 Cipher = 2
 )
 
 var EnumNamesCipher = map[Cipher]string{
-	CipherCIPHER_UNSPECIFIED: "CIPHER_UNSPECIFIED",
-	CipherCIPHER_AES128:      "CIPHER_AES128",
-	CipherCIPHER_AES192:      "CIPHER_AES192",
-	CipherCIPHER_AES256:      "CIPHER_AES256",
+	CipherAES128: "AES128",
+	CipherAES192: "AES192",
+	CipherAES256: "AES256",
 }
 
 var EnumValuesCipher = map[string]Cipher{
-	"CIPHER_UNSPECIFIED": CipherCIPHER_UNSPECIFIED,
-	"CIPHER_AES128":      CipherCIPHER_AES128,
-	"CIPHER_AES192":      CipherCIPHER_AES192,
-	"CIPHER_AES256":      CipherCIPHER_AES256,
+	"AES128": CipherAES128,
+	"AES192": CipherAES192,
+	"AES256": CipherAES256,
 }
 
 func (v Cipher) String() string {

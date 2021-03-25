@@ -1,25 +1,22 @@
 namespace model;
 
 enum Hash : int {
-  HASH_UNSPECIFIED = 0,
-  HASH_SHA256 = 1,
-  HASH_SHA224 = 2,
-  HASH_SHA384 = 3,
-  HASH_SHA512 = 4,
+  SHA256 = 0,
+  SHA224 = 1,
+  SHA384 = 2,
+  SHA512 = 3,
 }
 
 enum Compression : int {
-  COMPRESSION_UNSPECIFIED = 0,
-  COMPRESSION_NONE = 1,
-  COMPRESSION_ZLIB = 2,
-  COMPRESSION_ZIP = 3,
+  NONE = 0,
+  ZLIB = 1,
+  ZIP = 2,
 }
 
 enum Cipher : int {
-  CIPHER_UNSPECIFIED = 0,
-  CIPHER_AES128 = 1,
-  CIPHER_AES192 = 2,
-  CIPHER_AES256 = 3,
+  AES128 = 0,
+  AES192 = 1,
+  AES256 = 2,
 }
 
 table EncryptRequest {

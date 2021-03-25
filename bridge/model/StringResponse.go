@@ -6,7 +6,6 @@ import (
 	flatbuffers "github.com/google/flatbuffers/go"
 )
 
-////////////// RESPONSE BELOW THIS LINE ///////////////
 type StringResponse struct {
 	_tab flatbuffers.Table
 }
