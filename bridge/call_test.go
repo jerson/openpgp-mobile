@@ -18,10 +18,10 @@ func TestCall(t *testing.T) {
 	model.KeyOptionsAddRsaBits(b, 1024)
 	keyOptions := model.KeyOptionsEnd(b)
 
-	comment := b.CreateSharedString("this is a sample comment")
-	email := b.CreateSharedString("sample@sample.com")
-	name := b.CreateSharedString("jhon doe")
-	passphrase := b.CreateSharedString("123465")
+	comment := b.CreateString("this is a sample comment")
+	email := b.CreateString("sample@sample.com")
+	name := b.CreateString("jhon doe")
+	passphrase := b.CreateString("123465")
 
 	model.OptionsStart(b)
 	model.OptionsAddComment(b, comment)
@@ -35,12 +35,17 @@ func TestCall(t *testing.T) {
 	model.GenerateRequestAddOptions(b, options)
 	b.Finish(model.GenerateRequestEnd(b))
 
-	data, err := Call("generate", b.Bytes[b.Head():])
+	data, err := Call("generate", b.FinishedBytes())
 	if err != nil {
 		t.Fatal(err)
 		return
 	}
 	response := model.GetRootAsKeyPairResponse(data, 0)
+	errOutput := response.Error()
+	if errOutput != nil {
+		t.Log(string(errOutput))
+		return
+	}
 	keyPairOutput := response.Output(nil)
 	t.Log(string(keyPairOutput.PrivateKey()))
 	t.Log(string(keyPairOutput.PublicKey()))
