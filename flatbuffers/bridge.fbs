@@ -107,11 +107,29 @@ table GenerateRequest {
   options:model.Options;
 }
 
+/// KeyOptions collects a number of parameters along with sensible defaults.
 table KeyOptions {
+  /// Hash is the default hash function to be used.
+  /// If zero, SHA-256 is used.
   hash:model.Hash;
+  /// Cipher is the cipher to be used.
+  /// If zero, AES-128 is used.
   cipher:model.Cipher;
+  /// Compression is the compression algorithm to be
+  /// applied to the plaintext before encryption. If zero, no
+  /// compression is done.
   compression:model.Compression;
+  /// CompressionLevel is the compression level to use. It must be set to
+  /// between -1 and 9, with -1 causing the compressor to use the
+  /// default compression level, 0 causing the compressor to use
+  /// no compression and 1 to 9 representing increasing (better,
+  /// slower) compression levels. If Level is less than -1 or
+  /// more then 9, a non-nil error will be returned during
+  /// encryption. See the constants above for convenient common
+  /// settings for Level.
   compressionLevel:int;
+  /// RSABits is the number of bits in new RSA keys made with NewEntity.
+  /// If zero, then 2048 bit keys are created.
   rsaBits:int;
 }
 
@@ -124,11 +142,20 @@ table Options {
 }
 
 table FileHints {
+  /// IsBinary can be set to hint that the contents are binary data.
   isBinary:bool;
+  /// FileName hints at the name of the file that should be written. It's
+  /// truncated to 255 bytes if longer. It may be empty to suggest that the
+  /// file should not be written to disk. It may be equal to "_CONSOLE" to
+  /// suggest the data should not be written to disk.
   fileName:string;
+  /// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
   modTime:string;
 }
 
+/// An Entity represents the components of an OpenPGP key: a primary public key
+/// (which must be a signing key), one or more identities claimed by that key,
+/// and zero or more subkeys, which may be encryption keys.
 table Entity {
   publicKey:string;
   privateKey:string;

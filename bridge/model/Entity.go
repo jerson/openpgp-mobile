@@ -6,6 +6,9 @@ import (
 	flatbuffers "github.com/google/flatbuffers/go"
 )
 
+/// An Entity represents the components of an OpenPGP key: a primary public key
+/// (which must be a signing key), one or more identities claimed by that key,
+/// and zero or more subkeys, which may be encryption keys.
 type Entity struct {
 	_tab flatbuffers.Table
 }

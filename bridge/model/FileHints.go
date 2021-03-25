@@ -26,6 +26,7 @@ func (rcv *FileHints) Table() flatbuffers.Table {
 	return rcv._tab
 }
 
+/// IsBinary can be set to hint that the contents are binary data.
 func (rcv *FileHints) IsBinary() bool {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(4))
 	if o != 0 {
@@ -34,10 +35,15 @@ func (rcv *FileHints) IsBinary() bool {
 	return false
 }
 
+/// IsBinary can be set to hint that the contents are binary data.
 func (rcv *FileHints) MutateIsBinary(n bool) bool {
 	return rcv._tab.MutateBoolSlot(4, n)
 }
 
+/// FileName hints at the name of the file that should be written. It's
+/// truncated to 255 bytes if longer. It may be empty to suggest that the
+/// file should not be written to disk. It may be equal to "_CONSOLE" to
+/// suggest the data should not be written to disk.
 func (rcv *FileHints) FileName() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
 	if o != 0 {
@@ -46,6 +52,11 @@ func (rcv *FileHints) FileName() []byte {
 	return nil
 }
 
+/// FileName hints at the name of the file that should be written. It's
+/// truncated to 255 bytes if longer. It may be empty to suggest that the
+/// file should not be written to disk. It may be equal to "_CONSOLE" to
+/// suggest the data should not be written to disk.
+/// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
 func (rcv *FileHints) ModTime() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
 	if o != 0 {
@@ -54,6 +65,7 @@ func (rcv *FileHints) ModTime() []byte {
 	return nil
 }
 
+/// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
 func FileHintsStart(builder *flatbuffers.Builder) {
 	builder.StartObject(3)
 }

@@ -10,62 +10,56 @@ var model = model || {};
  * @enum {number}
  */
 model.Hash = {
-  HASH_UNSPECIFIED: 0,
-  HASH_SHA256: 1,
-  HASH_SHA224: 2,
-  HASH_SHA384: 3,
-  HASH_SHA512: 4
+  SHA256: 0,
+  SHA224: 1,
+  SHA384: 2,
+  SHA512: 3
 };
 
 /**
  * @enum {string}
  */
 model.HashName = {
-  '0': 'HASH_UNSPECIFIED',
-  '1': 'HASH_SHA256',
-  '2': 'HASH_SHA224',
-  '3': 'HASH_SHA384',
-  '4': 'HASH_SHA512'
+  '0': 'SHA256',
+  '1': 'SHA224',
+  '2': 'SHA384',
+  '3': 'SHA512'
 };
 
 /**
  * @enum {number}
  */
 model.Compression = {
-  COMPRESSION_UNSPECIFIED: 0,
-  COMPRESSION_NONE: 1,
-  COMPRESSION_ZLIB: 2,
-  COMPRESSION_ZIP: 3
+  NONE: 0,
+  ZLIB: 1,
+  ZIP: 2
 };
 
 /**
  * @enum {string}
  */
 model.CompressionName = {
-  '0': 'COMPRESSION_UNSPECIFIED',
-  '1': 'COMPRESSION_NONE',
-  '2': 'COMPRESSION_ZLIB',
-  '3': 'COMPRESSION_ZIP'
+  '0': 'NONE',
+  '1': 'ZLIB',
+  '2': 'ZIP'
 };
 
 /**
  * @enum {number}
  */
 model.Cipher = {
-  CIPHER_UNSPECIFIED: 0,
-  CIPHER_AES128: 1,
-  CIPHER_AES192: 2,
-  CIPHER_AES256: 3
+  AES128: 0,
+  AES192: 1,
+  AES256: 2
 };
 
 /**
  * @enum {string}
  */
 model.CipherName = {
-  '0': 'CIPHER_UNSPECIFIED',
-  '1': 'CIPHER_AES128',
-  '2': 'CIPHER_AES192',
-  '3': 'CIPHER_AES256'
+  '0': 'AES128',
+  '1': 'AES192',
+  '2': 'AES256'
 };
 
 /**
@@ -2132,6 +2126,8 @@ model.GenerateRequest.createGenerateRequest = function(builder, optionsOffset) {
 }
 
 /**
+ * KeyOptions collects a number of parameters along with sensible defaults.
+ *
  * @constructor
  */
 model.KeyOptions = function() {
@@ -2177,11 +2173,14 @@ model.KeyOptions.getSizePrefixedRootAsKeyOptions = function(bb, obj) {
 };
 
 /**
+ * Hash is the default hash function to be used.
+ * If zero, SHA-256 is used.
+ *
  * @returns {model.Hash}
  */
 model.KeyOptions.prototype.hash = function() {
   var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? /** @type {model.Hash} */ (this.bb.readInt32(this.bb_pos + offset)) : model.Hash.HASH_UNSPECIFIED;
+  return offset ? /** @type {model.Hash} */ (this.bb.readInt32(this.bb_pos + offset)) : model.Hash.SHA256;
 };
 
 /**
@@ -2200,11 +2199,14 @@ model.KeyOptions.prototype.mutate_hash = function(value) {
 };
 
 /**
+ * Cipher is the cipher to be used.
+ * If zero, AES-128 is used.
+ *
  * @returns {model.Cipher}
  */
 model.KeyOptions.prototype.cipher = function() {
   var offset = this.bb.__offset(this.bb_pos, 6);
-  return offset ? /** @type {model.Cipher} */ (this.bb.readInt32(this.bb_pos + offset)) : model.Cipher.CIPHER_UNSPECIFIED;
+  return offset ? /** @type {model.Cipher} */ (this.bb.readInt32(this.bb_pos + offset)) : model.Cipher.AES128;
 };
 
 /**
@@ -2223,11 +2225,15 @@ model.KeyOptions.prototype.mutate_cipher = function(value) {
 };
 
 /**
+ * Compression is the compression algorithm to be
+ * applied to the plaintext before encryption. If zero, no
+ * compression is done.
+ *
  * @returns {model.Compression}
  */
 model.KeyOptions.prototype.compression = function() {
   var offset = this.bb.__offset(this.bb_pos, 8);
-  return offset ? /** @type {model.Compression} */ (this.bb.readInt32(this.bb_pos + offset)) : model.Compression.COMPRESSION_UNSPECIFIED;
+  return offset ? /** @type {model.Compression} */ (this.bb.readInt32(this.bb_pos + offset)) : model.Compression.NONE;
 };
 
 /**
@@ -2246,6 +2252,15 @@ model.KeyOptions.prototype.mutate_compression = function(value) {
 };
 
 /**
+ * CompressionLevel is the compression level to use. It must be set to
+ * between -1 and 9, with -1 causing the compressor to use the
+ * default compression level, 0 causing the compressor to use
+ * no compression and 1 to 9 representing increasing (better,
+ * slower) compression levels. If Level is less than -1 or
+ * more then 9, a non-nil error will be returned during
+ * encryption. See the constants above for convenient common
+ * settings for Level.
+ *
  * @returns {number}
  */
 model.KeyOptions.prototype.compressionLevel = function() {
@@ -2269,6 +2284,9 @@ model.KeyOptions.prototype.mutate_compressionLevel = function(value) {
 };
 
 /**
+ * RSABits is the number of bits in new RSA keys made with NewEntity.
+ * If zero, then 2048 bit keys are created.
+ *
  * @returns {number}
  */
 model.KeyOptions.prototype.rsaBits = function() {
@@ -2303,7 +2321,7 @@ model.KeyOptions.startKeyOptions = function(builder) {
  * @param {model.Hash} hash
  */
 model.KeyOptions.addHash = function(builder, hash) {
-  builder.addFieldInt32(0, hash, model.Hash.HASH_UNSPECIFIED);
+  builder.addFieldInt32(0, hash, model.Hash.SHA256);
 };
 
 /**
@@ -2311,7 +2329,7 @@ model.KeyOptions.addHash = function(builder, hash) {
  * @param {model.Cipher} cipher
  */
 model.KeyOptions.addCipher = function(builder, cipher) {
-  builder.addFieldInt32(1, cipher, model.Cipher.CIPHER_UNSPECIFIED);
+  builder.addFieldInt32(1, cipher, model.Cipher.AES128);
 };
 
 /**
@@ -2319,7 +2337,7 @@ model.KeyOptions.addCipher = function(builder, cipher) {
  * @param {model.Compression} compression
  */
 model.KeyOptions.addCompression = function(builder, compression) {
-  builder.addFieldInt32(2, compression, model.Compression.COMPRESSION_UNSPECIFIED);
+  builder.addFieldInt32(2, compression, model.Compression.NONE);
 };
 
 /**
@@ -2577,6 +2595,8 @@ model.FileHints.getSizePrefixedRootAsFileHints = function(bb, obj) {
 };
 
 /**
+ * IsBinary can be set to hint that the contents are binary data.
+ *
  * @returns {boolean}
  */
 model.FileHints.prototype.isBinary = function() {
@@ -2600,6 +2620,11 @@ model.FileHints.prototype.mutate_isBinary = function(value) {
 };
 
 /**
+ * FileName hints at the name of the file that should be written. It's
+ * truncated to 255 bytes if longer. It may be empty to suggest that the
+ * file should not be written to disk. It may be equal to "_CONSOLE" to
+ * suggest the data should not be written to disk.
+ *
  * @param {flatbuffers.Encoding=} optionalEncoding
  * @returns {string|Uint8Array|null}
  */
@@ -2609,6 +2634,8 @@ model.FileHints.prototype.fileName = function(optionalEncoding) {
 };
 
 /**
+ * ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
+ *
  * @param {flatbuffers.Encoding=} optionalEncoding
  * @returns {string|Uint8Array|null}
  */
@@ -2673,6 +2700,10 @@ model.FileHints.createFileHints = function(builder, isBinary, fileNameOffset, mo
 }
 
 /**
+ * An Entity represents the components of an OpenPGP key: a primary public key
+ * (which must be a signing key), one or more identities claimed by that key,
+ * and zero or more subkeys, which may be encryption keys.
+ *
  * @constructor
  */
 model.Entity = function() {
