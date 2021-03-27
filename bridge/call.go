@@ -62,17 +62,9 @@ func (m instance) decrypt(payload []byte) []byte {
 
 	output, err := m.instance.Decrypt(m.toString(request.Message()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.StringResponseStart(response)
-		model.StringResponseAddError(response, message)
-		response.Finish(model.StringResponseEnd(response))
-		return response.FinishedBytes()
+		return m._stringResponse(response, output, err)
 	}
-	outputOffset := response.CreateString(output)
-	model.StringResponseStart(response)
-	model.StringResponseAddOutput(response, outputOffset)
-	response.Finish(model.StringResponseEnd(response))
-	return response.FinishedBytes()
+	return m._stringResponse(response, output, nil)
 }
 
 func (m instance) decryptBytes(payload []byte) []byte {
@@ -81,17 +73,9 @@ func (m instance) decryptBytes(payload []byte) []byte {
 
 	output, err := m.instance.DecryptBytes(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BytesResponseStart(response)
-		model.BytesResponseAddError(response, message)
-		response.Finish(model.BytesResponseEnd(response))
-		return response.FinishedBytes()
+		return m._bytesResponse(response, output, err)
 	}
-	outputOffset := response.CreateByteVector(output)
-	model.BytesResponseStart(response)
-	model.BytesResponseAddOutput(response, outputOffset)
-	response.Finish(model.BytesResponseEnd(response))
-	return response.FinishedBytes()
+	return m._bytesResponse(response, output, nil)
 }
 
 func (m instance) encrypt(payload []byte) []byte {
@@ -100,17 +84,9 @@ func (m instance) encrypt(payload []byte) []byte {
 
 	output, err := m.instance.Encrypt(m.toString(request.Message()), m.toString(request.PublicKey()), m.parseEntity(request.Signed(nil)), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.StringResponseStart(response)
-		model.StringResponseAddError(response, message)
-		response.Finish(model.StringResponseEnd(response))
-		return response.FinishedBytes()
+		return m._stringResponse(response, output, err)
 	}
-	outputOffset := response.CreateString(output)
-	model.StringResponseStart(response)
-	model.StringResponseAddOutput(response, outputOffset)
-	response.Finish(model.StringResponseEnd(response))
-	return response.FinishedBytes()
+	return m._stringResponse(response, output, nil)
 }
 
 func (m instance) encryptBytes(payload []byte) []byte {
@@ -119,17 +95,9 @@ func (m instance) encryptBytes(payload []byte) []byte {
 
 	output, err := m.instance.EncryptBytes(request.MessageBytes(), m.toString(request.PublicKey()), m.parseEntity(request.Signed(nil)), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BytesResponseStart(response)
-		model.BytesResponseAddError(response, message)
-		response.Finish(model.BytesResponseEnd(response))
-		return response.FinishedBytes()
+		return m._bytesResponse(response, output, err)
 	}
-	outputOffset := response.CreateByteVector(output)
-	model.BytesResponseStart(response)
-	model.BytesResponseAddOutput(response, outputOffset)
-	response.Finish(model.BytesResponseEnd(response))
-	return response.FinishedBytes()
+	return m._bytesResponse(response, output, nil)
 }
 
 func (m instance) sign(payload []byte) []byte {
@@ -138,17 +106,9 @@ func (m instance) sign(payload []byte) []byte {
 
 	output, err := m.instance.Sign(m.toString(request.Message()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.StringResponseStart(response)
-		model.StringResponseAddError(response, message)
-		response.Finish(model.StringResponseEnd(response))
-		return response.FinishedBytes()
+		return m._stringResponse(response, output, err)
 	}
-	outputOffset := response.CreateString(output)
-	model.StringResponseStart(response)
-	model.StringResponseAddOutput(response, outputOffset)
-	response.Finish(model.StringResponseEnd(response))
-	return response.FinishedBytes()
+	return m._stringResponse(response, output, nil)
 }
 func (m instance) signBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -156,17 +116,9 @@ func (m instance) signBytes(payload []byte) []byte {
 
 	output, err := m.instance.SignBytes(request.MessageBytes(), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BytesResponseStart(response)
-		model.BytesResponseAddError(response, message)
-		response.Finish(model.BytesResponseEnd(response))
-		return response.FinishedBytes()
+		return m._bytesResponse(response, output, err)
 	}
-	outputOffset := response.CreateByteVector(output)
-	model.BytesResponseStart(response)
-	model.BytesResponseAddOutput(response, outputOffset)
-	response.Finish(model.BytesResponseEnd(response))
-	return response.FinishedBytes()
+	return m._bytesResponse(response, output, nil)
 }
 func (m instance) signBytesToString(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -174,17 +126,9 @@ func (m instance) signBytesToString(payload []byte) []byte {
 
 	output, err := m.instance.SignBytesToString(request.MessageBytes(), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.StringResponseStart(response)
-		model.StringResponseAddError(response, message)
-		response.Finish(model.StringResponseEnd(response))
-		return response.FinishedBytes()
+		return m._stringResponse(response, output, err)
 	}
-	outputOffset := response.CreateString(output)
-	model.StringResponseStart(response)
-	model.StringResponseAddOutput(response, outputOffset)
-	response.Finish(model.StringResponseEnd(response))
-	return response.FinishedBytes()
+	return m._stringResponse(response, output, nil)
 }
 func (m instance) verify(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -192,16 +136,9 @@ func (m instance) verify(payload []byte) []byte {
 
 	output, err := m.instance.Verify(m.toString(request.Signature()), m.toString(request.Message()), m.toString(request.PublicKey()))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BoolResponseStart(response)
-		model.BoolResponseAddError(response, message)
-		response.Finish(model.BoolResponseEnd(response))
-		return response.FinishedBytes()
+		return m._boolResponse(response, output, err)
 	}
-	model.BoolResponseStart(response)
-	model.BoolResponseAddOutput(response, output)
-	response.Finish(model.BoolResponseEnd(response))
-	return response.FinishedBytes()
+	return m._boolResponse(response, output, nil)
 }
 func (m instance) verifyBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -209,16 +146,9 @@ func (m instance) verifyBytes(payload []byte) []byte {
 
 	output, err := m.instance.VerifyBytes(m.toString(request.Signature()), request.MessageBytes(), m.toString(request.PublicKey()))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BoolResponseStart(response)
-		model.BoolResponseAddError(response, message)
-		response.Finish(model.BoolResponseEnd(response))
-		return response.FinishedBytes()
+		return m._boolResponse(response, output, err)
 	}
-	model.BoolResponseStart(response)
-	model.BoolResponseAddOutput(response, output)
-	response.Finish(model.BoolResponseEnd(response))
-	return response.FinishedBytes()
+	return m._boolResponse(response, output, nil)
 }
 func (m instance) decryptSymmetric(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -226,17 +156,9 @@ func (m instance) decryptSymmetric(payload []byte) []byte {
 
 	output, err := m.instance.DecryptSymmetric(m.toString(request.Message()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.StringResponseStart(response)
-		model.StringResponseAddError(response, message)
-		response.Finish(model.StringResponseEnd(response))
-		return response.FinishedBytes()
+		return m._stringResponse(response, output, err)
 	}
-	outputOffset := response.CreateString(output)
-	model.StringResponseStart(response)
-	model.StringResponseAddOutput(response, outputOffset)
-	response.Finish(model.StringResponseEnd(response))
-	return response.FinishedBytes()
+	return m._stringResponse(response, output, nil)
 }
 func (m instance) decryptSymmetricBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -244,17 +166,9 @@ func (m instance) decryptSymmetricBytes(payload []byte) []byte {
 
 	output, err := m.instance.DecryptSymmetricBytes(request.MessageBytes(), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BytesResponseStart(response)
-		model.BytesResponseAddError(response, message)
-		response.Finish(model.BytesResponseEnd(response))
-		return response.FinishedBytes()
+		return m._bytesResponse(response, output, err)
 	}
-	outputOffset := response.CreateByteVector(output)
-	model.BytesResponseStart(response)
-	model.BytesResponseAddOutput(response, outputOffset)
-	response.Finish(model.BytesResponseEnd(response))
-	return response.FinishedBytes()
+	return m._bytesResponse(response, output, nil)
 }
 func (m instance) encryptSymmetric(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -262,17 +176,9 @@ func (m instance) encryptSymmetric(payload []byte) []byte {
 
 	output, err := m.instance.EncryptSymmetric(m.toString(request.Message()), m.toString(request.Passphrase()), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.StringResponseStart(response)
-		model.StringResponseAddError(response, message)
-		response.Finish(model.StringResponseEnd(response))
-		return response.FinishedBytes()
+		return m._stringResponse(response, output, err)
 	}
-	outputOffset := response.CreateString(output)
-	model.StringResponseStart(response)
-	model.StringResponseAddOutput(response, outputOffset)
-	response.Finish(model.StringResponseEnd(response))
-	return response.FinishedBytes()
+	return m._stringResponse(response, output, nil)
 }
 func (m instance) encryptSymmetricBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -280,17 +186,9 @@ func (m instance) encryptSymmetricBytes(payload []byte) []byte {
 
 	output, err := m.instance.EncryptSymmetricBytes(request.MessageBytes(), m.toString(request.Passphrase()), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.BytesResponseStart(response)
-		model.BytesResponseAddError(response, message)
-		response.Finish(model.BytesResponseEnd(response))
-		return response.FinishedBytes()
+		return m._bytesResponse(response, output, err)
 	}
-	outputOffset := response.CreateByteVector(output)
-	model.BytesResponseStart(response)
-	model.BytesResponseAddOutput(response, outputOffset)
-	response.Finish(model.BytesResponseEnd(response))
-	return response.FinishedBytes()
+	return m._bytesResponse(response, output, nil)
 }
 func (m instance) generate(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -299,24 +197,9 @@ func (m instance) generate(payload []byte) []byte {
 
 	output, err := m.instance.Generate(options)
 	if err != nil {
-		message := response.CreateString(err.Error())
-		model.KeyPairResponseStart(response)
-		model.KeyPairResponseAddError(response, message)
-		response.Finish(model.KeyPairResponseEnd(response))
-		return response.FinishedBytes()
+		return m._keyPairResponse(response, output, err)
 	}
-	publicKey := response.CreateByteString([]byte(output.PublicKey))
-	privateKey := response.CreateByteString([]byte(output.PrivateKey))
-
-	model.KeyPairStart(response)
-	model.KeyPairAddPublicKey(response, publicKey)
-	model.KeyPairAddPrivateKey(response, privateKey)
-	keyPair := model.KeyPairEnd(response)
-
-	model.KeyPairResponseStart(response)
-	model.KeyPairResponseAddOutput(response, keyPair)
-	response.Finish(model.KeyPairResponseEnd(response))
-	return response.FinishedBytes()
+	return m._keyPairResponse(response, output, nil)
 }
 
 func (m instance) parseOptions(input *model.Options) *openpgp.Options {
@@ -333,14 +216,6 @@ func (m instance) parseOptions(input *model.Options) *openpgp.Options {
 		Passphrase: m.toString(input.Passphrase()),
 	}
 	return options
-}
-
-func (m instance) toString(input []byte) string {
-	if input == nil {
-		return ""
-	}
-
-	return string(input)
 }
 
 func (m instance) parseKeyOptions(input *model.KeyOptions) *openpgp.KeyOptions {
@@ -423,4 +298,79 @@ func (m instance) parseCompression(input model.Compression) string {
 	default:
 		return "none"
 	}
+}
+
+func (m instance) _keyPairResponse(response *flatbuffers.Builder, output *openpgp.KeyPair, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.KeyPairResponseStart(response)
+		model.KeyPairResponseAddError(response, outputOffset)
+		response.Finish(model.KeyPairResponseEnd(response))
+		return response.FinishedBytes()
+	}
+
+	publicKeyOffset := response.CreateString(output.PublicKey)
+	privateKeyOffset := response.CreateString(output.PrivateKey)
+
+	model.KeyPairStart(response)
+	model.KeyPairAddPublicKey(response, publicKeyOffset)
+	model.KeyPairAddPrivateKey(response, privateKeyOffset)
+	KeyPair := model.KeyPairEnd(response)
+
+	model.KeyPairResponseStart(response)
+	model.KeyPairResponseAddOutput(response, KeyPair)
+	response.Finish(model.KeyPairResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) _boolResponse(response *flatbuffers.Builder, output bool, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.BoolResponseStart(response)
+		model.BoolResponseAddError(response, outputOffset)
+		response.Finish(model.BoolResponseEnd(response))
+		return response.FinishedBytes()
+	}
+	model.BoolResponseStart(response)
+	model.BoolResponseAddOutput(response, output)
+	response.Finish(model.BoolResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) _bytesResponse(response *flatbuffers.Builder, output []byte, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.BytesResponseStart(response)
+		model.BytesResponseAddError(response, outputOffset)
+		response.Finish(model.BytesResponseEnd(response))
+		return response.FinishedBytes()
+	}
+	outputOffset := response.CreateByteVector(output)
+	model.BytesResponseStart(response)
+	model.BytesResponseAddOutput(response, outputOffset)
+	response.Finish(model.BytesResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) _stringResponse(response *flatbuffers.Builder, output string, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.StringResponseStart(response)
+		model.StringResponseAddError(response, outputOffset)
+		response.Finish(model.StringResponseEnd(response))
+		return response.FinishedBytes()
+	}
+	outputOffset := response.CreateString(output)
+	model.StringResponseStart(response)
+	model.StringResponseAddOutput(response, outputOffset)
+	response.Finish(model.StringResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) toString(input []byte) string {
+	if input == nil {
+		return ""
+	}
+
+	return string(input)
 }
