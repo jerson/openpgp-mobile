@@ -72,5 +72,6 @@ func (o *FastOpenPGP) generateSignedEntity(options *Entity) *openpgp.Entity {
 		// by now we are skipping errors, be careful
 		return nil
 	}
+	// for signed entity we only use first one
 	return entityList[0]
 }

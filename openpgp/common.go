@@ -178,7 +178,7 @@ func (o *FastOpenPGP) readArmoredKeyRing(keys string) (openpgp.EntityList, error
 				return entityList, err
 			}
 			if len(entityListItem) > 0 {
-				entityList = append(entityList, entityListItem[0])
+				entityList = append(entityList, entityListItem...)
 			}
 		}
 	}
