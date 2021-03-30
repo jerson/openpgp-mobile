@@ -23,7 +23,7 @@ jobs:
         with:
           go-version: '1.16.1'
       - name: Build
-        run: make binding_darwin_github_actions_limit_macos
+        run: make binding_darwin
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/darwin .
       - if: ${{ env.VERSION!='' }}
