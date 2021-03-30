@@ -1,15 +1,11 @@
 DARWIN_OUTPUT?=darwin
 DARWIN_BINDING_OUTPUT?=$(BINDING_OUTPUT)/$(DARWIN_OUTPUT)
 DARWIN_TARGET?=10.11
+DARWIN_SDKROOT?=$(shell xcrun --sdk macosx --show-sdk-path)
 
 binding_darwin: binding_darwin_x86_64 binding_darwin_arm64
 	lipo $(DARWIN_BINDING_OUTPUT)/x86_64.dylib $(DARWIN_BINDING_OUTPUT)/arm64.dylib -create -output $(DARWIN_BINDING_OUTPUT)/$(BINDING_NAME).dylib
 	rm $(DARWIN_BINDING_OUTPUT)/x86_64.dylib $(DARWIN_BINDING_OUTPUT)/arm64.dylib $(DARWIN_BINDING_OUTPUT)/*.h
-
-# this exists only bc of github actions
-binding_darwin_github_actions_limit_macos: binding_darwin_x86_64
-	mv $(DARWIN_BINDING_OUTPUT)/x86_64.dylib $(DARWIN_BINDING_OUTPUT)/$(BINDING_NAME).dylib
-	rm $(DARWIN_BINDING_OUTPUT)/*.h
 
 binding_darwin_x86_64:
 	BINDING_FILE=$(DARWIN_OUTPUT)/x86_64.dylib \
@@ -25,6 +21,7 @@ binding_darwin_arm64:
 	CGO_CFLAGS=-mmacosx-version-min=$(DARWIN_TARGET) \
 	MACOSX_DEPLOYMENT_TARGET=$(DARWIN_TARGET) \
 	GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
+	SDKROOT=$(DARWIN_SDKROOT) \
 	make binding
 
 binding_darwin_archive_x86_64:
