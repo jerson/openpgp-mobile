@@ -4,6 +4,7 @@ BINDING_NAME?=libopenpgp_bridge
 BINDING_FILE?=$(BINDING_NAME).so
 BINDING_ARGS?=
 BINDING_OUTPUT?=$(OUTPUT_DIR)/binding
+EXTRA_LD_FLAGS?=
 
 default: fmt test
 
@@ -21,7 +22,7 @@ clean:
 
 binding: deps
 	mkdir -p $(BINDING_OUTPUT)
-	go build -ldflags="-w -s" -o $(BINDING_OUTPUT)/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go
+	go build -ldflags="-w -s $(EXTRA_LD_FLAGS)" -o $(BINDING_OUTPUT)/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go
 
 include Makefile.android
 include Makefile.ios
