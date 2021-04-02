@@ -86,3 +86,26 @@ jobs:
         with:
           name: flatbuffers_libopenpgp_bridge_js
           path: output.tar.gz
+  ts:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Protoc
+        run: sudo apt install -y flatbuffers-compiler
+      - name: Build
+        run: make flatbuffers_ts
+      - name: Compress
+        run: tar -czvf output.tar.gz -C output/flatbuffers/ts .
+      - if: ${{ env.VERSION!='' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          asset_name: flatbuffers_libopenpgp_bridge_ts_$tag.tar.gz
+          file: output.tar.gz
+          tag: ${{ env.VERSION }}
+          overwrite: true
+      - if: ${{ env.VERSION=='' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: flatbuffers_libopenpgp_bridge_ts
+          path: output.tar.gz
