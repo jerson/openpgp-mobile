@@ -8,7 +8,7 @@ on:
         required: false
   push:
     paths:
-      - '**.fbs'
+      - 'flatbuffers/**.fbs'
     tags:
       - "v*"
   pull_request:

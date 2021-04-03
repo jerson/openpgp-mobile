@@ -205,4 +205,3 @@ table PrivateKeyMetadata {
   isSubKey:bool;
   encrypted:bool;
 }
-// sample
