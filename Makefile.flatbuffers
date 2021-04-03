@@ -30,3 +30,7 @@ flatbuffers_swift:
 flatbuffers_kotlin:
 	rm -rf output/flatbuffers/kotlin && mkdir -p output/flatbuffers/kotlin
 	flatc --kotlin --gen-mutable -o ./output/flatbuffers/kotlin flatbuffers/*.fbs
+
+flatbuffers_java:
+	rm -rf output/flatbuffers/java && mkdir -p output/flatbuffers/java
+	flatc --java --gen-mutable -o ./output/flatbuffers/java flatbuffers/*.fbs
