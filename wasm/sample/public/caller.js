@@ -2,6 +2,15 @@ const myWorker = new Worker('worker.js');
 const sample = async () => {
 
     const builder = new flatbuffers.Builder(0);
+
+    model.KeyOptions.startKeyOptions(builder);
+    model.KeyOptions.addCipher(builder, model.Cipher.AES256);
+    model.KeyOptions.addCompression(builder, model.Compression.ZLIB);
+    model.KeyOptions.addCompressionLevel(builder, 9);
+    model.KeyOptions.addHash(builder, model.Hash.SHA512);
+    model.KeyOptions.addRsaBits(builder, 1024);
+    const offsetKeyOptions = model.KeyOptions.endKeyOptions(builder)
+
     const name = builder.createString('sample')
     const comment = builder.createString('sample')
     const passphrase = builder.createString('sample')
@@ -12,6 +21,7 @@ const sample = async () => {
     model.Options.addComment(builder, comment);
     model.Options.addEmail(builder, email);
     model.Options.addPassphrase(builder, passphrase);
+    model.Options.addKeyOptions(builder, offsetKeyOptions);
     const offsetOptions = model.Options.endOptions(builder)
 
     model.GenerateRequest.startGenerateRequest(builder);
@@ -29,7 +39,7 @@ const sample = async () => {
     if (response.error()) {
         throw new Error(response.error())
     }
-    const output =  response.output()
+    const output = response.output()
     console.log('privateKey', output.privateKey());
     console.log('publicKey', output.publicKey());
 }

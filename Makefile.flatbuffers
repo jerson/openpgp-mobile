@@ -1,5 +1,5 @@
 .PHONY: flatbuffers
-flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js flatbuffers_ts
+flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js
 
 flatbuffers_deps:
 	brew install flatbuffers || echo "please install flatbuffers manually or use brew"
@@ -9,8 +9,10 @@ flatbuffers_dart:
 	flatc --dart --gen-mutable -o ./output/flatbuffers/dart flatbuffers/*.fbs
 
 flatbuffers_go:
+	rm -rf output/flatbuffers/go && mkdir -p output/flatbuffers/go
+	flatc --go --gen-mutable -o ./output/flatbuffers/go flatbuffers/*.fbs
 	rm -rf bridge/model && mkdir -p bridge/model
-	flatc --go --gen-mutable -o ./bridge flatbuffers/*.fbs
+	cp -r output/flatbuffers/go/model bridge
 
 flatbuffers_js:
 	rm -rf output/flatbuffers/js && mkdir -p output/flatbuffers/js
@@ -20,3 +22,11 @@ flatbuffers_js:
 flatbuffers_ts:
 	rm -rf output/flatbuffers/ts && mkdir -p output/flatbuffers/ts
 	flatc --ts --gen-mutable -o ./output/flatbuffers/ts flatbuffers/*.fbs
+
+flatbuffers_swift:
+	rm -rf output/flatbuffers/swift && mkdir -p output/flatbuffers/swift
+	flatc --swift --gen-mutable -o ./output/flatbuffers/swift flatbuffers/*.fbs
+
+flatbuffers_kotlin:
+	rm -rf output/flatbuffers/kotlin && mkdir -p output/flatbuffers/kotlin
+	flatc --kotlin --gen-mutable -o ./output/flatbuffers/kotlin flatbuffers/*.fbs
