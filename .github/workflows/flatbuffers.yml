@@ -24,8 +24,8 @@ jobs:
         language: [ dart, go, js, ts, java ]
     steps:
       - uses: actions/checkout@v2
-      - name: Install Protoc
-        run: sudo apt install -y flatbuffers-compiler
+      - name: Install Flatbuffers
+        run: make flatbuffers_deps
       - name: Build
         run: make flatbuffers_${{ matrix.language }}
       - name: Compress
