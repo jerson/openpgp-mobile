@@ -3,11 +3,12 @@ flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js
 
 flatbuffers_deps:
 	cd /tmp && \
-	git clone https://github.com/google/flatbuffers.git && \
+	git clone https://github.com/google/flatbuffers.git -b v1.12.0 && \
     cd flatbuffers && \
     cmake -G "Unix Makefiles" && \
     make && \
-    sudo make install
+    sudo make install && \
+    rm -rf /tmp/flatbuffers
 
 flatbuffers_dart:
 	rm -rf output/flatbuffers/dart && mkdir -p output/flatbuffers/dart
