@@ -2,6 +2,7 @@
 flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js
 
 flatbuffers_deps:
+	cd /tmp && \
 	git clone https://github.com/google/flatbuffers.git && \
     cd flatbuffers && \
     cmake -G "Unix Makefiles" && \
