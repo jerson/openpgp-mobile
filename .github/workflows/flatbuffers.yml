@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         language: [ dart, go, js, ts, java, kotlin, swift ]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - name: Install Flatbuffers
