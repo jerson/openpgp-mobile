@@ -3,9 +3,9 @@ flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js
 
 flatbuffers_deps:
 	git clone https://github.com/google/flatbuffers.git && \
-    cd flatbuffers  && \
-    cmake -G "Unix Makefiles"  && \
-    make  && \
+    cd flatbuffers && \
+    cmake -G "Unix Makefiles" && \
+    make && \
     sudo make install
 
 flatbuffers_dart:
