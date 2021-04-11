@@ -72,6 +72,10 @@ func (o *FastOpenPGP) generateSignedEntity(options *Entity) *openpgp.Entity {
 		// by now we are skipping errors, be careful
 		return nil
 	}
+	// if for some reason dont contains any key we need to return nil
+	if len(entityList) < 1 {
+		return nil
+	}
 	// for signed entity we only use first one
 	return entityList[0]
 }
