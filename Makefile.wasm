@@ -5,9 +5,9 @@ GO_ROOT?=`go env GOROOT`
 wasm_tinygo:
 	mkdir -p output/wasm
 	tinygo build -tags=math_big_pure_go -o output/wasm/openpgp.wasm -target wasm wasm/main.go
-	#cp $(TINYGO_ROOT)/targets/wasm_exec.js  output/wasm/wasm_exec.js
-	#cp output/wasm/openpgp.wasm wasm/sample/public/openpgp.wasm
-	#cp output/wasm/wasm_exec.js  wasm/sample/public/wasm_exec.js
+	cp $(TINYGO_ROOT)/targets/wasm_exec.js  output/wasm/wasm_exec.js
+	cp output/wasm/openpgp.wasm wasm/sample/public/openpgp.wasm
+	cp output/wasm/wasm_exec.js  wasm/sample/public/wasm_exec.js
 
 wasm:
 	mkdir -p output/wasm
