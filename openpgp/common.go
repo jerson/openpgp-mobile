@@ -87,6 +87,12 @@ func hashTo(hash string) crypto.Hash {
 		return crypto.SHA384
 	case "sha512":
 		return crypto.SHA512
+	case "ripemd160":
+		return crypto.RIPEMD160
+	case "md5":
+		return crypto.MD5
+	case "sha1":
+		return crypto.SHA1
 	case "sha256":
 		fallthrough
 	default:
