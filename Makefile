@@ -31,5 +31,4 @@ include Makefile.linux
 include Makefile.windows
 include Makefile.gomobile
 include Makefile.wasm
-include Makefile.protobuf
 include Makefile.flatbuffers
