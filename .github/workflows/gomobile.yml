@@ -37,6 +37,8 @@ jobs:
           go-version: '^1.15'
       - name: Install Gomobile
         run: make gomobile
+        env:
+          GOPROXY: https://proxy.golang.org,direct
       - name: Build
         run: |
           export ANDROID_NDK_HOME=${{ steps.setup-ndk.outputs.ndk-path }}
@@ -70,6 +72,8 @@ jobs:
         run: |
           go get -u golang.org/x/mobile/cmd/gomobile@33b80540585f2b31e503da24d6b2a02de3c53ff5
           gomobile init
+        env:
+          GOPROXY: https://proxy.golang.org,direct
       - name: Build Framework
         run: make gomobile_ios
       - name: Compress Framework
