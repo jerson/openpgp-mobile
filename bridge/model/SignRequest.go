@@ -17,6 +17,13 @@ func GetRootAsSignRequest(buf []byte, offset flatbuffers.UOffsetT) *SignRequest 
 	return x
 }
 
+func GetSizePrefixedRootAsSignRequest(buf []byte, offset flatbuffers.UOffsetT) *SignRequest {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &SignRequest{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *SignRequest) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

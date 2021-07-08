@@ -17,6 +17,13 @@ func GetRootAsEncryptSymmetricRequest(buf []byte, offset flatbuffers.UOffsetT) *
 	return x
 }
 
+func GetSizePrefixedRootAsEncryptSymmetricRequest(buf []byte, offset flatbuffers.UOffsetT) *EncryptSymmetricRequest {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &EncryptSymmetricRequest{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *EncryptSymmetricRequest) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

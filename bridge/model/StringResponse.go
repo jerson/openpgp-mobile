@@ -17,6 +17,13 @@ func GetRootAsStringResponse(buf []byte, offset flatbuffers.UOffsetT) *StringRes
 	return x
 }
 
+func GetSizePrefixedRootAsStringResponse(buf []byte, offset flatbuffers.UOffsetT) *StringResponse {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &StringResponse{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *StringResponse) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

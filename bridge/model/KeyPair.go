@@ -17,6 +17,13 @@ func GetRootAsKeyPair(buf []byte, offset flatbuffers.UOffsetT) *KeyPair {
 	return x
 }
 
+func GetSizePrefixedRootAsKeyPair(buf []byte, offset flatbuffers.UOffsetT) *KeyPair {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &KeyPair{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *KeyPair) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

@@ -17,6 +17,13 @@ func GetRootAsDecryptSymmetricBytesRequest(buf []byte, offset flatbuffers.UOffse
 	return x
 }
 
+func GetSizePrefixedRootAsDecryptSymmetricBytesRequest(buf []byte, offset flatbuffers.UOffsetT) *DecryptSymmetricBytesRequest {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &DecryptSymmetricBytesRequest{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *DecryptSymmetricBytesRequest) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

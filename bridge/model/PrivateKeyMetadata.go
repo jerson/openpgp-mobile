@@ -17,6 +17,13 @@ func GetRootAsPrivateKeyMetadata(buf []byte, offset flatbuffers.UOffsetT) *Priva
 	return x
 }
 
+func GetSizePrefixedRootAsPrivateKeyMetadata(buf []byte, offset flatbuffers.UOffsetT) *PrivateKeyMetadata {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &PrivateKeyMetadata{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *PrivateKeyMetadata) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

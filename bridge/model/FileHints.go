@@ -17,6 +17,13 @@ func GetRootAsFileHints(buf []byte, offset flatbuffers.UOffsetT) *FileHints {
 	return x
 }
 
+func GetSizePrefixedRootAsFileHints(buf []byte, offset flatbuffers.UOffsetT) *FileHints {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &FileHints{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *FileHints) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i

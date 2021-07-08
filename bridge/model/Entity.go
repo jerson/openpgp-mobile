@@ -20,6 +20,13 @@ func GetRootAsEntity(buf []byte, offset flatbuffers.UOffsetT) *Entity {
 	return x
 }
 
+func GetSizePrefixedRootAsEntity(buf []byte, offset flatbuffers.UOffsetT) *Entity {
+	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
+	x := &Entity{}
+	x.Init(buf, n+offset+flatbuffers.SizeUint32)
+	return x
+}
+
 func (rcv *Entity) Init(buf []byte, i flatbuffers.UOffsetT) {
 	rcv._tab.Bytes = buf
 	rcv._tab.Pos = i
