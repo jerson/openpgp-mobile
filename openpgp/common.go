@@ -12,7 +12,7 @@ import (
 )
 
 var headers = map[string]string{
-	"Version": "fast-openpgp",
+	"Version": "openpgp-mobile",
 }
 var messageHeader = "PGP MESSAGE"
 var signatureHeader = "PGP SIGNATURE"
