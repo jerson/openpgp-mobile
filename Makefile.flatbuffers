@@ -1,0 +1,42 @@
+.PHONY: flatbuffers
+flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js
+
+flatbuffers_deps:
+	cd /tmp && \
+	git clone https://github.com/google/flatbuffers.git -b master && \
+    cd flatbuffers && \
+    cmake -G "Unix Makefiles" && \
+    make && \
+    sudo make install && \
+    rm -rf /tmp/flatbuffers
+
+flatbuffers_dart:
+	rm -rf output/flatbuffers/dart && mkdir -p output/flatbuffers/dart
+	flatc --dart --gen-mutable -o ./output/flatbuffers/dart flatbuffers/*.fbs
+
+flatbuffers_go:
+	rm -rf output/flatbuffers/go && mkdir -p output/flatbuffers/go
+	flatc --go --gen-mutable -o ./output/flatbuffers/go flatbuffers/*.fbs
+	rm -rf bridge/model && mkdir -p bridge/model
+	cp -r output/flatbuffers/go/model bridge
+
+flatbuffers_js:
+	rm -rf output/flatbuffers/js && mkdir -p output/flatbuffers/js
+	flatc --js --gen-mutable -o ./output/flatbuffers/js flatbuffers/*.fbs
+	cp output/flatbuffers/js/bridge_generated.js wasm/sample/public/bridge_generated.js
+
+flatbuffers_ts:
+	rm -rf output/flatbuffers/ts && mkdir -p output/flatbuffers/ts
+	flatc --ts --gen-mutable -o ./output/flatbuffers/ts flatbuffers/*.fbs
+
+flatbuffers_swift:
+	rm -rf output/flatbuffers/swift && mkdir -p output/flatbuffers/swift
+	flatc --swift --gen-mutable -o ./output/flatbuffers/swift flatbuffers/*.fbs
+
+flatbuffers_kotlin:
+	rm -rf output/flatbuffers/kotlin && mkdir -p output/flatbuffers/kotlin
+	flatc --kotlin --gen-mutable -o ./output/flatbuffers/kotlin flatbuffers/*.fbs
+
+flatbuffers_java:
+	rm -rf output/flatbuffers/java && mkdir -p output/flatbuffers/java
+	flatc --java --gen-mutable -o ./output/flatbuffers/java flatbuffers/*.fbs

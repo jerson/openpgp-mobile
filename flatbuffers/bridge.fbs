@@ -1,0 +1,207 @@
+namespace model;
+
+enum Hash : int {
+  SHA256 = 0,
+  SHA224 = 1,
+  SHA384 = 2,
+  SHA512 = 3,
+}
+
+enum Compression : int {
+  NONE = 0,
+  ZLIB = 1,
+  ZIP = 2,
+}
+
+enum Cipher : int {
+  AES128 = 0,
+  AES192 = 1,
+  AES256 = 2,
+}
+
+table EncryptRequest {
+  message:string;
+  publicKey:string;
+  options:model.KeyOptions;
+  signed:model.Entity;
+  fileHints:model.FileHints;
+}
+
+table EncryptBytesRequest {
+  message:[ubyte];
+  publicKey:string;
+  options:model.KeyOptions;
+  signed:model.Entity;
+  fileHints:model.FileHints;
+}
+
+table DecryptRequest {
+  message:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table DecryptBytesRequest {
+  message:[ubyte];
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table SignRequest {
+  message:string;
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table SignBytesRequest {
+  message:[ubyte];
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table VerifyRequest {
+  signature:string;
+  message:string;
+  publicKey:string;
+}
+
+table VerifyBytesRequest {
+  signature:string;
+  message:[ubyte];
+  publicKey:string;
+}
+
+table EncryptSymmetricRequest {
+  message:string;
+  passphrase:string;
+  options:model.KeyOptions;
+  fileHints:model.FileHints;
+}
+
+table EncryptSymmetricBytesRequest {
+  message:[ubyte];
+  passphrase:string;
+  options:model.KeyOptions;
+  fileHints:model.FileHints;
+}
+
+table DecryptSymmetricRequest {
+  message:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table DecryptSymmetricBytesRequest {
+  message:[ubyte];
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table GenerateRequest {
+  options:model.Options;
+}
+
+/// KeyOptions collects a number of parameters along with sensible defaults.
+table KeyOptions {
+  /// Hash is the default hash function to be used.
+  /// If zero, SHA-256 is used.
+  hash:model.Hash;
+  /// Cipher is the cipher to be used.
+  /// If zero, AES-128 is used.
+  cipher:model.Cipher;
+  /// Compression is the compression algorithm to be
+  /// applied to the plaintext before encryption. If zero, no
+  /// compression is done.
+  compression:model.Compression;
+  /// CompressionLevel is the compression level to use. It must be set to
+  /// between -1 and 9, with -1 causing the compressor to use the
+  /// default compression level, 0 causing the compressor to use
+  /// no compression and 1 to 9 representing increasing (better,
+  /// slower) compression levels. If Level is less than -1 or
+  /// more then 9, a non-nil error will be returned during
+  /// encryption. See the constants above for convenient common
+  /// settings for Level.
+  compressionLevel:int;
+  /// RSABits is the number of bits in new RSA keys made with NewEntity.
+  /// If zero, then 2048 bit keys are created.
+  rsaBits:int;
+}
+
+table Options {
+  name:string;
+  comment:string;
+  email:string;
+  passphrase:string;
+  keyOptions:model.KeyOptions;
+}
+
+table FileHints {
+  /// IsBinary can be set to hint that the contents are binary data.
+  isBinary:bool;
+  /// FileName hints at the name of the file that should be written. It's
+  /// truncated to 255 bytes if longer. It may be empty to suggest that the
+  /// file should not be written to disk. It may be equal to "_CONSOLE" to
+  /// suggest the data should not be written to disk.
+  fileName:string;
+  /// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
+  modTime:string;
+}
+
+/// An Entity represents the components of an OpenPGP key: a primary public key
+/// (which must be a signing key), one or more identities claimed by that key,
+/// and zero or more subkeys, which may be encryption keys.
+table Entity {
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+}
+
+table StringResponse {
+  output:string;
+  error:string;
+}
+
+table BytesResponse {
+  output:[ubyte];
+  error:string;
+}
+
+table BoolResponse {
+  output:bool;
+  error:string;
+}
+
+table KeyPairResponse {
+  output:model.KeyPair;
+  error:string;
+}
+
+table KeyPair {
+  publicKey:string;
+  privateKey:string;
+}
+
+table PublicKeyMetadata {
+  keyID:string;
+  keyIDShort:string;
+  creationTime:string;
+  fingerprint:string;
+  keyIDNumeric:string;
+  isSubKey:bool;
+}
+
+table PrivateKeyMetadata {
+  keyID:string;
+  keyIDShort:string;
+  creationTime:string;
+  fingerprint:string;
+  keyIDNumeric:string;
+  isSubKey:bool;
+  encrypted:bool;
+}

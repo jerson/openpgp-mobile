@@ -12,7 +12,7 @@ import (
 )
 
 var headers = map[string]string{
-	"Version": "fast-openpgp",
+	"Version": "openpgp-mobile",
 }
 var messageHeader = "PGP MESSAGE"
 var signatureHeader = "PGP SIGNATURE"
@@ -50,7 +50,6 @@ func generatePacketConfig(options *KeyOptions) *packet.Config {
 		},
 		RSABits: options.RSABits,
 	}
-	fmt.Println(config)
 	return config
 }
 
@@ -185,7 +184,7 @@ func (o *FastOpenPGP) readArmoredKeyRing(keys string) (openpgp.EntityList, error
 				return entityList, err
 			}
 			if len(entityListItem) > 0 {
-				entityList = append(entityList, entityListItem[0])
+				entityList = append(entityList, entityListItem...)
 			}
 		}
 	}

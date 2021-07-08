@@ -1,4 +1,4 @@
-name: Build WASM
+name: Build FlatBuffers
 
 on:
   workflow_dispatch:
@@ -7,6 +7,8 @@ on:
         description: Version Overwrite
         required: false
   push:
+    paths:
+      - '**.fbs'
     tags:
       - "v*"
   pull_request:
@@ -15,31 +17,30 @@ env:
   VERSION: ${{ github.event.inputs.version || (startsWith(github.ref, 'refs/tags/') && github.ref || '') }}
 
 jobs:
-  binding:
+  build:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        language: [ dart, go, ts, java, kotlin, swift ]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '1.15.10'
-      - name: Install TinyGo
-        run: |
-          wget https://github.com/tinygo-org/tinygo/releases/download/v0.17.0/tinygo_0.17.0_amd64.deb
-          sudo dpkg -i tinygo_0.17.0_amd64.deb
+      - name: Install Flatbuffers
+        run: make flatbuffers_deps
       - name: Build
-        run: make wasm
+        run: make flatbuffers_${{ matrix.language }}
       - name: Compress
-        run: tar -czvf output.tar.gz -C output/wasm .
+        run: tar -czvf output.tar.gz -C output/flatbuffers/${{ matrix.language }} .
       - if: ${{ env.VERSION!='' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: libopenpgp_bridge_wasm_$tag.tar.gz
+          asset_name: flatbuffers_libopenpgp_bridge_${{ matrix.language }}_$tag.tar.gz
           file: output.tar.gz
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
         uses: actions/upload-artifact@v2
         with:
-          name: libopenpgp_bridge_wasm
+          name: flatbuffers_libopenpgp_bridge_${{ matrix.language }}
           path: output.tar.gz

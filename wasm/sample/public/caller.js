@@ -1,28 +1,47 @@
 const myWorker = new Worker('worker.js');
-
 const sample = async () => {
 
-    let pbf = new Pbf();
-    GenerateRequest.write({
-        options: {
-            name: 'sample',
-            comment: '',
-            passphrase: '',
-            email: 'sample@sample.com',
-            keyOptions: {
-                rsaBits: 1024
-            }
-        }
-    }, pbf)
-    const buf = pbf.finish()
-    console.log('request', buf);
-    const rawResponse = await send('generate', buf)
+    const builder = new flatbuffers.Builder(0);
 
-    const response = KeyPairResponse.read(new Pbf(rawResponse))
-    if (response.error) {
-        throw new Error(response.error)
+    model.KeyOptions.startKeyOptions(builder);
+    model.KeyOptions.addCipher(builder, model.Cipher.AES256);
+    model.KeyOptions.addCompression(builder, model.Compression.ZLIB);
+    model.KeyOptions.addCompressionLevel(builder, 9);
+    model.KeyOptions.addHash(builder, model.Hash.SHA512);
+    model.KeyOptions.addRsaBits(builder, 1024);
+    const offsetKeyOptions = model.KeyOptions.endKeyOptions(builder)
+
+    const name = builder.createString('sample')
+    const comment = builder.createString('sample')
+    const passphrase = builder.createString('sample')
+    const email = builder.createString('sample@sample.com')
+
+    model.Options.startOptions(builder);
+    model.Options.addName(builder, name);
+    model.Options.addComment(builder, comment);
+    model.Options.addEmail(builder, email);
+    model.Options.addPassphrase(builder, passphrase);
+    model.Options.addKeyOptions(builder, offsetKeyOptions);
+    const offsetOptions = model.Options.endOptions(builder)
+
+    model.GenerateRequest.startGenerateRequest(builder);
+    model.GenerateRequest.addOptions(builder, offsetOptions);
+    const offset = model.GenerateRequest.endGenerateRequest(builder);
+    builder.finish(offset);
+
+    const bytes = builder.asUint8Array()
+
+    console.log('request', bytes);
+    const rawResponse = await send('generate', bytes)
+
+    const responseBuffer = new flatbuffers.ByteBuffer(rawResponse);
+    const response = model.KeyPairResponse.getRootAsKeyPairResponse(responseBuffer, null)
+    if (response.error()) {
+        throw new Error(response.error())
     }
-    console.log('response', response.output);
+    const output = response.output()
+    console.log('privateKey', output.privateKey());
+    console.log('publicKey', output.publicKey());
 }
 
 let counter = 0;
