@@ -209,7 +209,7 @@ func (o *FastOpenPGP) readBlock(message, blockType string) (io.Reader, error) {
 		if err != nil {
 			return nil, err
 		}
-		// if we dont have a block type we can not validad type
+		// if we don't have a block type, we can't validate the type
 		return bytes.NewReader(decoded), err
 	}
 	if err != nil {
