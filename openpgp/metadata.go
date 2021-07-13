@@ -3,22 +3,23 @@ package openpgp
 import (
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/openpgp"
 	"strings"
 	"time"
 )
 
 func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, error) {
-	entityList, err := o.readArmoredKeyRing(key)
+	entityList, err := o.readArmoredKeyRing(key,openpgp.PublicKeyType)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("publicKey error: %w", err)
 	}
 	if len(entityList) < 1 {
-		return nil, errors.New("no key found")
+		return nil, fmt.Errorf("publicKey error: %w", errors.New("no key found"))
 	}
 
 	publicKey := entityList[0].PrimaryKey
 	if publicKey == nil {
-		return nil, errors.New("no publicKey found")
+		return nil, fmt.Errorf("publicKey error: %w",  errors.New("no publicKey found"))
 	}
 
 	var byteIDs []string
@@ -37,17 +38,17 @@ func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, erro
 }
 
 func (o *FastOpenPGP) GetPrivateKeyMetadata(key string) (*PrivateKeyMetadata, error) {
-	entityList, err := o.readArmoredKeyRing(key)
+	entityList, err := o.readArmoredKeyRing(key,openpgp.PrivateKeyType)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("privateKey error: %w", err)
 	}
 	if len(entityList) < 1 {
-		return nil, errors.New("no key found")
+		return nil, fmt.Errorf("privateKey error: %w", errors.New("no key found"))
 	}
 
 	privateKey := entityList[0].PrivateKey
 	if privateKey == nil {
-		return nil, errors.New("no privateKey found")
+		return nil, fmt.Errorf("privateKey error: %w",  errors.New("no privateKey found"))
 	}
 
 	var byteIDs []string

@@ -2,6 +2,7 @@ package openpgp
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 
 	"golang.org/x/crypto/openpgp"
@@ -15,7 +16,7 @@ func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, fileHints *Fi
 	}
 
 	buf := bytes.NewBuffer(nil)
-	writer, err := armor.Encode(buf, messageHeader, headers)
+	writer, err := armor.Encode(buf, messageType, headers)
 	if err != nil {
 		return "", err
 	}
@@ -39,7 +40,7 @@ func (o *FastOpenPGP) encryptSymmetric(message []byte, passphrase string, fileHi
 	buf := new(bytes.Buffer)
 	w, err := openpgp.SymmetricallyEncrypt(buf, []byte(passphrase), generateFileHints(fileHints), generatePacketConfig(options))
 	if err != nil {
-		return nil, err
+		return nil,  fmt.Errorf("symmetricallyEncrypt error: %w", err)
 	}
 	defer w.Close()
 

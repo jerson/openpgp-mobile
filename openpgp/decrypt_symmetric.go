@@ -3,21 +3,20 @@ package openpgp
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 
 	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
 )
 
 func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
-	buf := bytes.NewReader([]byte(message))
-	dec, err := armor.Decode(buf)
+	body, err := o.readBlock(message, messageType)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("message error: %w",err)
 	}
 
-	output, err := o.decryptSymmetric(dec.Body, passphrase, options)
+	output, err := o.decryptSymmetric(body, passphrase, options)
 	if err != nil {
 		return "", err
 	}
@@ -42,7 +41,7 @@ func (o *FastOpenPGP) decryptSymmetric(reader io.Reader, passphrase string, opti
 
 	md, err := openpgp.ReadMessage(reader, nil, prompt, generatePacketConfig(options))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("readMessage error: %w", err)
 	}
 	output, err := ioutil.ReadAll(md.UnverifiedBody)
 	if err != nil {

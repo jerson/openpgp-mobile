@@ -2,6 +2,7 @@ package openpgp
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/keybase/go-crypto/openpgp/packet"
 	"golang.org/x/crypto/openpgp/armor"
 
@@ -15,20 +16,20 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	config := generatePacketConfigKeybase(options.KeyOptions)
 	entity, err := keybaseOpenPGP.NewEntity(options.Name, options.Comment, options.Email, config)
 	if err != nil {
-		return keyPair, err
+		return keyPair, fmt.Errorf("newEntity error: %w", err)
 	}
 
 	for _, id := range entity.Identities {
 		err := id.SelfSignature.SignUserId(id.UserId.Id, entity.PrimaryKey, entity.PrivateKey, nil)
 		if err != nil {
-			return keyPair, err
+			return keyPair, fmt.Errorf("signUserId error: %w", err)
 		}
 	}
 
 	if options.Passphrase != "" {
 		err = entity.PrivateKey.Encrypt([]byte(options.Passphrase), nil)
 		if err != nil {
-			return keyPair, err
+			return keyPair, fmt.Errorf("encrypt privateKey error: %w", err)
 		}
 	}
 

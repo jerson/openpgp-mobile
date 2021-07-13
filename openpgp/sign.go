@@ -3,6 +3,7 @@ package openpgp
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
 
 	"golang.org/x/crypto/openpgp"
@@ -20,7 +21,7 @@ func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, p
 	}
 
 	buf := bytes.NewBuffer(nil)
-	writer, err := armor.Encode(buf, signatureHeader, headers)
+	writer, err := armor.Encode(buf, openpgp.SignatureType, headers)
 	if err != nil {
 		return "", err
 	}
@@ -43,10 +44,10 @@ func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase str
 
 	entityList, err := o.readSignKeys(publicKey, privateKey, passphrase)
 	if err != nil {
-		return nil, err
+		return nil,  err
 	}
 	if len(entityList) < 1 {
-		return nil, errors.New("no key found")
+		return nil, fmt.Errorf("keys error: %w", errors.New("no key found"))
 	}
 
 	writer := new(bytes.Buffer)

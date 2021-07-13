@@ -1,12 +1,16 @@
 package openpgp
 
 import (
+	"bytes"
 	"crypto"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
+	errorsOpenpgp "golang.org/x/crypto/openpgp/errors"
 	"golang.org/x/crypto/openpgp/packet"
+	"io"
 	"strings"
 	"time"
 )
@@ -14,8 +18,7 @@ import (
 var headers = map[string]string{
 	"Version": "openpgp-mobile",
 }
-var messageHeader = "PGP MESSAGE"
-var signatureHeader = "PGP SIGNATURE"
+var messageType = "PGP MESSAGE"
 
 func generateFileHints(options *FileHints) *openpgp.FileHints {
 
@@ -104,12 +107,12 @@ func (o *FastOpenPGP) readSignKeys(publicKey, privateKey, passphrase string) (op
 
 	entityListPublic, err := o.readPublicKeys(publicKey)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("publicKey error: %w", err)
 	}
 
 	entityListPrivate, err := o.readPrivateKeys(privateKey, passphrase)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("privateKey error: %w", err)
 	}
 
 	for i := 0; i < len(entityListPublic); i++ {
@@ -123,7 +126,7 @@ func (o *FastOpenPGP) readPrivateKeys(key, passphrase string) (openpgp.EntityLis
 
 	var entityList openpgp.EntityList
 
-	entityList, err := o.readArmoredKeyRing(key)
+	entityList, err := o.readArmoredKeyRing(key, openpgp.PrivateKeyType)
 	if err != nil {
 		return entityList, err
 	}
@@ -155,7 +158,7 @@ func (o *FastOpenPGP) ReadPrivateKeys(key, passphrase string) error {
 
 func (o *FastOpenPGP) readPublicKeys(key string) (openpgp.EntityList, error) {
 
-	entityList, err := o.readArmoredKeyRing(key)
+	entityList, err := o.readArmoredKeyRing(key, openpgp.PublicKeyType)
 	if err != nil {
 		return entityList, err
 	}
@@ -163,14 +166,21 @@ func (o *FastOpenPGP) readPublicKeys(key string) (openpgp.EntityList, error) {
 	return entityList, nil
 }
 
-func (o *FastOpenPGP) readArmoredKeyRing(keys string) (openpgp.EntityList, error) {
+func (o *FastOpenPGP) readArmoredKeyRing(keys, blockType string) (openpgp.EntityList, error) {
+	// we can use later blockType to make use that we are using right block type
 
 	flag := "-----BEGIN"
 	keysSplit := strings.Split(keys, flag)
 	var entityList openpgp.EntityList
 
 	if len(keysSplit) < 1 {
-		return openpgp.ReadArmoredKeyRing(strings.NewReader(keys))
+		keysReader := strings.NewReader(keys)
+		ring, err := openpgp.ReadArmoredKeyRing(keysReader)
+		// if no armored data is found we will try to read only
+		if err == errorsOpenpgp.InvalidArgumentError("no armored data found") {
+			return openpgp.ReadKeyRing(keysReader)
+		}
+		return ring, err
 	} else {
 		for _, keyPart := range keysSplit {
 			keyPart = strings.TrimSpace(keyPart)
@@ -192,18 +202,34 @@ func (o *FastOpenPGP) readArmoredKeyRing(keys string) (openpgp.EntityList, error
 	return entityList, nil
 }
 
-func (o *FastOpenPGP) readSignature(message string) (*packet.Signature, error) {
-
+func (o *FastOpenPGP) readBlock(message, blockType string) (io.Reader, error) {
 	block, err := armor.Decode(strings.NewReader(message))
+	if errors.Is(err, io.EOF) {
+		decoded, err := base64.StdEncoding.DecodeString(message)
+		if err != nil {
+			return nil, err
+		}
+		// if we dont have a block type we can not validad type
+		return bytes.NewReader(decoded), err
+	}
+	if err != nil {
+		return nil, err
+	}
+	if block.Type != blockType {
+		return nil, fmt.Errorf("invalid block type, expected: %s received: %s", blockType, block.Type)
+	}
+
+	return block.Body, err
+}
+
+func (o *FastOpenPGP) readSignature(signature string) (*packet.Signature, error) {
+
+	body, err := o.readBlock(signature, openpgp.SignatureType)
 	if err != nil {
 		return nil, err
 	}
 
-	if block.Type != openpgp.SignatureType {
-		return nil, errors.New("Invalid signature file")
-	}
-
-	reader := packet.NewReader(block.Body)
+	reader := packet.NewReader(body)
 	pkt, err := reader.Next()
 	if err != nil {
 		return nil, err
@@ -211,7 +237,7 @@ func (o *FastOpenPGP) readSignature(message string) (*packet.Signature, error) {
 
 	sig, ok := pkt.(*packet.Signature)
 	if !ok {
-		return nil, errors.New("Invalid signature")
+		return nil, errors.New("invalid signature")
 	}
 
 	return sig, nil

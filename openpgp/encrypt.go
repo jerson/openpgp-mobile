@@ -2,6 +2,7 @@ package openpgp
 
 import (
 	"bytes"
+	"fmt"
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 	"io/ioutil"
@@ -14,7 +15,7 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string, signedEntity *Entity, f
 	}
 
 	buf := bytes.NewBuffer(nil)
-	writer, err := armor.Encode(buf, messageHeader, headers)
+	writer, err := armor.Encode(buf, messageType, headers)
 	if err != nil {
 		return "", err
 	}
@@ -37,7 +38,7 @@ func (o *FastOpenPGP) encrypt(message []byte, publicKey string, signedEntity *En
 
 	entityList, err := o.readPublicKeys(publicKey)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("publicKey error: %w", err)
 	}
 
 	buf := new(bytes.Buffer)
