@@ -27,6 +27,15 @@ table EncryptRequest {
   fileHints:model.FileHints;
 }
 
+table EncryptFileRequest {
+  input:string;
+  output:string;
+  publicKey:string;
+  options:model.KeyOptions;
+  signed:model.Entity;
+  fileHints:model.FileHints;
+}
+
 table EncryptBytesRequest {
   message:[ubyte];
   publicKey:string;
@@ -37,6 +46,14 @@ table EncryptBytesRequest {
 
 table DecryptRequest {
   message:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table DecryptFileRequest {
+  input:string;
+  output:string;
   privateKey:string;
   passphrase:string;
   options:model.KeyOptions;
@@ -57,6 +74,15 @@ table SignRequest {
   options:model.KeyOptions;
 }
 
+table SignFileRequest {
+  input:string;
+  output:string;
+  publicKey:string;
+  privateKey:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
 table SignBytesRequest {
   message:[ubyte];
   publicKey:string;
@@ -68,6 +94,12 @@ table SignBytesRequest {
 table VerifyRequest {
   signature:string;
   message:string;
+  publicKey:string;
+}
+
+table VerifyFileRequest {
+  signature:string;
+  input:string;
   publicKey:string;
 }
 
