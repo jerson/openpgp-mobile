@@ -4,10 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"os"
 
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 )
+
+const fileDefaultPermissions = 0755
 
 func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, fileHints *FileHints, options *KeyOptions) (string, error) {
 	output, err := o.encryptSymmetric([]byte(message), passphrase, fileHints, options)
@@ -31,6 +34,24 @@ func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, fileHints *Fi
 	return buf.String(), nil
 }
 
+func (o *FastOpenPGP) EncryptSymmetricFile(input, output string, passphrase string, fileHints *FileHints, options *KeyOptions) (int, error) {
+	message, err := os.ReadFile(input)
+	if err != nil {
+		return 0, err
+	}
+	result, err := o.encryptSymmetric(message, passphrase, fileHints, options)
+	if err != nil {
+		return 0, nil
+	}
+
+	err = os.WriteFile(output, result, fileDefaultPermissions)
+	if err != nil {
+		return 0, nil
+	}
+
+	return len(result), nil
+}
+
 func (o *FastOpenPGP) EncryptSymmetricBytes(message []byte, passphrase string, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
 	return o.encryptSymmetric(message, passphrase, fileHints, options)
 }
@@ -40,7 +61,7 @@ func (o *FastOpenPGP) encryptSymmetric(message []byte, passphrase string, fileHi
 	buf := new(bytes.Buffer)
 	w, err := openpgp.SymmetricallyEncrypt(buf, []byte(passphrase), generateFileHints(fileHints), generatePacketConfig(options))
 	if err != nil {
-		return nil,  fmt.Errorf("symmetricallyEncrypt error: %w", err)
+		return nil, fmt.Errorf("symmetricallyEncrypt error: %w", err)
 	}
 	defer w.Close()
 

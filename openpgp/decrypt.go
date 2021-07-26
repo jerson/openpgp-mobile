@@ -11,7 +11,7 @@ import (
 func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string, options *KeyOptions) (string, error) {
 	body, err := o.readBlock(message, messageType)
 	if err != nil {
-		return "", fmt.Errorf("message error: %w",err)
+		return "", fmt.Errorf("message error: %w", err)
 	}
 
 	output, err := o.decrypt(body, privateKey, passphrase, options)

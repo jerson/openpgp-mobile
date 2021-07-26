@@ -33,10 +33,14 @@ func Call(name string, payload []byte) ([]byte, error) {
 		output = instance.verifyBytes(payload)
 	case "decryptSymmetric":
 		output = instance.decryptSymmetric(payload)
+	case "decryptSymmetricFile":
+		output = instance.decryptSymmetricFile(payload)
 	case "decryptSymmetricBytes":
 		output = instance.decryptSymmetricBytes(payload)
 	case "encryptSymmetric":
 		output = instance.encryptSymmetric(payload)
+	case "encryptSymmetricFile":
+		output = instance.encryptSymmetricFile(payload)
 	case "encryptSymmetricBytes":
 		output = instance.encryptSymmetricBytes(payload)
 	case "generate":
@@ -160,6 +164,16 @@ func (m instance) decryptSymmetric(payload []byte) []byte {
 	}
 	return m._stringResponse(response, output, nil)
 }
+func (m instance) decryptSymmetricFile(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsDecryptSymmetricFileRequest(payload, 0)
+
+	output, err := m.instance.DecryptSymmetricFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	if err != nil {
+		return m._intResponse(response, int64(output), err)
+	}
+	return m._intResponse(response, int64(output), nil)
+}
 func (m instance) decryptSymmetricBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptSymmetricBytesRequest(payload, 0)
@@ -179,6 +193,16 @@ func (m instance) encryptSymmetric(payload []byte) []byte {
 		return m._stringResponse(response, output, err)
 	}
 	return m._stringResponse(response, output, nil)
+}
+func (m instance) encryptSymmetricFile(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsEncryptSymmetricFileRequest(payload, 0)
+
+	output, err := m.instance.EncryptSymmetricFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.Passphrase()), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
+	if err != nil {
+		return m._intResponse(response, int64(output), err)
+	}
+	return m._intResponse(response, int64(output), nil)
 }
 func (m instance) encryptSymmetricBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -349,6 +373,20 @@ func (m instance) _bytesResponse(response *flatbuffers.Builder, output []byte, e
 	model.BytesResponseStart(response)
 	model.BytesResponseAddOutput(response, outputOffset)
 	response.Finish(model.BytesResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) _intResponse(response *flatbuffers.Builder, output int64, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.IntResponseStart(response)
+		model.IntResponseAddError(response, outputOffset)
+		response.Finish(model.IntResponseEnd(response))
+		return response.FinishedBytes()
+	}
+	model.IntResponseStart(response)
+	model.IntResponseAddOutput(response, output)
+	response.Finish(model.IntResponseEnd(response))
 	return response.FinishedBytes()
 }
 

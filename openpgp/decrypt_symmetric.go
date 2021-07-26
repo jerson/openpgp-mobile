@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 
 	"golang.org/x/crypto/openpgp"
 )
@@ -13,7 +14,7 @@ import (
 func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {
 	body, err := o.readBlock(message, messageType)
 	if err != nil {
-		return "", fmt.Errorf("message error: %w",err)
+		return "", fmt.Errorf("message error: %w", err)
 	}
 
 	output, err := o.decryptSymmetric(body, passphrase, options)
@@ -21,6 +22,25 @@ func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyO
 		return "", err
 	}
 	return string(output), nil
+}
+
+func (o *FastOpenPGP) DecryptSymmetricFile(input, output string, passphrase string, options *KeyOptions) (int, error) {
+	message, err := os.ReadFile(input)
+	if err != nil {
+		return 0, err
+	}
+	buf := bytes.NewReader(message)
+	result, err := o.decryptSymmetric(buf, passphrase, options)
+	if err != nil {
+		return 0, nil
+	}
+
+	err = os.WriteFile(output, result, fileDefaultPermissions)
+	if err != nil {
+		return 0, nil
+	}
+
+	return len(result), nil
 }
 
 func (o *FastOpenPGP) DecryptSymmetricBytes(message []byte, passphrase string, options *KeyOptions) ([]byte, error) {

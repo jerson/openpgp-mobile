@@ -9,7 +9,7 @@ import (
 )
 
 func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, error) {
-	entityList, err := o.readArmoredKeyRing(key,openpgp.PublicKeyType)
+	entityList, err := o.readArmoredKeyRing(key, openpgp.PublicKeyType)
 	if err != nil {
 		return nil, fmt.Errorf("publicKey error: %w", err)
 	}
@@ -19,7 +19,7 @@ func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, erro
 
 	publicKey := entityList[0].PrimaryKey
 	if publicKey == nil {
-		return nil, fmt.Errorf("publicKey error: %w",  errors.New("no publicKey found"))
+		return nil, fmt.Errorf("publicKey error: %w", errors.New("no publicKey found"))
 	}
 
 	var byteIDs []string
@@ -38,7 +38,7 @@ func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, erro
 }
 
 func (o *FastOpenPGP) GetPrivateKeyMetadata(key string) (*PrivateKeyMetadata, error) {
-	entityList, err := o.readArmoredKeyRing(key,openpgp.PrivateKeyType)
+	entityList, err := o.readArmoredKeyRing(key, openpgp.PrivateKeyType)
 	if err != nil {
 		return nil, fmt.Errorf("privateKey error: %w", err)
 	}
@@ -48,7 +48,7 @@ func (o *FastOpenPGP) GetPrivateKeyMetadata(key string) (*PrivateKeyMetadata, er
 
 	privateKey := entityList[0].PrivateKey
 	if privateKey == nil {
-		return nil, fmt.Errorf("privateKey error: %w",  errors.New("no privateKey found"))
+		return nil, fmt.Errorf("privateKey error: %w", errors.New("no privateKey found"))
 	}
 
 	var byteIDs []string

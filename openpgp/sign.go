@@ -44,7 +44,7 @@ func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase str
 
 	entityList, err := o.readSignKeys(publicKey, privateKey, passphrase)
 	if err != nil {
-		return nil,  err
+		return nil, err
 	}
 	if len(entityList) < 1 {
 		return nil, fmt.Errorf("keys error: %w", errors.New("no key found"))

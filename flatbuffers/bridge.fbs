@@ -84,6 +84,14 @@ table EncryptSymmetricRequest {
   fileHints:model.FileHints;
 }
 
+table EncryptSymmetricFileRequest {
+  input:string;
+  output:string;
+  passphrase:string;
+  options:model.KeyOptions;
+  fileHints:model.FileHints;
+}
+
 table EncryptSymmetricBytesRequest {
   message:[ubyte];
   passphrase:string;
@@ -93,6 +101,13 @@ table EncryptSymmetricBytesRequest {
 
 table DecryptSymmetricRequest {
   message:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table DecryptSymmetricFileRequest {
+  input:string;
+  output:string;
   passphrase:string;
   options:model.KeyOptions;
 }
@@ -174,6 +189,11 @@ table BytesResponse {
 
 table BoolResponse {
   output:bool;
+  error:string;
+}
+
+table IntResponse {
+  output:int64;
   error:string;
 }
 
