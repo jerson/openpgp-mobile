@@ -25,19 +25,20 @@ func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyO
 }
 
 func (o *FastOpenPGP) DecryptSymmetricFile(input, output string, passphrase string, options *KeyOptions) (int, error) {
-	message, err := os.ReadFile(input)
+	message, err := os.Open(input)
 	if err != nil {
 		return 0, err
 	}
-	buf := bytes.NewReader(message)
-	result, err := o.decryptSymmetric(buf, passphrase, options)
+	defer message.Close()
+	result, err := o.decryptSymmetric(message, passphrase, options)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
-	err = os.WriteFile(output, result, fileDefaultPermissions)
+	// TODO optimize to handle big files
+	err = ioutil.WriteFile(output, result, fileDefaultPermissions)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return len(result), nil

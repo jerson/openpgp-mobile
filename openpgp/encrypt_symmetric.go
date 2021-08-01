@@ -3,11 +3,9 @@ package openpgp
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
-	"os"
-
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
+	"io/ioutil"
 )
 
 const fileDefaultPermissions = 0755
@@ -35,18 +33,20 @@ func (o *FastOpenPGP) EncryptSymmetric(message, passphrase string, fileHints *Fi
 }
 
 func (o *FastOpenPGP) EncryptSymmetricFile(input, output string, passphrase string, fileHints *FileHints, options *KeyOptions) (int, error) {
-	message, err := os.ReadFile(input)
+	// TODO optimize to handle big files
+	message, err := ioutil.ReadFile(input)
 	if err != nil {
 		return 0, err
 	}
 	result, err := o.encryptSymmetric(message, passphrase, fileHints, options)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
-	err = os.WriteFile(output, result, fileDefaultPermissions)
+	// TODO optimize to handle big files
+	err = ioutil.WriteFile(output, result, fileDefaultPermissions)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return len(result), nil

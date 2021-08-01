@@ -76,7 +76,6 @@ table SignRequest {
 
 table SignFileRequest {
   input:string;
-  output:string;
   publicKey:string;
   privateKey:string;
   passphrase:string;

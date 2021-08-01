@@ -30,6 +30,26 @@ func (o *FastOpenPGP) Encrypt(message, publicKey string, signedEntity *Entity, f
 	return buf.String(), nil
 }
 
+func (o *FastOpenPGP) EncryptFile(input, output, publicKey string, signedEntity *Entity, fileHints *FileHints, options *KeyOptions) (int, error) {
+	// TODO optimize to handle big files
+	message, err := ioutil.ReadFile(input)
+	if err != nil {
+		return 0, err
+	}
+	result, err := o.encrypt(message, publicKey, signedEntity, fileHints, options)
+	if err != nil {
+		return 0, err
+	}
+
+	// TODO optimize to handle big files
+	err = ioutil.WriteFile(output, result, fileDefaultPermissions)
+	if err != nil {
+		return 0, err
+	}
+
+	return len(result), nil
+}
+
 func (o *FastOpenPGP) EncryptBytes(message []byte, publicKey string, signedEntity *Entity, fileHints *FileHints, options *KeyOptions) ([]byte, error) {
 	return o.encrypt(message, publicKey, signedEntity, fileHints, options)
 }

@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"os"
 
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
@@ -15,7 +17,7 @@ func (o *FastOpenPGP) Sign(message, publicKey, privateKey, passphrase string, op
 }
 
 func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) (string, error) {
-	output, err := o.sign(message, publicKey, privateKey, passphrase, options)
+	output, err := o.sign(bytes.NewReader(message), publicKey, privateKey, passphrase, options)
 	if err != nil {
 		return "", err
 	}
@@ -36,11 +38,21 @@ func (o *FastOpenPGP) SignBytesToString(message []byte, publicKey, privateKey, p
 	return buf.String(), nil
 }
 
-func (o *FastOpenPGP) SignBytes(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
+func (o *FastOpenPGP) SignFile(input, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
+	message, err := os.Open(input)
+	if err != nil {
+		return nil, err
+	}
+	defer message.Close()
+
 	return o.sign(message, publicKey, privateKey, passphrase, options)
 }
 
-func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
+func (o *FastOpenPGP) SignBytes(message []byte, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
+	return o.sign(bytes.NewReader(message), publicKey, privateKey, passphrase, options)
+}
+
+func (o *FastOpenPGP) sign(reader io.Reader, publicKey, privateKey, passphrase string, options *KeyOptions) ([]byte, error) {
 
 	entityList, err := o.readSignKeys(publicKey, privateKey, passphrase)
 	if err != nil {
@@ -51,7 +63,6 @@ func (o *FastOpenPGP) sign(message []byte, publicKey, privateKey, passphrase str
 	}
 
 	writer := new(bytes.Buffer)
-	reader := bytes.NewReader(message)
 	err = openpgp.DetachSign(writer, entityList[0], reader, generatePacketConfig(options))
 	if err != nil {
 		return nil, err
