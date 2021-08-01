@@ -15,20 +15,28 @@ func Call(name string, payload []byte) ([]byte, error) {
 	switch name {
 	case "decrypt":
 		output = instance.decrypt(payload)
+	case "decryptFile":
+		output = instance.decryptFile(payload)
 	case "decryptBytes":
 		output = instance.decryptBytes(payload)
 	case "encrypt":
 		output = instance.encrypt(payload)
+	case "encryptFile":
+		output = instance.encryptFile(payload)
 	case "encryptBytes":
 		output = instance.encryptBytes(payload)
 	case "sign":
 		output = instance.sign(payload)
+	case "signFile":
+		output = instance.signFile(payload)
 	case "signBytes":
 		output = instance.signBytes(payload)
 	case "signBytesToString":
 		output = instance.signBytesToString(payload)
 	case "verify":
 		output = instance.verify(payload)
+	case "verifyFile":
+		output = instance.verifyFile(payload)
 	case "verifyBytes":
 		output = instance.verifyBytes(payload)
 	case "decryptSymmetric":
@@ -71,6 +79,17 @@ func (m instance) decrypt(payload []byte) []byte {
 	return m._stringResponse(response, output, nil)
 }
 
+func (m instance) decryptFile(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsDecryptFileRequest(payload, 0)
+
+	output, err := m.instance.DecryptFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	if err != nil {
+		return m._intResponse(response, int64(output), err)
+	}
+	return m._intResponse(response, int64(output), nil)
+}
+
 func (m instance) decryptBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptBytesRequest(payload, 0)
@@ -93,6 +112,17 @@ func (m instance) encrypt(payload []byte) []byte {
 	return m._stringResponse(response, output, nil)
 }
 
+func (m instance) encryptFile(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsEncryptFileRequest(payload, 0)
+
+	output, err := m.instance.EncryptFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.PublicKey()), m.parseEntity(request.Signed(nil)), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
+	if err != nil {
+		return m._intResponse(response, int64(output), err)
+	}
+	return m._intResponse(response, int64(output), nil)
+}
+
 func (m instance) encryptBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsEncryptBytesRequest(payload, 0)
@@ -109,6 +139,16 @@ func (m instance) sign(payload []byte) []byte {
 	request := model.GetRootAsSignRequest(payload, 0)
 
 	output, err := m.instance.Sign(m.toString(request.Message()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	if err != nil {
+		return m._stringResponse(response, output, err)
+	}
+	return m._stringResponse(response, output, nil)
+}
+func (m instance) signFile(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsSignFileRequest(payload, 0)
+
+	output, err := m.instance.SignFile(m.toString(request.Input()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	if err != nil {
 		return m._stringResponse(response, output, err)
 	}
@@ -139,6 +179,16 @@ func (m instance) verify(payload []byte) []byte {
 	request := model.GetRootAsVerifyRequest(payload, 0)
 
 	output, err := m.instance.Verify(m.toString(request.Signature()), m.toString(request.Message()), m.toString(request.PublicKey()))
+	if err != nil {
+		return m._boolResponse(response, output, err)
+	}
+	return m._boolResponse(response, output, nil)
+}
+func (m instance) verifyFile(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsVerifyFileRequest(payload, 0)
+
+	output, err := m.instance.VerifyFile(m.toString(request.Signature()), m.toString(request.Input()), m.toString(request.PublicKey()))
 	if err != nil {
 		return m._boolResponse(response, output, err)
 	}
