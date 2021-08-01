@@ -1,6 +1,7 @@
 package openpgp
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -18,7 +19,7 @@ func readFile(name string) ([]byte, error) {
 	path := filepath.Join(dir+"/testdata", name)
 	return ioutil.ReadFile(path)
 }
-func TestFastOpenPGP_EncryptFile(t *testing.T) {
+func TestFastOpenPGP_EncryptBytesFile(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipped, only call when its necessary")
 	}
@@ -157,6 +158,40 @@ func TestFastOpenPGP_Encrypt(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log("output:", output, outputDecrypted)
+}
+
+func TestFastOpenPGP_EncryptFile(t *testing.T) {
+
+	input := createSampleFile("buenos dias")
+	output := fmt.Sprintf("%s.output", input)
+
+	t.Log("input:", input)
+	t.Log("output:", output)
+
+	defer func() {
+		_ = os.Remove(input)
+		_ = os.Remove(output)
+	}()
+
+	options := &KeyOptions{
+		CompressionLevel: 9,
+		RSABits:          4096,
+		Cipher:           "aes256",
+		Compression:      "zlib",
+		Hash:             "sha512",
+	}
+	fileHints := &FileHints{
+		IsBinary: false,
+		FileName: "",
+		ModTime:  "",
+	}
+	openPGP := NewFastOpenPGP()
+	result, err := openPGP.EncryptFile(input, output, publicKey, nil, fileHints, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log("result:", result)
 }
 
 func TestFastOpenPGP_SignEncrypt(t *testing.T) {

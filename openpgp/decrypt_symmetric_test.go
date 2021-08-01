@@ -87,11 +87,11 @@ func TestFastOpenPGP_DecryptSymmetricFile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	inputData, err := os.ReadFile(input)
+	inputData, err := ioutil.ReadFile(input)
 	if err != nil {
 		t.Fatal(err)
 	}
-	outputData, err := os.ReadFile(outputDecrypted)
+	outputData, err := ioutil.ReadFile(outputDecrypted)
 	if err != nil {
 		t.Fatal(err)
 	}
