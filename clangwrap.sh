@@ -11,6 +11,8 @@ elif [ "$GOARCH" == "arm64" ]; then
     CARCH="arm64"
 elif [ "$GOARCH" == "arm" ]; then
     CARCH="armv7"
+elif [ "$GOARCH" == "386" ]; then
+    CARCH="i386"
 fi
 
 exec $CLANG -arch $CARCH -isysroot $SDK_PATH -mios-version-min=10.0 "$@"
