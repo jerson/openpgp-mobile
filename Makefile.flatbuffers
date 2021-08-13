@@ -20,14 +20,11 @@ flatbuffers_go:
 	rm -rf bridge/model && mkdir -p bridge/model
 	cp -r output/flatbuffers/go/model bridge
 
-flatbuffers_js:
-	rm -rf output/flatbuffers/js && mkdir -p output/flatbuffers/js
-	flatc --js --gen-mutable -o ./output/flatbuffers/js flatbuffers/*.fbs
-	cp output/flatbuffers/js/bridge_generated.js wasm/sample/public/bridge_generated.js
-
 flatbuffers_ts:
 	rm -rf output/flatbuffers/ts && mkdir -p output/flatbuffers/ts
 	flatc --ts --gen-mutable -o ./output/flatbuffers/ts flatbuffers/*.fbs
+	rm -rf wasm/example/libs && mkdir -p wasm/example/libs
+	cp -r output/flatbuffers/ts/* wasm/example/libs/
 
 flatbuffers_swift:
 	rm -rf output/flatbuffers/swift && mkdir -p output/flatbuffers/swift
