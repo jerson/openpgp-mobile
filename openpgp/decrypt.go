@@ -3,7 +3,7 @@ package openpgp
 import (
 	"bytes"
 	"fmt"
-	"golang.org/x/crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"io"
 	"io/ioutil"
 	"os"

@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"golang.org/x/crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 func (o *FastOpenPGP) DecryptSymmetric(message, passphrase string, options *KeyOptions) (string, error) {

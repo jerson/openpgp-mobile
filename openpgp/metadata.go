@@ -3,7 +3,7 @@ package openpgp
 import (
 	"errors"
 	"fmt"
-	"golang.org/x/crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"strings"
 	"time"
 )

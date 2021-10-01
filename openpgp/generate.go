@@ -3,11 +3,11 @@ package openpgp
 import (
 	"bytes"
 	"fmt"
+	"github.com/ProtonMail/go-crypto/openpgp/armor"
 	"github.com/keybase/go-crypto/openpgp/packet"
-	"golang.org/x/crypto/openpgp/armor"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
 	keybaseOpenPGP "github.com/keybase/go-crypto/openpgp"
-	"golang.org/x/crypto/openpgp"
 )
 
 func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
