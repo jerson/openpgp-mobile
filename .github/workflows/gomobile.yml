@@ -40,10 +40,10 @@ jobs:
         env:
           GOPROXY: https://proxy.golang.org,direct
       - name: Build
-        run: |
-          export ANDROID_NDK_HOME=${{ steps.setup-ndk.outputs.ndk-path }}
-          export ANDROID_NDK_TOOLCHAIN=${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin
-          make gomobile_android
+        run: make gomobile_android
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_TOOLCHAIN: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin
       - name: Compress
         run: tar -czvf output.tar.gz -C output/android .
       - if: ${{ env.VERSION!='' }}
