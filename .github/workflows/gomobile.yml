@@ -34,11 +34,14 @@ jobs:
           ndk-version: r21d
       - uses: actions/setup-go@v2
         with:
-          go-version: '^1.15'
+          go-version: '^1.17'
       - name: Install Gomobile
-        run: make gomobile
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          gomobile init
         env:
           GOPROXY: https://proxy.golang.org,direct
+          GO111MODULE: "on"
       - name: Build
         run: make gomobile_android
         env:
@@ -61,19 +64,19 @@ jobs:
           path: output.tar.gz
 
   ios:
-    runs-on: macos-10.15
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
         with:
-          # using this version to support more Architectures in the fat file: Openpgp are: armv7 i386 x86_64 arm64
-          go-version: '1.14.13'
+          go-version: '^1.17'
       - name: Install Gomobile
         run: |
-          go get -u golang.org/x/mobile/cmd/gomobile@33b80540585f2b31e503da24d6b2a02de3c53ff5
+          go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
         env:
           GOPROXY: https://proxy.golang.org,direct
+          GO111MODULE: "auto"
       - name: Build Framework
         run: make gomobile_ios
       - name: Compress Framework

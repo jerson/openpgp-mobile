@@ -16,8 +16,7 @@ env:
 
 jobs:
   binding:
-    # macos-11.0 is not available for all, so for now still use macos-10.15
-    runs-on: macos-10.15
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
