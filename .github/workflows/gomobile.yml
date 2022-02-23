@@ -87,29 +87,12 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: gomobile_openpgp_ios_framework_$tag.tar.gz
+          asset_name: gomobile_openpgp_ios_xcframework_$tag.tar.gz
           file: output.tar.gz
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
         uses: actions/upload-artifact@v2
         with:
-          name: gomobile_openpgp_ios_framework
-          path: output.tar.gz
-      - name: Build XCFramework
-        run: make gomobile_ios
-      - name: Compress XCFramework
-        run: tar -czvf output.tar.gz -C output/ios .
-      - if: ${{ env.VERSION!='' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: gomobile_openpgp_ios_$tag.tar.gz
-          file: output.tar.gz
-          tag: ${{ env.VERSION }}
-          overwrite: true
-      - if: ${{ env.VERSION=='' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: gomobile_openpgp_ios
+          name: gomobile_openpgp_ios_xcframework
           path: output.tar.gz
