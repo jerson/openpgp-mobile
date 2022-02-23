@@ -37,8 +37,8 @@ jobs:
           go-version: '^1.17'
       - name: Install Gomobile
         run: |
-          go get golang.org/x/mobile/cmd/gobind
-          go get golang.org/x/mobile/cmd/gomobile
+          go install golang.org/x/mobile/cmd/gobind@latest
+          go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
         env:
           GOPROXY: https://proxy.golang.org,direct
@@ -73,8 +73,8 @@ jobs:
           go-version: '^1.17'
       - name: Install Gomobile
         run: |
-          go get golang.org/x/mobile/cmd/gobind
-          go get golang.org/x/mobile/cmd/gomobile
+          go install golang.org/x/mobile/cmd/gobind@latest
+          go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
         env:
           GOPROXY: https://proxy.golang.org,direct
