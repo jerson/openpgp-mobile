@@ -78,7 +78,7 @@ jobs:
           gomobile init
         env:
           GOPROXY: https://proxy.golang.org,direct
-          GO111MODULE: "auto"
+          GO111MODULE: "on"
       - name: Build Framework
         run: make gomobile_ios
       - name: Compress Framework
