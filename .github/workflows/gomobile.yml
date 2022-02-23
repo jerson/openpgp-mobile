@@ -78,7 +78,7 @@ jobs:
           gomobile init
         env:
           GOPROXY: https://proxy.golang.org,direct
-          GO111MODULE: "auto"
+          GO111MODULE: "on"
       - name: Build Framework
         run: make gomobile_ios
       - name: Compress Framework
@@ -97,19 +97,19 @@ jobs:
           name: gomobile_openpgp_ios_framework
           path: output.tar.gz
       - name: Build XCFramework
-        run: make gomobile_ios_xcframework
+        run: make gomobile_ios
       - name: Compress XCFramework
-        run: tar -czvf output_xcframework.tar.gz -C output/ios_xcframework .
+        run: tar -czvf output.tar.gz -C output/ios .
       - if: ${{ env.VERSION!='' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          asset_name: gomobile_openpgp_ios_xcframework_$tag.tar.gz
-          file: output_xcframework.tar.gz
+          asset_name: gomobile_openpgp_ios_$tag.tar.gz
+          file: output.tar.gz
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
         uses: actions/upload-artifact@v2
         with:
-          name: gomobile_openpgp_ios_xcframework
-          path: output_xcframework.tar.gz
+          name: gomobile_openpgp_ios
+          path: output.tar.gz
