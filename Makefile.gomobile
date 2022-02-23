@@ -21,4 +21,4 @@ gomobile_android:
 
 gomobile_ios:
 	mkdir -p output/ios
-	gomobile bind -ldflags="-w -s" -target=ios -o output/ios/$(GOMOBILE_NAME).xcframework $(GOMOBILE_PACKAGE)
+	gomobile bind -ldflags="-w -s" -target=ios,iossimulator,macos,maccatalyst -o output/ios/$(GOMOBILE_NAME).xcframework $(GOMOBILE_PACKAGE)
