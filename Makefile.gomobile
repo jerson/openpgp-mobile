@@ -13,7 +13,7 @@ gomobile_bridge_android:
 
 gomobile_bridge_ios:
 	mkdir -p output/ios
-	gomobile bind -ldflags="-w -s" -target=ios,iossimulator -o output/ios/$(GOMOBILE_BRIDGE_NAME).xcframework $(GOMOBILE_BRIDGE_PACKAGE)
+	gomobile bind -ldflags="-w -s" -target=ios,iossimulator,macos,maccatalyst -o output/ios/$(GOMOBILE_BRIDGE_NAME).xcframework $(GOMOBILE_BRIDGE_PACKAGE)
 
 gomobile_android:
 	mkdir -p output/android
@@ -21,4 +21,4 @@ gomobile_android:
 
 gomobile_ios:
 	mkdir -p output/ios
-	gomobile bind -ldflags="-w -s" -target=ios,iossimulator -o output/ios/$(GOMOBILE_NAME).xcframework $(GOMOBILE_PACKAGE)
+	gomobile bind -ldflags="-w -s" -target=ios,iossimulator,macos,maccatalyst -o output/ios/$(GOMOBILE_NAME).xcframework $(GOMOBILE_PACKAGE)
