@@ -21,32 +21,32 @@ enum Cipher : int {
 
 table EncryptRequest {
   message:string;
-  publicKey:string;
+  public_key:string;
   options:model.KeyOptions;
   signed:model.Entity;
-  fileHints:model.FileHints;
+  file_hints:model.FileHints;
 }
 
 table EncryptFileRequest {
   input:string;
   output:string;
-  publicKey:string;
+  public_key:string;
   options:model.KeyOptions;
   signed:model.Entity;
-  fileHints:model.FileHints;
+  file_hints:model.FileHints;
 }
 
 table EncryptBytesRequest {
   message:[ubyte];
-  publicKey:string;
+  public_key:string;
   options:model.KeyOptions;
   signed:model.Entity;
-  fileHints:model.FileHints;
+  file_hints:model.FileHints;
 }
 
 table DecryptRequest {
   message:string;
-  privateKey:string;
+  private_key:string;
   passphrase:string;
   options:model.KeyOptions;
 }
@@ -54,38 +54,38 @@ table DecryptRequest {
 table DecryptFileRequest {
   input:string;
   output:string;
-  privateKey:string;
+  private_key:string;
   passphrase:string;
   options:model.KeyOptions;
 }
 
 table DecryptBytesRequest {
   message:[ubyte];
-  privateKey:string;
+  private_key:string;
   passphrase:string;
   options:model.KeyOptions;
 }
 
 table SignRequest {
   message:string;
-  publicKey:string;
-  privateKey:string;
+  public_key:string;
+  private_key:string;
   passphrase:string;
   options:model.KeyOptions;
 }
 
 table SignFileRequest {
   input:string;
-  publicKey:string;
-  privateKey:string;
+  public_key:string;
+  private_key:string;
   passphrase:string;
   options:model.KeyOptions;
 }
 
 table SignBytesRequest {
   message:[ubyte];
-  publicKey:string;
-  privateKey:string;
+  public_key:string;
+  private_key:string;
   passphrase:string;
   options:model.KeyOptions;
 }
@@ -93,26 +93,26 @@ table SignBytesRequest {
 table VerifyRequest {
   signature:string;
   message:string;
-  publicKey:string;
+  public_key:string;
 }
 
 table VerifyFileRequest {
   signature:string;
   input:string;
-  publicKey:string;
+  public_key:string;
 }
 
 table VerifyBytesRequest {
   signature:string;
   message:[ubyte];
-  publicKey:string;
+  public_key:string;
 }
 
 table EncryptSymmetricRequest {
   message:string;
   passphrase:string;
   options:model.KeyOptions;
-  fileHints:model.FileHints;
+  file_hints:model.FileHints;
 }
 
 table EncryptSymmetricFileRequest {
@@ -120,14 +120,14 @@ table EncryptSymmetricFileRequest {
   output:string;
   passphrase:string;
   options:model.KeyOptions;
-  fileHints:model.FileHints;
+  file_hints:model.FileHints;
 }
 
 table EncryptSymmetricBytesRequest {
   message:[ubyte];
   passphrase:string;
   options:model.KeyOptions;
-  fileHints:model.FileHints;
+  file_hints:model.FileHints;
 }
 
 table DecryptSymmetricRequest {
@@ -173,10 +173,10 @@ table KeyOptions {
   /// more then 9, a non-nil error will be returned during
   /// encryption. See the constants above for convenient common
   /// settings for Level.
-  compressionLevel:int;
+  compression_level:int;
   /// RSABits is the number of bits in new RSA keys made with NewEntity.
   /// If zero, then 2048 bit keys are created.
-  rsaBits:int;
+  rsa_bits:int;
 }
 
 table Options {
@@ -184,27 +184,27 @@ table Options {
   comment:string;
   email:string;
   passphrase:string;
-  keyOptions:model.KeyOptions;
+  key_options:model.KeyOptions;
 }
 
 table FileHints {
   /// IsBinary can be set to hint that the contents are binary data.
-  isBinary:bool;
+  is_binary:bool;
   /// FileName hints at the name of the file that should be written. It's
   /// truncated to 255 bytes if longer. It may be empty to suggest that the
   /// file should not be written to disk. It may be equal to "_CONSOLE" to
   /// suggest the data should not be written to disk.
-  fileName:string;
+  file_name:string;
   /// ModTime format allowed: RFC3339, contains the modification time of the file, or the zero time if not applicable.
-  modTime:string;
+  mod_time:string;
 }
 
 /// An Entity represents the components of an OpenPGP key: a primary public key
 /// (which must be a signing key), one or more identities claimed by that key,
 /// and zero or more subkeys, which may be encryption keys.
 table Entity {
-  publicKey:string;
-  privateKey:string;
+  public_key:string;
+  private_key:string;
   passphrase:string;
 }
 
@@ -234,25 +234,25 @@ table KeyPairResponse {
 }
 
 table KeyPair {
-  publicKey:string;
-  privateKey:string;
+  public_key:string;
+  private_key:string;
 }
 
 table PublicKeyMetadata {
-  keyID:string;
-  keyIDShort:string;
-  creationTime:string;
+  key_id:string;
+  key_id_short:string;
+  creation_time:string;
   fingerprint:string;
-  keyIDNumeric:string;
-  isSubKey:bool;
+  key_id_numeric:string;
+  is_sub_key:bool;
 }
 
 table PrivateKeyMetadata {
-  keyID:string;
-  keyIDShort:string;
-  creationTime:string;
+  key_id:string;
+  key_id_short:string;
+  creation_time:string;
   fingerprint:string;
-  keyIDNumeric:string;
-  isSubKey:bool;
+  key_id_numeric:string;
+  is_sub_key:bool;
   encrypted:bool;
 }

@@ -33,7 +33,7 @@ func (rcv *PublicKeyMetadata) Table() flatbuffers.Table {
 	return rcv._tab
 }
 
-func (rcv *PublicKeyMetadata) KeyID() []byte {
+func (rcv *PublicKeyMetadata) KeyId() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(4))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -41,7 +41,7 @@ func (rcv *PublicKeyMetadata) KeyID() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) KeyIDShort() []byte {
+func (rcv *PublicKeyMetadata) KeyIdShort() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -65,7 +65,7 @@ func (rcv *PublicKeyMetadata) Fingerprint() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) KeyIDNumeric() []byte {
+func (rcv *PublicKeyMetadata) KeyIdNumeric() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(12))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -88,11 +88,11 @@ func (rcv *PublicKeyMetadata) MutateIsSubKey(n bool) bool {
 func PublicKeyMetadataStart(builder *flatbuffers.Builder) {
 	builder.StartObject(6)
 }
-func PublicKeyMetadataAddKeyID(builder *flatbuffers.Builder, keyID flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(keyID), 0)
+func PublicKeyMetadataAddKeyId(builder *flatbuffers.Builder, keyId flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(keyId), 0)
 }
-func PublicKeyMetadataAddKeyIDShort(builder *flatbuffers.Builder, keyIDShort flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(keyIDShort), 0)
+func PublicKeyMetadataAddKeyIdShort(builder *flatbuffers.Builder, keyIdShort flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(keyIdShort), 0)
 }
 func PublicKeyMetadataAddCreationTime(builder *flatbuffers.Builder, creationTime flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(creationTime), 0)
@@ -100,8 +100,8 @@ func PublicKeyMetadataAddCreationTime(builder *flatbuffers.Builder, creationTime
 func PublicKeyMetadataAddFingerprint(builder *flatbuffers.Builder, fingerprint flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(3, flatbuffers.UOffsetT(fingerprint), 0)
 }
-func PublicKeyMetadataAddKeyIDNumeric(builder *flatbuffers.Builder, keyIDNumeric flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(4, flatbuffers.UOffsetT(keyIDNumeric), 0)
+func PublicKeyMetadataAddKeyIdNumeric(builder *flatbuffers.Builder, keyIdNumeric flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(4, flatbuffers.UOffsetT(keyIdNumeric), 0)
 }
 func PublicKeyMetadataAddIsSubKey(builder *flatbuffers.Builder, isSubKey bool) {
 	builder.PrependBoolSlot(5, isSubKey, false)
