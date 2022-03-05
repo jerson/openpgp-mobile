@@ -40,7 +40,8 @@ jobs:
           path: output
       - uses: actions/setup-go@v2
         with:
-          go-version: '^1.17'
+          # we are using this version to avoid conflict with fast_rsa, they will be using 1.17.7
+          go-version: '1.17.6'
       - name: Build
         run: make binding_ios
       - name: Compress
