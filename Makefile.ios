@@ -29,5 +29,7 @@ binding_ios_armv7:
 	make binding
 
 binding_ios_armv7_prefix:
-	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/armv7.a
-	nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall
+	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/armv7.a || echo true
+	nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall || echo true
+	ld -r output/binding/ios/armv7.a -o output/binding/ios/armv77.a -alias __cgo_panic __cgo_panic_openpgp -unexported_symbol __cgo_panic || echo true
+	nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall || echo true
