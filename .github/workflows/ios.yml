@@ -24,8 +24,8 @@ jobs:
           go-version: '1.14.15'
       - name: Build
         run: make binding_ios_armv7
-      - run: brew install binutils
-      - run: echo "/usr/local/opt/binutils/bin" >> $BINUTIL_PATH
+      - run: brew install binutils aarch64-elf-binutils arm-linux-gnueabihf-binutils x86_64-elf-binutils
+      - run: echo "/usr/local/opt/binutils/bin" >> $OBJCOPY_PATH
       - run: make binding_ios_armv7_prefix
       - uses: actions/upload-artifact@v2
         with:
@@ -43,7 +43,7 @@ jobs:
           name: output_binding_arm7
           path: output
       - run: brew install binutils
-      - run: echo "/usr/local/opt/binutils/bin" >> $BINUTIL_PATH
+      - run: echo "/usr/local/opt/binutils/bin" >> $OBJCOPY_PATH
       - uses: actions/setup-go@v2
         with:
           go-version: '^1.17'
