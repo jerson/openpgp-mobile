@@ -11,7 +11,7 @@ binding_ios_arm64:
 	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
-	objcopy --redefine-syms=syms.txt $(IOS_BINDING_OUTPUT)/arm64.a
+	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/arm64.a
 	nm $(IOS_BINDING_OUTPUT)/arm64.a | grep OpenPGPBridgeCall
 
 binding_ios_x86_64:
@@ -19,7 +19,7 @@ binding_ios_x86_64:
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
-	objcopy --redefine-syms=syms.txt $(IOS_BINDING_OUTPUT)/x86_64.a
+	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/x86_64.a
 	nm $(IOS_BINDING_OUTPUT)/x86_64.a | grep OpenPGPBridgeCall
 
 binding_ios_armv7:
@@ -29,5 +29,5 @@ binding_ios_armv7:
 	make binding
 
 binding_ios_armv7_prefix:
-	objcopy --redefine-syms=syms.txt $(IOS_BINDING_OUTPUT)/armv7.a
+	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/armv7.a
 	nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall
