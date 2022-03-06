@@ -31,6 +31,7 @@ jobs:
           retention-days: 1
   binding_arm7_prefix:
     runs-on: ubuntu-20.04
+    needs: binding_arm7
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -46,7 +47,7 @@ jobs:
           retention-days: 1
   binding:
     runs-on: macos-11
-    needs: binding_arm7
+    needs: binding_arm7_prefix
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
