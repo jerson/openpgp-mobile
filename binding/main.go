@@ -5,8 +5,9 @@ package main
 //typedef struct  { void* message; int size; char* error; } BytesReturn;
 import "C"
 import (
-	"github.com/jerson/openpgp-mobile/bridge"
 	"unsafe"
+
+	openPGPBridge "github.com/jerson/openpgp-mobile/bridge"
 )
 
 //export OpenPGPBridgeCall
