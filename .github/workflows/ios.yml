@@ -24,35 +24,23 @@ jobs:
           go-version: '1.14.15'
       - name: Build
         run: make binding_ios_armv7
+      - run: brew install binutils
+      - run: echo "/usr/local/opt/binutils/bin" >> $BINUTILS_PATH
+      - run: make binding_ios_armv7_prefix
       - uses: actions/upload-artifact@v2
         with:
           name: output_binding_arm7
           path: output
           retention-days: 1
-  binding_arm7_prefix:
-    runs-on: ubuntu-20.04
+
+  binding:
+    runs-on: macos-11
     needs: binding_arm7
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: output_binding_arm7
-          path: output
-      - run: sudo apt-get install binutils
-      - run: make binding_ios_armv7_prefix
-      - uses: actions/upload-artifact@v2
-        with:
-          name: output_binding_strip_arm7
-          path: output
-          retention-days: 1
-  binding:
-    runs-on: macos-11
-    needs: binding_arm7_prefix
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: output_binding_prefix_arm7
           path: output
       - run: brew install binutils
       - run: echo "/usr/local/opt/binutils/bin" >> $BINUTILS_PATH
