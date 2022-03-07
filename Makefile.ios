@@ -27,9 +27,6 @@ binding_ios_armv7:
 	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
 	GOOS=darwin GOARCH=arm CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
 	make binding
-
-binding_ios_armv7_prefix:
-	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/armv7.a || echo true
-	nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall || echo true
-	ld -r output/binding/ios/armv7.a -o output/binding/ios/armv77.a -alias __cgo_panic __cgo_panic_openpgp -unexported_symbol __cgo_panic || echo true
-	nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall || echo true
+	#objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/armv7.a
+	#nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall
+	#ld -r output/binding/ios/armv7.a -o output/binding/ios/armv77.a -alias __cgo_panic __cgo_panic_openpgp -unexported_symbol __cgo_panic || echo true
