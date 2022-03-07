@@ -12,7 +12,6 @@ binding_ios_arm64:
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
 	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/arm64.a
-	nm $(IOS_BINDING_OUTPUT)/arm64.a | grep OpenPGPBridgeCall
 
 binding_ios_x86_64:
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64.a BUILD_MODE="c-archive" \
@@ -20,7 +19,6 @@ binding_ios_x86_64:
 	GOOS=ios GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
 	objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/x86_64.a
-	nm $(IOS_BINDING_OUTPUT)/x86_64.a | grep OpenPGPBridgeCall
 
 binding_ios_armv7:
 	BINDING_FILE=$(IOS_OUTPUT)/armv7.a BUILD_MODE="c-archive" \
