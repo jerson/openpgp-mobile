@@ -37,3 +37,7 @@ flatbuffers_kotlin:
 flatbuffers_java:
 	rm -rf output/flatbuffers/java && mkdir -p output/flatbuffers/java
 	flatc --java --gen-mutable -o ./output/flatbuffers/java flatbuffers/*.fbs
+
+flatbuffers_rust:
+	rm -rf output/flatbuffers/rust && mkdir -p output/flatbuffers/rust
+	flatc --rust --gen-mutable -o ./output/flatbuffers/rust flatbuffers/*.fbs
