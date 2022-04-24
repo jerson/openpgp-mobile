@@ -18,7 +18,7 @@ jobs:
   binding:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: docker-practice/actions-setup-docker@master
       - name: Build
         run: make binding_linux
@@ -33,7 +33,7 @@ jobs:
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: libopenpgp_bridge_linux
           path: output.tar.gz
