@@ -1,5 +1,5 @@
 .PHONY: flatbuffers
-flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_js
+flatbuffers: flatbuffers_dart flatbuffers_go flatbuffers_ts
 
 flatbuffers_deps:
 	cd /tmp && \
