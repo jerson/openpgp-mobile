@@ -53,6 +53,8 @@ func Call(name string, payload []byte) ([]byte, error) {
 		output = instance.encryptSymmetricBytes(payload)
 	case "generate":
 		output = instance.generate(payload)
+	case "armorEncode":
+		output = instance.armorEncode(payload)
 	default:
 		return nil, fmt.Errorf("not implemented: %s", name)
 	}
@@ -372,6 +374,17 @@ func (m instance) parseCompression(input model.Compression) string {
 	default:
 		return "none"
 	}
+}
+
+func (m instance) armorEncode(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsArmorEncodeRequest(payload, 0)
+
+	output, err := m.instance.ArmorEncode(request.PacketBytes())
+	if err != nil {
+		return m._stringResponse(response, output, err)
+	}
+	return m._stringResponse(response, output, nil)
 }
 
 func (m instance) _keyPairResponse(response *flatbuffers.Builder, output *openpgp.KeyPair, err error) []byte {
