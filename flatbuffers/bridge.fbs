@@ -153,6 +153,10 @@ table GenerateRequest {
   options:model.Options;
 }
 
+table ArmorEncodeRequest {
+  packet:[ubyte];
+}
+
 /// KeyOptions collects a number of parameters along with sensible defaults.
 table KeyOptions {
   /// Hash is the default hash function to be used.
