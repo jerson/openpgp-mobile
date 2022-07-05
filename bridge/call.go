@@ -229,10 +229,7 @@ func (m instance) armorEncode(payload []byte) []byte {
 	request := model.GetRootAsArmorEncodeRequest(payload, 0)
 
 	output, err := m.instance.ArmorEncode(request.PacketBytes())
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 
 func (m instance) getPublicKeyMetadata(payload []byte) []byte {
