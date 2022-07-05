@@ -55,6 +55,12 @@ func Call(name string, payload []byte) ([]byte, error) {
 		output = instance.generate(payload)
 	case "armorEncode":
 		output = instance.armorEncode(payload)
+	case "getPublicKeyMetadata":
+		output = instance.getPublicKeyMetadata(payload)
+	case "getPrivateKeyMetadata":
+		output = instance.getPrivateKeyMetadata(payload)
+	case "convertPrivateKeyToPublicKey":
+		output = instance.convertPrivateKeyToPublicKey(payload)
 	default:
 		return nil, fmt.Errorf("not implemented: %s", name)
 	}
@@ -75,10 +81,7 @@ func (m instance) decrypt(payload []byte) []byte {
 	request := model.GetRootAsDecryptRequest(payload, 0)
 
 	output, err := m.instance.Decrypt(m.toString(request.Message()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 
 func (m instance) decryptFile(payload []byte) []byte {
@@ -86,10 +89,7 @@ func (m instance) decryptFile(payload []byte) []byte {
 	request := model.GetRootAsDecryptFileRequest(payload, 0)
 
 	output, err := m.instance.DecryptFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._intResponse(response, int64(output), err)
-	}
-	return m._intResponse(response, int64(output), nil)
+	return m._intResponse(response, int64(output), err)
 }
 
 func (m instance) decryptBytes(payload []byte) []byte {
@@ -97,10 +97,7 @@ func (m instance) decryptBytes(payload []byte) []byte {
 	request := model.GetRootAsDecryptBytesRequest(payload, 0)
 
 	output, err := m.instance.DecryptBytes(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._bytesResponse(response, output, err)
-	}
-	return m._bytesResponse(response, output, nil)
+	return m._bytesResponse(response, output, err)
 }
 
 func (m instance) encrypt(payload []byte) []byte {
@@ -108,10 +105,7 @@ func (m instance) encrypt(payload []byte) []byte {
 	request := model.GetRootAsEncryptRequest(payload, 0)
 
 	output, err := m.instance.Encrypt(m.toString(request.Message()), m.toString(request.PublicKey()), m.parseEntity(request.Signed(nil)), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 
 func (m instance) encryptFile(payload []byte) []byte {
@@ -119,10 +113,7 @@ func (m instance) encryptFile(payload []byte) []byte {
 	request := model.GetRootAsEncryptFileRequest(payload, 0)
 
 	output, err := m.instance.EncryptFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.PublicKey()), m.parseEntity(request.Signed(nil)), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._intResponse(response, int64(output), err)
-	}
-	return m._intResponse(response, int64(output), nil)
+	return m._intResponse(response, int64(output), err)
 }
 
 func (m instance) encryptBytes(payload []byte) []byte {
@@ -130,10 +121,7 @@ func (m instance) encryptBytes(payload []byte) []byte {
 	request := model.GetRootAsEncryptBytesRequest(payload, 0)
 
 	output, err := m.instance.EncryptBytes(request.MessageBytes(), m.toString(request.PublicKey()), m.parseEntity(request.Signed(nil)), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._bytesResponse(response, output, err)
-	}
-	return m._bytesResponse(response, output, nil)
+	return m._bytesResponse(response, output, err)
 }
 
 func (m instance) sign(payload []byte) []byte {
@@ -141,130 +129,91 @@ func (m instance) sign(payload []byte) []byte {
 	request := model.GetRootAsSignRequest(payload, 0)
 
 	output, err := m.instance.Sign(m.toString(request.Message()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 func (m instance) signFile(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignFileRequest(payload, 0)
 
 	output, err := m.instance.SignFile(m.toString(request.Input()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 func (m instance) signBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignBytesRequest(payload, 0)
 
 	output, err := m.instance.SignBytes(request.MessageBytes(), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._bytesResponse(response, output, err)
-	}
-	return m._bytesResponse(response, output, nil)
+	return m._bytesResponse(response, output, err)
 }
 func (m instance) signBytesToString(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignBytesRequest(payload, 0)
 
 	output, err := m.instance.SignBytesToString(request.MessageBytes(), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 func (m instance) verify(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsVerifyRequest(payload, 0)
 
 	output, err := m.instance.Verify(m.toString(request.Signature()), m.toString(request.Message()), m.toString(request.PublicKey()))
-	if err != nil {
-		return m._boolResponse(response, output, err)
-	}
-	return m._boolResponse(response, output, nil)
+	return m._boolResponse(response, output, err)
 }
 func (m instance) verifyFile(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsVerifyFileRequest(payload, 0)
 
 	output, err := m.instance.VerifyFile(m.toString(request.Signature()), m.toString(request.Input()), m.toString(request.PublicKey()))
-	if err != nil {
-		return m._boolResponse(response, output, err)
-	}
-	return m._boolResponse(response, output, nil)
+	return m._boolResponse(response, output, err)
 }
 func (m instance) verifyBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsVerifyBytesRequest(payload, 0)
 
 	output, err := m.instance.VerifyBytes(m.toString(request.Signature()), request.MessageBytes(), m.toString(request.PublicKey()))
-	if err != nil {
-		return m._boolResponse(response, output, err)
-	}
-	return m._boolResponse(response, output, nil)
+	return m._boolResponse(response, output, err)
 }
 func (m instance) decryptSymmetric(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptSymmetricRequest(payload, 0)
 
 	output, err := m.instance.DecryptSymmetric(m.toString(request.Message()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 func (m instance) decryptSymmetricFile(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptSymmetricFileRequest(payload, 0)
 
 	output, err := m.instance.DecryptSymmetricFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._intResponse(response, int64(output), err)
-	}
-	return m._intResponse(response, int64(output), nil)
+	return m._intResponse(response, int64(output), err)
 }
 func (m instance) decryptSymmetricBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptSymmetricBytesRequest(payload, 0)
 
 	output, err := m.instance.DecryptSymmetricBytes(request.MessageBytes(), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._bytesResponse(response, output, err)
-	}
-	return m._bytesResponse(response, output, nil)
+	return m._bytesResponse(response, output, err)
 }
 func (m instance) encryptSymmetric(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsEncryptSymmetricRequest(payload, 0)
 
 	output, err := m.instance.EncryptSymmetric(m.toString(request.Message()), m.toString(request.Passphrase()), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
+	return m._stringResponse(response, output, err)
 }
 func (m instance) encryptSymmetricFile(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsEncryptSymmetricFileRequest(payload, 0)
 
 	output, err := m.instance.EncryptSymmetricFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.Passphrase()), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._intResponse(response, int64(output), err)
-	}
-	return m._intResponse(response, int64(output), nil)
+	return m._intResponse(response, int64(output), err)
 }
 func (m instance) encryptSymmetricBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsEncryptSymmetricBytesRequest(payload, 0)
 
 	output, err := m.instance.EncryptSymmetricBytes(request.MessageBytes(), m.toString(request.Passphrase()), m.parseFileHints(request.FileHints(nil)), m.parseKeyOptions(request.Options(nil)))
-	if err != nil {
-		return m._bytesResponse(response, output, err)
-	}
-	return m._bytesResponse(response, output, nil)
+	return m._bytesResponse(response, output, err)
 }
 func (m instance) generate(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
@@ -272,10 +221,39 @@ func (m instance) generate(payload []byte) []byte {
 	options := m.parseOptions(request.Options(nil))
 
 	output, err := m.instance.Generate(options)
-	if err != nil {
-		return m._keyPairResponse(response, output, err)
-	}
-	return m._keyPairResponse(response, output, nil)
+	return m._keyPairResponse(response, output, err)
+}
+
+func (m instance) armorEncode(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsArmorEncodeRequest(payload, 0)
+
+	output, err := m.instance.ArmorEncode(request.PacketBytes())
+	return m._stringResponse(response, output, err)
+}
+
+func (m instance) getPublicKeyMetadata(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsGetPublicKeyMetadataRequest(payload, 0)
+
+	output, err := m.instance.GetPublicKeyMetadata(m.toString(request.PublicKey()))
+	return m._publicKeyMetadataResponse(response, output, err)
+}
+
+func (m instance) getPrivateKeyMetadata(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsGetPrivateKeyMetadataRequest(payload, 0)
+
+	output, err := m.instance.GetPrivateKeyMetadata(m.toString(request.PrivateKey()))
+	return m._privateKeyMetadataResponse(response, output, err)
+}
+
+func (m instance) convertPrivateKeyToPublicKey(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsConvertPrivateKeyToPublicKeyRequest(payload, 0)
+
+	output, err := m.instance.ConvertPrivateKeyToPublicKey(m.toString(request.PrivateKey()))
+	return m._stringResponse(response, output, err)
 }
 
 func (m instance) parseOptions(input *model.Options) *openpgp.Options {
@@ -376,17 +354,6 @@ func (m instance) parseCompression(input model.Compression) string {
 	}
 }
 
-func (m instance) armorEncode(payload []byte) []byte {
-	response := flatbuffers.NewBuilder(0)
-	request := model.GetRootAsArmorEncodeRequest(payload, 0)
-
-	output, err := m.instance.ArmorEncode(request.PacketBytes())
-	if err != nil {
-		return m._stringResponse(response, output, err)
-	}
-	return m._stringResponse(response, output, nil)
-}
-
 func (m instance) _keyPairResponse(response *flatbuffers.Builder, output *openpgp.KeyPair, err error) []byte {
 	if err != nil {
 		outputOffset := response.CreateString(err.Error())
@@ -407,6 +374,67 @@ func (m instance) _keyPairResponse(response *flatbuffers.Builder, output *openpg
 	model.KeyPairResponseStart(response)
 	model.KeyPairResponseAddOutput(response, KeyPair)
 	response.Finish(model.KeyPairResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) _publicKeyMetadataResponse(response *flatbuffers.Builder, output *openpgp.PublicKeyMetadata, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.PublicKeyMetadataResponseStart(response)
+		model.PublicKeyMetadataResponseAddError(response, outputOffset)
+		response.Finish(model.PublicKeyMetadataResponseEnd(response))
+		return response.FinishedBytes()
+	}
+
+	keyIDOffset := response.CreateString(output.KeyID)
+	keyIDShortOffset := response.CreateString(output.KeyIDShort)
+	creationTimeOffset := response.CreateString(output.CreationTime)
+	fingerprintOffset := response.CreateString(output.Fingerprint)
+	keyIDNumericOffset := response.CreateString(output.KeyIDNumeric)
+
+	model.PublicKeyMetadataStart(response)
+	model.PublicKeyMetadataAddKeyId(response, keyIDOffset)
+	model.PublicKeyMetadataAddKeyIdShort(response, keyIDShortOffset)
+	model.PublicKeyMetadataAddCreationTime(response, creationTimeOffset)
+	model.PublicKeyMetadataAddFingerprint(response, fingerprintOffset)
+	model.PublicKeyMetadataAddKeyIdNumeric(response, keyIDNumericOffset)
+	model.PublicKeyMetadataAddIsSubKey(response, output.IsSubKey)
+	KeyPair := model.PublicKeyMetadataEnd(response)
+
+	model.PublicKeyMetadataResponseStart(response)
+	model.PublicKeyMetadataResponseAddOutput(response, KeyPair)
+	response.Finish(model.PublicKeyMetadataResponseEnd(response))
+	return response.FinishedBytes()
+}
+
+func (m instance) _privateKeyMetadataResponse(response *flatbuffers.Builder, output *openpgp.PrivateKeyMetadata, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.PrivateKeyMetadataResponseStart(response)
+		model.PrivateKeyMetadataResponseAddError(response, outputOffset)
+		response.Finish(model.PrivateKeyMetadataResponseEnd(response))
+		return response.FinishedBytes()
+	}
+
+	keyIDOffset := response.CreateString(output.KeyID)
+	keyIDShortOffset := response.CreateString(output.KeyIDShort)
+	creationTimeOffset := response.CreateString(output.CreationTime)
+	fingerprintOffset := response.CreateString(output.Fingerprint)
+	keyIDNumericOffset := response.CreateString(output.KeyIDNumeric)
+
+	model.PrivateKeyMetadataStart(response)
+	model.PrivateKeyMetadataAddKeyId(response, keyIDOffset)
+	model.PrivateKeyMetadataAddKeyIdShort(response, keyIDShortOffset)
+	model.PrivateKeyMetadataAddCreationTime(response, creationTimeOffset)
+	model.PrivateKeyMetadataAddFingerprint(response, fingerprintOffset)
+	model.PrivateKeyMetadataAddKeyIdNumeric(response, keyIDNumericOffset)
+	model.PrivateKeyMetadataAddIsSubKey(response, output.IsSubKey)
+	model.PrivateKeyMetadataAddEncrypted(response, output.Encrypted)
+	KeyPair := model.PrivateKeyMetadataEnd(response)
+
+	model.PrivateKeyMetadataResponseStart(response)
+	model.PrivateKeyMetadataResponseAddOutput(response, KeyPair)
+	response.Finish(model.PrivateKeyMetadataResponseEnd(response))
 	return response.FinishedBytes()
 }
 
