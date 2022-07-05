@@ -157,6 +157,18 @@ table ArmorEncodeRequest {
   packet:[ubyte];
 }
 
+table GetPublicKeyMetadataRequest {
+  public_key:string;
+}
+
+table GetPrivateKeyMetadataRequest {
+  private_key:string;
+}
+
+table ConvertPrivateKeyToPublicKeyRequest {
+  private_key:string;
+}
+
 /// KeyOptions collects a number of parameters along with sensible defaults.
 table KeyOptions {
   /// Hash is the default hash function to be used.
@@ -240,6 +252,16 @@ table KeyPairResponse {
 table KeyPair {
   public_key:string;
   private_key:string;
+}
+
+table PublicKeyMetadataResponse {
+  output:model.PublicKeyMetadata;
+  error:string;
+}
+
+table PrivateKeyMetadataResponse {
+  output:model.PrivateKeyMetadata;
+  error:string;
 }
 
 table PublicKeyMetadata {
