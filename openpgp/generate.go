@@ -45,6 +45,7 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	if err != nil {
 		return keyPair, err
 	}
+	// this is required to allow close block before String
 	writerPrivate.Close()
 	keyPair.PrivateKey = privateKeyBuf.String()
 
@@ -59,6 +60,7 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	if err != nil {
 		return keyPair, err
 	}
+	// this is required to allow close block before String
 	writerPublic.Close()
 	keyPair.PublicKey = publicKeyBuf.String()
 

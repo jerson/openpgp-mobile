@@ -11,10 +11,10 @@ import (
 func (o *FastOpenPGP) ConvertPrivateKeyToPublicKey(key string) (string, error) {
 	entityList, err := o.readArmoredKeyRing(key, openpgp.PrivateKeyType)
 	if err != nil {
-		return "", fmt.Errorf("publicKey error: %w", err)
+		return "", fmt.Errorf("privateKey error: %w", err)
 	}
 	if len(entityList) < 1 {
-		return "", fmt.Errorf("publicKey error: %w", errors.New("no key found"))
+		return "", fmt.Errorf("privateKey error: %w", errors.New("no key found"))
 	}
 
 	publicKey := entityList[0].PrimaryKey
@@ -33,6 +33,8 @@ func (o *FastOpenPGP) ConvertPrivateKeyToPublicKey(key string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	// this is required to allow close block before String
+	writerPublic.Close()
 
 	return publicKeyBuf.String(), nil
 }
