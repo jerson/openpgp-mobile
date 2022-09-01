@@ -3,31 +3,36 @@ package openpgp
 import (
 	"bytes"
 	"fmt"
-	"github.com/ProtonMail/go-crypto/openpgp/armor"
-	"github.com/keybase/go-crypto/openpgp/packet"
-
 	"github.com/ProtonMail/go-crypto/openpgp"
-	keybaseOpenPGP "github.com/keybase/go-crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp/armor"
 )
 
 func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
-
 	var keyPair *KeyPair
-	config := generatePacketConfigKeybase(options.KeyOptions)
-	entity, err := keybaseOpenPGP.NewEntity(options.Name, options.Comment, options.Email, config)
+
+	if options == nil {
+		return keyPair, fmt.Errorf("missing parameters: Options")
+	}
+
+	if options.KeyOptions == nil {
+		return keyPair, fmt.Errorf("missing parameters: KeyOptions")
+	}
+
+	config := generatePacketConfig(options.KeyOptions)
+	entity, err := openpgp.NewEntity(options.Name, options.Comment, options.Email, config)
 	if err != nil {
 		return keyPair, fmt.Errorf("newEntity error: %w", err)
 	}
 
 	for _, id := range entity.Identities {
-		err := id.SelfSignature.SignUserId(id.UserId.Id, entity.PrimaryKey, entity.PrivateKey, nil)
+		err := id.SelfSignature.SignUserId(id.UserId.Id, entity.PrimaryKey, entity.PrivateKey, config)
 		if err != nil {
 			return keyPair, fmt.Errorf("signUserId error: %w", err)
 		}
 	}
 
 	if options.Passphrase != "" {
-		err = entity.PrivateKey.Encrypt([]byte(options.Passphrase), nil)
+		err = entity.PrivateKey.Encrypt([]byte(options.Passphrase))
 		if err != nil {
 			return keyPair, fmt.Errorf("encrypt privateKey error: %w", err)
 		}
@@ -41,7 +46,7 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	}
 	defer writerPrivate.Close()
 
-	err = entity.SerializePrivate(writerPrivate, nil)
+	err = entity.SerializePrivateWithoutSigning(writerPrivate, config)
 	if err != nil {
 		return keyPair, err
 	}
@@ -65,48 +70,4 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	keyPair.PublicKey = publicKeyBuf.String()
 
 	return keyPair, nil
-}
-
-func generatePacketConfigKeybase(options *KeyOptions) *packet.Config {
-
-	if options == nil {
-		return &packet.Config{}
-	}
-
-	config := &packet.Config{
-		DefaultHash:            hashTo(options.Hash),
-		DefaultCipher:          cipherToFunctionKeybase(options.Cipher),
-		DefaultCompressionAlgo: compressionToAlgoKeybase(options.Compression),
-		CompressionConfig: &packet.CompressionConfig{
-			Level: options.CompressionLevel,
-		},
-		RSABits: options.RSABits,
-	}
-	return config
-}
-
-func cipherToFunctionKeybase(cipher string) packet.CipherFunction {
-	switch cipher {
-	case "aes256":
-		return packet.CipherAES256
-	case "aes192":
-		return packet.CipherAES192
-	case "aes128":
-		fallthrough
-	default:
-		return packet.CipherAES128
-	}
-}
-
-func compressionToAlgoKeybase(algo string) packet.CompressionAlgo {
-	switch algo {
-	case "zlib":
-		return packet.CompressionZLIB
-	case "zip":
-		return packet.CompressionZIP
-	case "none":
-		fallthrough
-	default:
-		return packet.CompressionNone
-	}
 }

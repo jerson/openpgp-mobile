@@ -32,3 +32,38 @@ func TestFastOpenPGP_SignFile(t *testing.T) {
 
 	t.Log("output:", output)
 }
+
+func TestFastOpenPGP_SignVerifyAndGenerate(t *testing.T) {
+	options := &Options{
+		Email:      "sample@sample.com",
+		Name:       "Test",
+		Comment:    "sample",
+		Passphrase: "test",
+		KeyOptions: &KeyOptions{
+			CompressionLevel: 9,
+			RSABits:          2048,
+			Cipher:           "aes256",
+			Compression:      "none",
+			Hash:             "sha512",
+		},
+	}
+	openPGP := NewFastOpenPGP()
+
+	keyPair, err := openPGP.Generate(options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signed, err := openPGP.Sign(inputMessage, keyPair.PublicKey, keyPair.PrivateKey, passphrase, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("signed:", signed)
+
+	ok, err := openPGP.Verify(signed, inputMessage, keyPair.PublicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("verified:", ok)
+
+}

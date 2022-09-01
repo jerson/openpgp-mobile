@@ -5,7 +5,7 @@ import (
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
 )
 
-func (o FastOpenPGP) ArmorEncode(packet []byte) (string, error) {
+func (o *FastOpenPGP) ArmorEncode(packet []byte) (string, error) {
 	buf := bytes.NewBuffer(nil)
 	writer, err := armor.Encode(buf, messageType, headers)
 	if err != nil {
