@@ -17,10 +17,7 @@ func (o *FastOpenPGP) ConvertPrivateKeyToPublicKey(key string) (string, error) {
 		return "", fmt.Errorf("privateKey error: %w", errors.New("no key found"))
 	}
 
-	publicKey := entityList[0].PrimaryKey
-	if publicKey == nil {
-		return "", fmt.Errorf("publicKey error: %w", errors.New("no publicKey found"))
-	}
+	entity := entityList[0]
 
 	publicKeyBuf := bytes.NewBuffer(nil)
 	writerPublic, err := armor.Encode(publicKeyBuf, openpgp.PublicKeyType, headers)
@@ -29,7 +26,7 @@ func (o *FastOpenPGP) ConvertPrivateKeyToPublicKey(key string) (string, error) {
 	}
 	defer writerPublic.Close()
 
-	err = publicKey.Serialize(writerPublic)
+	err = entity.Serialize(writerPublic)
 	if err != nil {
 		return "", err
 	}
