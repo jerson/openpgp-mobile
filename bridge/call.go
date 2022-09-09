@@ -2,6 +2,7 @@ package openPGPBridge
 
 import (
 	"fmt"
+
 	flatbuffers "github.com/google/flatbuffers/go"
 	"github.com/jerson/openpgp-mobile/bridge/model"
 	"github.com/jerson/openpgp-mobile/openpgp"
@@ -377,7 +378,44 @@ func (m instance) _keyPairResponse(response *flatbuffers.Builder, output *openpg
 	return response.FinishedBytes()
 }
 
+type identityOffset struct {
+	id      flatbuffers.UOffsetT
+	name    flatbuffers.UOffsetT
+	email   flatbuffers.UOffsetT
+	comment flatbuffers.UOffsetT
+}
+
+func (m instance) _identitiesResponse(response *flatbuffers.Builder, output []openpgp.Identity) flatbuffers.UOffsetT {
+	total := len(output)
+	identityMap := map[int]identityOffset{}
+	for key, identity := range output {
+		identityMap[key] = identityOffset{
+			id:      response.CreateString(identity.ID),
+			name:    response.CreateString(identity.Name),
+			email:   response.CreateString(identity.Email),
+			comment: response.CreateString(identity.Comment),
+		}
+	}
+	identityOffsetList := []flatbuffers.UOffsetT{}
+	for _, identity := range identityMap {
+		model.IdentityStart(response)
+		model.IdentityAddId(response, identity.id)
+		model.IdentityAddName(response, identity.name)
+		model.IdentityAddEmail(response, identity.email)
+		model.IdentityAddComment(response, identity.comment)
+		identityOffset := model.IdentityEnd(response)
+		identityOffsetList = append(identityOffsetList, identityOffset)
+	}
+	model.PublicKeyMetadataStartIdentitiesVector(response, total)
+	for _, identity := range identityOffsetList {
+		response.PrependUOffsetT(identity)
+	}
+	identities := response.EndVector(total)
+	return identities
+}
+
 func (m instance) _publicKeyMetadataResponse(response *flatbuffers.Builder, output *openpgp.PublicKeyMetadata, err error) []byte {
+
 	if err != nil {
 		outputOffset := response.CreateString(err.Error())
 		model.PublicKeyMetadataResponseStart(response)
@@ -391,6 +429,7 @@ func (m instance) _publicKeyMetadataResponse(response *flatbuffers.Builder, outp
 	creationTimeOffset := response.CreateString(output.CreationTime)
 	fingerprintOffset := response.CreateString(output.Fingerprint)
 	keyIDNumericOffset := response.CreateString(output.KeyIDNumeric)
+	identitiesOffset := m._identitiesResponse(response, output.Identities)
 
 	model.PublicKeyMetadataStart(response)
 	model.PublicKeyMetadataAddKeyId(response, keyIDOffset)
@@ -399,6 +438,7 @@ func (m instance) _publicKeyMetadataResponse(response *flatbuffers.Builder, outp
 	model.PublicKeyMetadataAddFingerprint(response, fingerprintOffset)
 	model.PublicKeyMetadataAddKeyIdNumeric(response, keyIDNumericOffset)
 	model.PublicKeyMetadataAddIsSubKey(response, output.IsSubKey)
+	model.PublicKeyMetadataAddIdentities(response, identitiesOffset)
 	KeyPair := model.PublicKeyMetadataEnd(response)
 
 	model.PublicKeyMetadataResponseStart(response)
@@ -421,6 +461,7 @@ func (m instance) _privateKeyMetadataResponse(response *flatbuffers.Builder, out
 	creationTimeOffset := response.CreateString(output.CreationTime)
 	fingerprintOffset := response.CreateString(output.Fingerprint)
 	keyIDNumericOffset := response.CreateString(output.KeyIDNumeric)
+	identitiesOffset := m._identitiesResponse(response, output.Identities)
 
 	model.PrivateKeyMetadataStart(response)
 	model.PrivateKeyMetadataAddKeyId(response, keyIDOffset)
@@ -430,6 +471,7 @@ func (m instance) _privateKeyMetadataResponse(response *flatbuffers.Builder, out
 	model.PrivateKeyMetadataAddKeyIdNumeric(response, keyIDNumericOffset)
 	model.PrivateKeyMetadataAddIsSubKey(response, output.IsSubKey)
 	model.PrivateKeyMetadataAddEncrypted(response, output.Encrypted)
+	model.PrivateKeyMetadataAddIdentities(response, identitiesOffset)
 	KeyPair := model.PrivateKeyMetadataEnd(response)
 
 	model.PrivateKeyMetadataResponseStart(response)

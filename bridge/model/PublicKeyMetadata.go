@@ -85,8 +85,28 @@ func (rcv *PublicKeyMetadata) MutateIsSubKey(n bool) bool {
 	return rcv._tab.MutateBoolSlot(14, n)
 }
 
+func (rcv *PublicKeyMetadata) Identities(obj *Identity, j int) bool {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(16))
+	if o != 0 {
+		x := rcv._tab.Vector(o)
+		x += flatbuffers.UOffsetT(j) * 4
+		x = rcv._tab.Indirect(x)
+		obj.Init(rcv._tab.Bytes, x)
+		return true
+	}
+	return false
+}
+
+func (rcv *PublicKeyMetadata) IdentitiesLength() int {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(16))
+	if o != 0 {
+		return rcv._tab.VectorLen(o)
+	}
+	return 0
+}
+
 func PublicKeyMetadataStart(builder *flatbuffers.Builder) {
-	builder.StartObject(6)
+	builder.StartObject(7)
 }
 func PublicKeyMetadataAddKeyId(builder *flatbuffers.Builder, keyId flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(keyId), 0)
@@ -105,6 +125,12 @@ func PublicKeyMetadataAddKeyIdNumeric(builder *flatbuffers.Builder, keyIdNumeric
 }
 func PublicKeyMetadataAddIsSubKey(builder *flatbuffers.Builder, isSubKey bool) {
 	builder.PrependBoolSlot(5, isSubKey, false)
+}
+func PublicKeyMetadataAddIdentities(builder *flatbuffers.Builder, identities flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(6, flatbuffers.UOffsetT(identities), 0)
+}
+func PublicKeyMetadataStartIdentitiesVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT {
+	return builder.StartVector(4, numElems, 4)
 }
 func PublicKeyMetadataEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()

@@ -25,6 +25,13 @@ type Entity struct {
 	Passphrase string
 }
 
+type Identity struct {
+	ID      string
+	Name    string
+	Comment string
+	Email   string
+}
+
 type PublicKeyMetadata struct {
 	KeyID        string
 	KeyIDShort   string
@@ -32,6 +39,7 @@ type PublicKeyMetadata struct {
 	Fingerprint  string
 	KeyIDNumeric string
 	IsSubKey     bool
+	Identities   []Identity
 }
 
 type PrivateKeyMetadata struct {
@@ -42,4 +50,5 @@ type PrivateKeyMetadata struct {
 	KeyIDNumeric string
 	IsSubKey     bool
 	Encrypted    bool
+	Identities   []Identity
 }

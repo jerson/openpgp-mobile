@@ -264,6 +264,14 @@ table PrivateKeyMetadataResponse {
   error:string;
 }
 
+table Identity {
+  id:string;
+  comment:string;
+  email:string;
+  name:string;
+}
+
+
 table PublicKeyMetadata {
   key_id:string;
   key_id_short:string;
@@ -271,6 +279,7 @@ table PublicKeyMetadata {
   fingerprint:string;
   key_id_numeric:string;
   is_sub_key:bool;
+  identities:[model.Identity];
 }
 
 table PrivateKeyMetadata {
@@ -281,4 +290,5 @@ table PrivateKeyMetadata {
   key_id_numeric:string;
   is_sub_key:bool;
   encrypted:bool;
+  identities:[model.Identity];
 }
