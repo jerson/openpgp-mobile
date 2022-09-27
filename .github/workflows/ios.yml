@@ -22,10 +22,11 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '1.14.15'
-      - run: brew install binutils 
+      - name: Build Go
+        run: ./go.sh 1.14.15 openpgp
       - name: Build
         run: |
-          export PATH="$PATH:/usr/local/opt/binutils/bin"
+          export PATH="/tmp/go/bin:$PATH"
           make binding_ios_armv7
       - uses: actions/upload-artifact@v3
         with:
@@ -45,10 +46,11 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '^1.17'
-      - run: brew install binutils
+      - name: Build Go
+        run: ./go.sh 1.17.13 openpgp
       - name: Build
         run: |
-          export PATH="$PATH:/usr/local/opt/binutils/bin"
+          export PATH="/tmp/go/bin:$PATH"
           make binding_ios
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/ios .

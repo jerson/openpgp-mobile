@@ -1,5 +1,6 @@
 BUILD_MODE?=c-shared
 OUTPUT_DIR?=output
+GO_BINARY?=go
 BINDING_NAME?=libopenpgp_bridge
 BINDING_FILE?=$(BINDING_NAME).so
 BINDING_ARGS?=
@@ -22,7 +23,7 @@ clean:
 
 binding: deps
 	mkdir -p $(BINDING_OUTPUT)
-	go build -ldflags="-w -s $(EXTRA_LD_FLAGS)" -o $(BINDING_OUTPUT)/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go
+	$(GO_BINARY) build -ldflags="-w -s $(EXTRA_LD_FLAGS)" -o $(BINDING_OUTPUT)/$(BINDING_FILE) -buildmode=$(BUILD_MODE) $(BINDING_ARGS) binding/main.go
 
 include Makefile.android
 include Makefile.ios
