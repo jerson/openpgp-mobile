@@ -1,0 +1,26 @@
+export SUFFIX="openpgp"
+find ./ -type f -exec sed -i "s/_cgo_panic/_cgo_panic_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_topofstack/_cgo_topofstack_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/crosscall2/crosscall2_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_release_context/_cgo_release_context_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_sys_thread_start/_cgo_sys_thread_start_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_init/x_cgo_init_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_get_context_function/_cgo_get_context_function_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_try_pthread_create/_cgo_try_pthread_create_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_wait_runtime_init_done/_cgo_wait_runtime_init_done_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_notify_runtime_init_done/x_cgo_notify_runtime_init_done_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_set_context_function/x_cgo_set_context_function_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_sys_thread_create/x_cgo_sys_thread_create_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_setenv/x_cgo_setenv_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_unsetenv/x_cgo_unsetenv_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_callers/x_cgo_callers_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/_cgo_yield/_cgo_yield_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/x_cgo_thread_start/x_cgo_thread_start_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/crosscall_amd64/crosscall_amd64_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/crosscall_arm64/crosscall_arm64_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/crosscall_arm/crosscall_arm_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/crosscall_arm7/crosscall_arm7_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/crosscall_arm1/crosscall_arm1_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/xx_cgo_panicmem/xx_cgo_panicmem_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/darwin_arm_init_thread_exception_port/darwin_arm_init_thread_exception_port_$SUFFIX/g" {} \;
+find ./ -type f -exec sed -i "s/darwin_arm_init_mach_exception_handler/darwin_arm_init_mach_exception_handler_$SUFFIX/g" {} \;
