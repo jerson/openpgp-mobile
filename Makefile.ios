@@ -11,20 +11,15 @@ binding_ios_arm64:
 	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
-	#objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/arm64.a
 
 binding_ios_x86_64:
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64.a BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
-	#objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/x86_64.a
 
 binding_ios_armv7:
 	BINDING_FILE=$(IOS_OUTPUT)/armv7.a BUILD_MODE="c-archive" \
 	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
 	GOOS=darwin GOARCH=arm CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
 	make binding
-	#objcopy --redefine-syms=ios_syms.txt $(IOS_BINDING_OUTPUT)/armv7.a
-	#nm $(IOS_BINDING_OUTPUT)/armv7.a | grep OpenPGPBridgeCall
-	#ld -r output/binding/ios/armv7.a -o output/binding/ios/armv77.a -alias __cgo_panic __cgo_panic_openpgp -unexported_symbol __cgo_panic || echo true
