@@ -10,18 +10,24 @@ const (
 	CipherAES128 Cipher = 0
 	CipherAES192 Cipher = 1
 	CipherAES256 Cipher = 2
+	CipherDES    Cipher = 3
+	CipherCAST5  Cipher = 4
 )
 
 var EnumNamesCipher = map[Cipher]string{
 	CipherAES128: "AES128",
 	CipherAES192: "AES192",
 	CipherAES256: "AES256",
+	CipherDES:    "DES",
+	CipherCAST5:  "CAST5",
 }
 
 var EnumValuesCipher = map[string]Cipher{
 	"AES128": CipherAES128,
 	"AES192": CipherAES192,
 	"AES256": CipherAES256,
+	"DES":    CipherDES,
+	"CAST5":  CipherCAST5,
 }
 
 func (v Cipher) String() string {

@@ -33,12 +33,15 @@ type Identity struct {
 }
 
 type PublicKeyMetadata struct {
+	Algorithm    string
 	KeyID        string
 	KeyIDShort   string
 	CreationTime string
 	Fingerprint  string
 	KeyIDNumeric string
 	IsSubKey     bool
+	CanSign      bool
+	CanEncrypt   bool
 	Identities   []Identity
 }
 
@@ -50,5 +53,6 @@ type PrivateKeyMetadata struct {
 	KeyIDNumeric string
 	IsSubKey     bool
 	Encrypted    bool
+	CanSign      bool
 	Identities   []Identity
 }

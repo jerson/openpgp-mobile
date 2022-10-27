@@ -97,8 +97,20 @@ func (rcv *PrivateKeyMetadata) MutateEncrypted(n bool) bool {
 	return rcv._tab.MutateBoolSlot(16, n)
 }
 
-func (rcv *PrivateKeyMetadata) Identities(obj *Identity, j int) bool {
+func (rcv *PrivateKeyMetadata) CanSign() bool {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(18))
+	if o != 0 {
+		return rcv._tab.GetBool(o + rcv._tab.Pos)
+	}
+	return false
+}
+
+func (rcv *PrivateKeyMetadata) MutateCanSign(n bool) bool {
+	return rcv._tab.MutateBoolSlot(18, n)
+}
+
+func (rcv *PrivateKeyMetadata) Identities(obj *Identity, j int) bool {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(20))
 	if o != 0 {
 		x := rcv._tab.Vector(o)
 		x += flatbuffers.UOffsetT(j) * 4
@@ -110,7 +122,7 @@ func (rcv *PrivateKeyMetadata) Identities(obj *Identity, j int) bool {
 }
 
 func (rcv *PrivateKeyMetadata) IdentitiesLength() int {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(18))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(20))
 	if o != 0 {
 		return rcv._tab.VectorLen(o)
 	}
@@ -118,7 +130,7 @@ func (rcv *PrivateKeyMetadata) IdentitiesLength() int {
 }
 
 func PrivateKeyMetadataStart(builder *flatbuffers.Builder) {
-	builder.StartObject(8)
+	builder.StartObject(9)
 }
 func PrivateKeyMetadataAddKeyId(builder *flatbuffers.Builder, keyId flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(keyId), 0)
@@ -141,8 +153,11 @@ func PrivateKeyMetadataAddIsSubKey(builder *flatbuffers.Builder, isSubKey bool) 
 func PrivateKeyMetadataAddEncrypted(builder *flatbuffers.Builder, encrypted bool) {
 	builder.PrependBoolSlot(6, encrypted, false)
 }
+func PrivateKeyMetadataAddCanSign(builder *flatbuffers.Builder, canSign bool) {
+	builder.PrependBoolSlot(7, canSign, false)
+}
 func PrivateKeyMetadataAddIdentities(builder *flatbuffers.Builder, identities flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(7, flatbuffers.UOffsetT(identities), 0)
+	builder.PrependUOffsetTSlot(8, flatbuffers.UOffsetT(identities), 0)
 }
 func PrivateKeyMetadataStartIdentitiesVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT {
 	return builder.StartVector(4, numElems, 4)

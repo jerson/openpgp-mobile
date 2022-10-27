@@ -1,5 +1,26 @@
 namespace model;
 
+enum Algorithm : int {
+  RSA = 0,
+  ECDSA = 1,
+  EDDSA = 2,
+  ECHD = 3,
+  DSA = 4,
+  ELGAMAL = 5,
+}
+
+enum Curve : int {
+  CURVE25519 = 0,
+  CURVE448 = 1,
+  P256 = 2,
+  P384 = 3,
+  P521 = 4,
+  SECP256K1 = 5,
+  BRAINPOOLP256 = 6,
+  BRAINPOOLP384 = 7,
+  BRAINPOOLP512 = 8,
+}
+
 enum Hash : int {
   SHA256 = 0,
   SHA224 = 1,
@@ -17,6 +38,8 @@ enum Cipher : int {
   AES128 = 0,
   AES192 = 1,
   AES256 = 2,
+  DES = 3,
+  CAST5 = 4,
 }
 
 table EncryptRequest {
@@ -171,6 +194,12 @@ table ConvertPrivateKeyToPublicKeyRequest {
 
 /// KeyOptions collects a number of parameters along with sensible defaults.
 table KeyOptions {
+  /// The public key algorithm to use - will always create a signing primary
+  /// key and encryption subkey.
+  algorithm:model.Algorithm;
+  /// Curve configures the desired packet.Curve if the Algorithm is PubKeyAlgoECDSA,
+  /// PubKeyAlgoEdDSA, or PubKeyAlgoECDH. If empty Curve25519 is used.
+  curve:model.Curve;
   /// Hash is the default hash function to be used.
   /// If zero, SHA-256 is used.
   hash:model.Hash;
@@ -273,12 +302,15 @@ table Identity {
 
 
 table PublicKeyMetadata {
+  algorithm:string;
   key_id:string;
   key_id_short:string;
   creation_time:string;
   fingerprint:string;
   key_id_numeric:string;
   is_sub_key:bool;
+  can_sign:bool;
+  can_encrypt:bool;
   identities:[model.Identity];
 }
 
@@ -290,5 +322,6 @@ table PrivateKeyMetadata {
   key_id_numeric:string;
   is_sub_key:bool;
   encrypted:bool;
+  can_sign:bool;
   identities:[model.Identity];
 }

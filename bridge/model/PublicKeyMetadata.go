@@ -33,7 +33,7 @@ func (rcv *PublicKeyMetadata) Table() flatbuffers.Table {
 	return rcv._tab
 }
 
-func (rcv *PublicKeyMetadata) KeyId() []byte {
+func (rcv *PublicKeyMetadata) Algorithm() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(4))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -41,7 +41,7 @@ func (rcv *PublicKeyMetadata) KeyId() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) KeyIdShort() []byte {
+func (rcv *PublicKeyMetadata) KeyId() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -49,7 +49,7 @@ func (rcv *PublicKeyMetadata) KeyIdShort() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) CreationTime() []byte {
+func (rcv *PublicKeyMetadata) KeyIdShort() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -57,7 +57,7 @@ func (rcv *PublicKeyMetadata) CreationTime() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) Fingerprint() []byte {
+func (rcv *PublicKeyMetadata) CreationTime() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(10))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -65,7 +65,7 @@ func (rcv *PublicKeyMetadata) Fingerprint() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) KeyIdNumeric() []byte {
+func (rcv *PublicKeyMetadata) Fingerprint() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(12))
 	if o != 0 {
 		return rcv._tab.ByteVector(o + rcv._tab.Pos)
@@ -73,8 +73,16 @@ func (rcv *PublicKeyMetadata) KeyIdNumeric() []byte {
 	return nil
 }
 
-func (rcv *PublicKeyMetadata) IsSubKey() bool {
+func (rcv *PublicKeyMetadata) KeyIdNumeric() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(14))
+	if o != 0 {
+		return rcv._tab.ByteVector(o + rcv._tab.Pos)
+	}
+	return nil
+}
+
+func (rcv *PublicKeyMetadata) IsSubKey() bool {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(16))
 	if o != 0 {
 		return rcv._tab.GetBool(o + rcv._tab.Pos)
 	}
@@ -82,11 +90,35 @@ func (rcv *PublicKeyMetadata) IsSubKey() bool {
 }
 
 func (rcv *PublicKeyMetadata) MutateIsSubKey(n bool) bool {
-	return rcv._tab.MutateBoolSlot(14, n)
+	return rcv._tab.MutateBoolSlot(16, n)
+}
+
+func (rcv *PublicKeyMetadata) CanSign() bool {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(18))
+	if o != 0 {
+		return rcv._tab.GetBool(o + rcv._tab.Pos)
+	}
+	return false
+}
+
+func (rcv *PublicKeyMetadata) MutateCanSign(n bool) bool {
+	return rcv._tab.MutateBoolSlot(18, n)
+}
+
+func (rcv *PublicKeyMetadata) CanEncrypt() bool {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(20))
+	if o != 0 {
+		return rcv._tab.GetBool(o + rcv._tab.Pos)
+	}
+	return false
+}
+
+func (rcv *PublicKeyMetadata) MutateCanEncrypt(n bool) bool {
+	return rcv._tab.MutateBoolSlot(20, n)
 }
 
 func (rcv *PublicKeyMetadata) Identities(obj *Identity, j int) bool {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(16))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(22))
 	if o != 0 {
 		x := rcv._tab.Vector(o)
 		x += flatbuffers.UOffsetT(j) * 4
@@ -98,7 +130,7 @@ func (rcv *PublicKeyMetadata) Identities(obj *Identity, j int) bool {
 }
 
 func (rcv *PublicKeyMetadata) IdentitiesLength() int {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(16))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(22))
 	if o != 0 {
 		return rcv._tab.VectorLen(o)
 	}
@@ -106,28 +138,37 @@ func (rcv *PublicKeyMetadata) IdentitiesLength() int {
 }
 
 func PublicKeyMetadataStart(builder *flatbuffers.Builder) {
-	builder.StartObject(7)
+	builder.StartObject(10)
+}
+func PublicKeyMetadataAddAlgorithm(builder *flatbuffers.Builder, algorithm flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(algorithm), 0)
 }
 func PublicKeyMetadataAddKeyId(builder *flatbuffers.Builder, keyId flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(keyId), 0)
+	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(keyId), 0)
 }
 func PublicKeyMetadataAddKeyIdShort(builder *flatbuffers.Builder, keyIdShort flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(keyIdShort), 0)
+	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(keyIdShort), 0)
 }
 func PublicKeyMetadataAddCreationTime(builder *flatbuffers.Builder, creationTime flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(creationTime), 0)
+	builder.PrependUOffsetTSlot(3, flatbuffers.UOffsetT(creationTime), 0)
 }
 func PublicKeyMetadataAddFingerprint(builder *flatbuffers.Builder, fingerprint flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(3, flatbuffers.UOffsetT(fingerprint), 0)
+	builder.PrependUOffsetTSlot(4, flatbuffers.UOffsetT(fingerprint), 0)
 }
 func PublicKeyMetadataAddKeyIdNumeric(builder *flatbuffers.Builder, keyIdNumeric flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(4, flatbuffers.UOffsetT(keyIdNumeric), 0)
+	builder.PrependUOffsetTSlot(5, flatbuffers.UOffsetT(keyIdNumeric), 0)
 }
 func PublicKeyMetadataAddIsSubKey(builder *flatbuffers.Builder, isSubKey bool) {
-	builder.PrependBoolSlot(5, isSubKey, false)
+	builder.PrependBoolSlot(6, isSubKey, false)
+}
+func PublicKeyMetadataAddCanSign(builder *flatbuffers.Builder, canSign bool) {
+	builder.PrependBoolSlot(7, canSign, false)
+}
+func PublicKeyMetadataAddCanEncrypt(builder *flatbuffers.Builder, canEncrypt bool) {
+	builder.PrependBoolSlot(8, canEncrypt, false)
 }
 func PublicKeyMetadataAddIdentities(builder *flatbuffers.Builder, identities flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(6, flatbuffers.UOffsetT(identities), 0)
+	builder.PrependUOffsetTSlot(9, flatbuffers.UOffsetT(identities), 0)
 }
 func PublicKeyMetadataStartIdentitiesVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT {
 	return builder.StartVector(4, numElems, 4)
