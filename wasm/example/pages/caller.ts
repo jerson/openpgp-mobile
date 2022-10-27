@@ -1,11 +1,11 @@
 import * as flatbuffers from 'flatbuffers';
-import {Cipher, Compression, Hash, KeyOptions, Options} from "../libs/bridge";
+import {Algorithm, Cipher, Compression, Hash, KeyOptions, Options} from "../libs/bridge";
 import {GenerateRequest} from "../libs/model/generate-request";
-import { GetPublicKeyMetadataRequest } from '../libs/model/get-public-key-metadata-request';
-import { PublicKeyMetadataResponse } from '../libs/model/public-key-metadata-response';
+import {GetPublicKeyMetadataRequest} from '../libs/model/get-public-key-metadata-request';
+import {PublicKeyMetadataResponse} from '../libs/model/public-key-metadata-response';
 import {KeyPairResponse} from "../libs/model/key-pair-response";
-import { PrivateKeyMetadataResponse } from '../libs/model/private-key-metadata-response';
-import { GetPrivateKeyMetadataRequest } from '../libs/model/get-private-key-metadata-request';
+import {PrivateKeyMetadataResponse} from '../libs/model/private-key-metadata-response';
+import {GetPrivateKeyMetadataRequest} from '../libs/model/get-private-key-metadata-request';
 
 export const GenerateSample = async () => {
     console.log("GenerateSample")
@@ -14,6 +14,7 @@ export const GenerateSample = async () => {
 
     KeyOptions.startKeyOptions(builder);
     KeyOptions.addCipher(builder, Cipher.AES256);
+    KeyOptions.addAlgorithm(builder, Algorithm.EDDSA);
     KeyOptions.addCompression(builder, Compression.ZLIB);
     KeyOptions.addCompressionLevel(builder, 9);
     KeyOptions.addHash(builder, Hash.SHA512);
@@ -76,6 +77,9 @@ var MetadataPublicKey = async (publicKey: string) => {
     }
     const output = response.output()
     const identity = output!.identities(0)
+    console.log('canEncrypt', output!.canEncrypt());
+    console.log('canSign', output!.canSign());
+    console.log('algorithm', output!.algorithm());
     console.log('email', identity?.email());
     console.log('name', identity?.name());
     console.log('comment', identity?.comment());
@@ -101,6 +105,7 @@ var MetadataPrivateKey = async (publicKey: string) => {
     }
     const output = response.output()
     const identity = output!.identities(0)
+    console.log('canSign', output!.canSign());
     console.log('email', identity?.email());
     console.log('name', identity?.name());
     console.log('comment', identity?.comment());

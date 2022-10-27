@@ -14,6 +14,7 @@ import (
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
 	errorsOpenpgp "github.com/ProtonMail/go-crypto/openpgp/errors"
 	"github.com/ProtonMail/go-crypto/openpgp/packet"
+	_ "golang.org/x/crypto/ripemd160"
 )
 
 var headers = map[string]string{
@@ -46,6 +47,8 @@ func generatePacketConfig(options *KeyOptions) *packet.Config {
 	}
 
 	config := &packet.Config{
+		Curve:                  curveToCurve(options.Curve),
+		Algorithm:              algorithmToFunction(options.Algorithm),
 		DefaultHash:            hashTo(options.Hash),
 		DefaultCipher:          cipherToFunction(options.Cipher),
 		DefaultCompressionAlgo: compressionToAlgo(options.Compression),
@@ -54,14 +57,78 @@ func generatePacketConfig(options *KeyOptions) *packet.Config {
 		},
 		RSABits: options.RSABits,
 	}
-	if options.Cipher == "x25519" {
-		config.Algorithm = packet.PubKeyAlgoEdDSA
-	}
 	return config
+}
+
+func curveToCurve(curve string) packet.Curve {
+	switch curve {
+	case "curve448":
+		return packet.Curve448
+	case "p256":
+		return packet.CurveNistP256
+	case "p384":
+		return packet.CurveNistP384
+	case "p521":
+		return packet.CurveNistP521
+	case "secp256k1":
+		return packet.CurveSecP256k1
+	case "brainpoolp256":
+		return packet.CurveBrainpoolP256
+	case "brainpoolp384":
+		return packet.CurveBrainpoolP384
+	case "brainpoolp512":
+		return packet.CurveBrainpoolP512
+	case "curve25519":
+		fallthrough
+	default:
+		return packet.Curve25519
+	}
+}
+
+func algorithmToFunction(algorithm string) packet.PublicKeyAlgorithm {
+	switch algorithm {
+	case "ecdsa":
+		return packet.PubKeyAlgoECDSA
+	case "eddsa":
+		return packet.PubKeyAlgoEdDSA
+	case "echd":
+		return packet.PubKeyAlgoECDH
+	case "dsa":
+		return packet.PubKeyAlgoDSA
+	case "elgamal":
+		return packet.PubKeyAlgoElGamal
+	case "rsa":
+		fallthrough
+	default:
+		return packet.PubKeyAlgoRSA
+	}
+}
+
+func functionToAlgorithm(algorithm packet.PublicKeyAlgorithm) string {
+	switch algorithm {
+	case packet.PubKeyAlgoECDSA:
+		return "ecdsa"
+	case packet.PubKeyAlgoEdDSA:
+		return "eddsa"
+	case packet.PubKeyAlgoECDH:
+		return "echd"
+	case packet.PubKeyAlgoDSA:
+		return "dsa"
+	case packet.PubKeyAlgoElGamal:
+		return "elgamal"
+	case packet.PubKeyAlgoRSA:
+		return "rsa"
+	default:
+		return ""
+	}
 }
 
 func cipherToFunction(cipher string) packet.CipherFunction {
 	switch cipher {
+	case "3des":
+		return packet.Cipher3DES
+	case "cast5":
+		return packet.CipherCAST5
 	case "aes256":
 		return packet.CipherAES256
 	case "aes192":

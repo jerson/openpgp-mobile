@@ -46,6 +46,9 @@ func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, erro
 	}
 
 	return &PublicKeyMetadata{
+		CanSign:      publicKey.PubKeyAlgo.CanSign(),
+		CanEncrypt:   publicKey.PubKeyAlgo.CanEncrypt(),
+		Algorithm:    functionToAlgorithm(publicKey.PubKeyAlgo),
 		KeyID:        publicKey.KeyIdString(),
 		KeyIDShort:   publicKey.KeyIdShortString(),
 		KeyIDNumeric: fmt.Sprintf("%d", publicKey.KeyId),
@@ -76,6 +79,7 @@ func (o *FastOpenPGP) GetPrivateKeyMetadata(key string) (*PrivateKeyMetadata, er
 	}
 
 	return &PrivateKeyMetadata{
+		CanSign:      privateKey.CanSign(),
 		KeyID:        privateKey.KeyIdString(),
 		KeyIDShort:   privateKey.KeyIdShortString(),
 		KeyIDNumeric: fmt.Sprintf("%d", privateKey.KeyId),

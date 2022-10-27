@@ -6,7 +6,7 @@ import (
 	flatbuffers "github.com/google/flatbuffers/go"
 )
 
-// / KeyOptions collects a number of parameters along with sensible defaults.
+/// KeyOptions collects a number of parameters along with sensible defaults.
 type KeyOptions struct {
 	_tab flatbuffers.Table
 }
@@ -34,117 +34,155 @@ func (rcv *KeyOptions) Table() flatbuffers.Table {
 	return rcv._tab
 }
 
-// / Hash is the default hash function to be used.
-// / If zero, SHA-256 is used.
-func (rcv *KeyOptions) Hash() Hash {
+/// The public key algorithm to use - will always create a signing primary
+/// key and encryption subkey.
+func (rcv *KeyOptions) Algorithm() Algorithm {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(4))
+	if o != 0 {
+		return Algorithm(rcv._tab.GetInt32(o + rcv._tab.Pos))
+	}
+	return 0
+}
+
+/// The public key algorithm to use - will always create a signing primary
+/// key and encryption subkey.
+func (rcv *KeyOptions) MutateAlgorithm(n Algorithm) bool {
+	return rcv._tab.MutateInt32Slot(4, int32(n))
+}
+
+/// Curve configures the desired packet.Curve if the Algorithm is PubKeyAlgoECDSA,
+/// PubKeyAlgoEdDSA, or PubKeyAlgoECDH. If empty Curve25519 is used.
+func (rcv *KeyOptions) Curve() Curve {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
+	if o != 0 {
+		return Curve(rcv._tab.GetInt32(o + rcv._tab.Pos))
+	}
+	return 0
+}
+
+/// Curve configures the desired packet.Curve if the Algorithm is PubKeyAlgoECDSA,
+/// PubKeyAlgoEdDSA, or PubKeyAlgoECDH. If empty Curve25519 is used.
+func (rcv *KeyOptions) MutateCurve(n Curve) bool {
+	return rcv._tab.MutateInt32Slot(6, int32(n))
+}
+
+/// Hash is the default hash function to be used.
+/// If zero, SHA-256 is used.
+func (rcv *KeyOptions) Hash() Hash {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
 	if o != 0 {
 		return Hash(rcv._tab.GetInt32(o + rcv._tab.Pos))
 	}
 	return 0
 }
 
-// / Hash is the default hash function to be used.
-// / If zero, SHA-256 is used.
+/// Hash is the default hash function to be used.
+/// If zero, SHA-256 is used.
 func (rcv *KeyOptions) MutateHash(n Hash) bool {
-	return rcv._tab.MutateInt32Slot(4, int32(n))
+	return rcv._tab.MutateInt32Slot(8, int32(n))
 }
 
-// / Cipher is the cipher to be used.
-// / If zero, AES-128 is used.
+/// Cipher is the cipher to be used.
+/// If zero, AES-128 is used.
 func (rcv *KeyOptions) Cipher() Cipher {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(10))
 	if o != 0 {
 		return Cipher(rcv._tab.GetInt32(o + rcv._tab.Pos))
 	}
 	return 0
 }
 
-// / Cipher is the cipher to be used.
-// / If zero, AES-128 is used.
+/// Cipher is the cipher to be used.
+/// If zero, AES-128 is used.
 func (rcv *KeyOptions) MutateCipher(n Cipher) bool {
-	return rcv._tab.MutateInt32Slot(6, int32(n))
+	return rcv._tab.MutateInt32Slot(10, int32(n))
 }
 
-// / Compression is the compression algorithm to be
-// / applied to the plaintext before encryption. If zero, no
-// / compression is done.
+/// Compression is the compression algorithm to be
+/// applied to the plaintext before encryption. If zero, no
+/// compression is done.
 func (rcv *KeyOptions) Compression() Compression {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(12))
 	if o != 0 {
 		return Compression(rcv._tab.GetInt32(o + rcv._tab.Pos))
 	}
 	return 0
 }
 
-// / Compression is the compression algorithm to be
-// / applied to the plaintext before encryption. If zero, no
-// / compression is done.
+/// Compression is the compression algorithm to be
+/// applied to the plaintext before encryption. If zero, no
+/// compression is done.
 func (rcv *KeyOptions) MutateCompression(n Compression) bool {
-	return rcv._tab.MutateInt32Slot(8, int32(n))
+	return rcv._tab.MutateInt32Slot(12, int32(n))
 }
 
-// / CompressionLevel is the compression level to use. It must be set to
-// / between -1 and 9, with -1 causing the compressor to use the
-// / default compression level, 0 causing the compressor to use
-// / no compression and 1 to 9 representing increasing (better,
-// / slower) compression levels. If Level is less than -1 or
-// / more then 9, a non-nil error will be returned during
-// / encryption. See the constants above for convenient common
-// / settings for Level.
+/// CompressionLevel is the compression level to use. It must be set to
+/// between -1 and 9, with -1 causing the compressor to use the
+/// default compression level, 0 causing the compressor to use
+/// no compression and 1 to 9 representing increasing (better,
+/// slower) compression levels. If Level is less than -1 or
+/// more then 9, a non-nil error will be returned during
+/// encryption. See the constants above for convenient common
+/// settings for Level.
 func (rcv *KeyOptions) CompressionLevel() int32 {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(10))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(14))
 	if o != 0 {
 		return rcv._tab.GetInt32(o + rcv._tab.Pos)
 	}
 	return 0
 }
 
-// / CompressionLevel is the compression level to use. It must be set to
-// / between -1 and 9, with -1 causing the compressor to use the
-// / default compression level, 0 causing the compressor to use
-// / no compression and 1 to 9 representing increasing (better,
-// / slower) compression levels. If Level is less than -1 or
-// / more then 9, a non-nil error will be returned during
-// / encryption. See the constants above for convenient common
-// / settings for Level.
+/// CompressionLevel is the compression level to use. It must be set to
+/// between -1 and 9, with -1 causing the compressor to use the
+/// default compression level, 0 causing the compressor to use
+/// no compression and 1 to 9 representing increasing (better,
+/// slower) compression levels. If Level is less than -1 or
+/// more then 9, a non-nil error will be returned during
+/// encryption. See the constants above for convenient common
+/// settings for Level.
 func (rcv *KeyOptions) MutateCompressionLevel(n int32) bool {
-	return rcv._tab.MutateInt32Slot(10, n)
+	return rcv._tab.MutateInt32Slot(14, n)
 }
 
-// / RSABits is the number of bits in new RSA keys made with NewEntity.
-// / If zero, then 2048 bit keys are created.
+/// RSABits is the number of bits in new RSA keys made with NewEntity.
+/// If zero, then 2048 bit keys are created.
 func (rcv *KeyOptions) RsaBits() int32 {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(12))
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(16))
 	if o != 0 {
 		return rcv._tab.GetInt32(o + rcv._tab.Pos)
 	}
 	return 0
 }
 
-// / RSABits is the number of bits in new RSA keys made with NewEntity.
-// / If zero, then 2048 bit keys are created.
+/// RSABits is the number of bits in new RSA keys made with NewEntity.
+/// If zero, then 2048 bit keys are created.
 func (rcv *KeyOptions) MutateRsaBits(n int32) bool {
-	return rcv._tab.MutateInt32Slot(12, n)
+	return rcv._tab.MutateInt32Slot(16, n)
 }
 
 func KeyOptionsStart(builder *flatbuffers.Builder) {
-	builder.StartObject(5)
+	builder.StartObject(7)
+}
+func KeyOptionsAddAlgorithm(builder *flatbuffers.Builder, algorithm Algorithm) {
+	builder.PrependInt32Slot(0, int32(algorithm), 0)
+}
+func KeyOptionsAddCurve(builder *flatbuffers.Builder, curve Curve) {
+	builder.PrependInt32Slot(1, int32(curve), 0)
 }
 func KeyOptionsAddHash(builder *flatbuffers.Builder, hash Hash) {
-	builder.PrependInt32Slot(0, int32(hash), 0)
+	builder.PrependInt32Slot(2, int32(hash), 0)
 }
 func KeyOptionsAddCipher(builder *flatbuffers.Builder, cipher Cipher) {
-	builder.PrependInt32Slot(1, int32(cipher), 0)
+	builder.PrependInt32Slot(3, int32(cipher), 0)
 }
 func KeyOptionsAddCompression(builder *flatbuffers.Builder, compression Compression) {
-	builder.PrependInt32Slot(2, int32(compression), 0)
+	builder.PrependInt32Slot(4, int32(compression), 0)
 }
 func KeyOptionsAddCompressionLevel(builder *flatbuffers.Builder, compressionLevel int32) {
-	builder.PrependInt32Slot(3, compressionLevel, 0)
+	builder.PrependInt32Slot(5, compressionLevel, 0)
 }
 func KeyOptionsAddRsaBits(builder *flatbuffers.Builder, rsaBits int32) {
-	builder.PrependInt32Slot(4, rsaBits, 0)
+	builder.PrependInt32Slot(6, rsaBits, 0)
 }
 func KeyOptionsEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()

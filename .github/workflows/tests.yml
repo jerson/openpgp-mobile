@@ -7,11 +7,11 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        go: [ '1.17', '1.14']
+        go: [ '1.19', '1.18']
     name: Using Go ${{ matrix.go }}
     steps:
       - uses: actions/checkout@v3
@@ -28,7 +28,7 @@ jobs:
 
   finish:
     needs: tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: shogo82148/actions-goveralls@v1
         with:

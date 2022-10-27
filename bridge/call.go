@@ -278,6 +278,8 @@ func (m instance) parseKeyOptions(input *model.KeyOptions) *openpgp.KeyOptions {
 		return &openpgp.KeyOptions{}
 	}
 	options := &openpgp.KeyOptions{
+		Curve:            m.parseCurve(input.Curve()),
+		Algorithm:        m.parseAlgorithm(input.Algorithm()),
 		Hash:             m.parseHash(input.Hash()),
 		Cipher:           m.parseCipher(input.Cipher()),
 		Compression:      m.parseCompression(input.Compression()),
@@ -314,6 +316,50 @@ func (m instance) parseEntity(input *model.Entity) *openpgp.Entity {
 	return options
 }
 
+func (m instance) parseCurve(input model.Curve) string {
+	switch input {
+	case model.CurveCURVE448:
+		return "curve448"
+	case model.CurveP256:
+		return "p256"
+	case model.CurveP384:
+		return "p384"
+	case model.CurveP521:
+		return "p521"
+	case model.CurveSECP256K1:
+		return "secp256k1"
+	case model.CurveBRAINPOOLP256:
+		return "brainpoolp256"
+	case model.CurveBRAINPOOLP384:
+		return "brainpoolp384"
+	case model.CurveBRAINPOOLP512:
+		return "brainpoolp512"
+	case model.CurveCURVE25519:
+		fallthrough
+	default:
+		return "curve25519"
+	}
+}
+
+func (m instance) parseAlgorithm(input model.Algorithm) string {
+	switch input {
+	case model.AlgorithmECDSA:
+		return "ecdsa"
+	case model.AlgorithmEDDSA:
+		return "eddsa"
+	case model.AlgorithmECHD:
+		return "echd"
+	case model.AlgorithmDSA:
+		return "dsa"
+	case model.AlgorithmELGAMAL:
+		return "elgamal"
+	case model.AlgorithmRSA:
+		fallthrough
+	default:
+		return "rsa"
+	}
+}
+
 func (m instance) parseHash(input model.Hash) string {
 	switch input {
 	case model.HashSHA224:
@@ -331,6 +377,10 @@ func (m instance) parseHash(input model.Hash) string {
 
 func (m instance) parseCipher(input model.Cipher) string {
 	switch input {
+	case model.CipherDES:
+		return "3des"
+	case model.CipherCAST5:
+		return "cast5"
 	case model.CipherAES192:
 		return "aes192"
 	case model.CipherAES256:
@@ -429,15 +479,19 @@ func (m instance) _publicKeyMetadataResponse(response *flatbuffers.Builder, outp
 	creationTimeOffset := response.CreateString(output.CreationTime)
 	fingerprintOffset := response.CreateString(output.Fingerprint)
 	keyIDNumericOffset := response.CreateString(output.KeyIDNumeric)
+	algorithmOffset := response.CreateString(output.Algorithm)
 	identitiesOffset := m._identitiesResponse(response, output.Identities)
 
 	model.PublicKeyMetadataStart(response)
+	model.PublicKeyMetadataAddAlgorithm(response, algorithmOffset)
 	model.PublicKeyMetadataAddKeyId(response, keyIDOffset)
 	model.PublicKeyMetadataAddKeyIdShort(response, keyIDShortOffset)
 	model.PublicKeyMetadataAddCreationTime(response, creationTimeOffset)
 	model.PublicKeyMetadataAddFingerprint(response, fingerprintOffset)
 	model.PublicKeyMetadataAddKeyIdNumeric(response, keyIDNumericOffset)
 	model.PublicKeyMetadataAddIsSubKey(response, output.IsSubKey)
+	model.PublicKeyMetadataAddCanEncrypt(response, output.CanEncrypt)
+	model.PublicKeyMetadataAddCanSign(response, output.CanSign)
 	model.PublicKeyMetadataAddIdentities(response, identitiesOffset)
 	KeyPair := model.PublicKeyMetadataEnd(response)
 
@@ -471,6 +525,7 @@ func (m instance) _privateKeyMetadataResponse(response *flatbuffers.Builder, out
 	model.PrivateKeyMetadataAddKeyIdNumeric(response, keyIDNumericOffset)
 	model.PrivateKeyMetadataAddIsSubKey(response, output.IsSubKey)
 	model.PrivateKeyMetadataAddEncrypted(response, output.Encrypted)
+	model.PrivateKeyMetadataAddCanSign(response, output.CanSign)
 	model.PrivateKeyMetadataAddIdentities(response, identitiesOffset)
 	KeyPair := model.PrivateKeyMetadataEnd(response)
 

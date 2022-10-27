@@ -2,7 +2,7 @@
 
 GOOS=${GOOS:-linux}
 GOARCH=${GOARCH:-amd64}
-GOVERSION=${GOVERSION:-1.17.1}
+GOVERSION=${GOVERSION:-1.19.2}
 TAG=${TAG:-main}
 CMD=${CMD:-make build}
 ARGS=${ARGS:-}

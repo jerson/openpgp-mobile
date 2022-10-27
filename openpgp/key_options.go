@@ -3,6 +3,8 @@ package openpgp
 import "strconv"
 
 type KeyOptions struct {
+	Algorithm        string
+	Curve            string
 	Hash             string
 	Cipher           string
 	Compression      string
