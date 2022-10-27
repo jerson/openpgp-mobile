@@ -1,6 +1,7 @@
 package openpgp
 
 import (
+	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -60,6 +61,29 @@ func TestFastOpenPGP_EncryptOptions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Log("output:", output)
+}
+
+func TestFastOpenPGP_EncryptOptionsECC(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	output, err := openPGP.EncryptBytes([]byte("Hello"), publicKeyECC, nil, nil, &KeyOptions{
+		Hash:             "sha256",
+		Cipher:           "x25519",
+		Compression:      "zlib",
+		CompressionLevel: 9,
+		RSABits:          4096,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	meow, _ := base64.StdEncoding.DecodeString("wV4Dvq15eT/QjtQSAQdAgP4X7BegCTvG78Vjqc89DBco+biNEjqIuBYrupGStjwwSzUCxgbuVOw1jxGxTbaylQAoFhQTwAqCi4rP0oldYmNwxZh//ZQw1wNbt/Rrs5hN0jYBArb9whokTUMFLRVemffxw4sxsn6RklleWxWBwL4S6UuH2AZd7DHx/84TCDuMBYS0nc8y47k=")
+	data, err := openPGP.DecryptBytes(meow, privateKeyECC, passphrase, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	println(base64.StdEncoding.EncodeToString(output))
+	println(string(data))
 	t.Log("output:", output)
 }
 

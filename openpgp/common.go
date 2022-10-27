@@ -6,13 +6,14 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"io"
+	"strings"
+	"time"
+
 	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
 	errorsOpenpgp "github.com/ProtonMail/go-crypto/openpgp/errors"
 	"github.com/ProtonMail/go-crypto/openpgp/packet"
-	"io"
-	"strings"
-	"time"
 )
 
 var headers = map[string]string{
@@ -52,6 +53,9 @@ func generatePacketConfig(options *KeyOptions) *packet.Config {
 			Level: options.CompressionLevel,
 		},
 		RSABits: options.RSABits,
+	}
+	if options.Cipher == "x25519" {
+		config.Algorithm = packet.PubKeyAlgoEdDSA
 	}
 	return config
 }
