@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
+	"github.com/ProtonMail/go-crypto/openpgp/packet"
+	"io"
 )
 
 func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
@@ -39,35 +41,70 @@ func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
 	}
 
 	keyPair = &KeyPair{}
-	privateKeyBuf := bytes.NewBuffer(nil)
-	writerPrivate, err := armor.Encode(privateKeyBuf, openpgp.PrivateKeyType, headers)
-	if err != nil {
-		return keyPair, err
-	}
-	defer writerPrivate.Close()
 
-	err = entity.SerializePrivateWithoutSigning(writerPrivate, config)
+	keyPair.PrivateKey, err = o.serializePrivateKey(entity, config)
 	if err != nil {
-		return keyPair, err
+		return nil, err
 	}
-	// this is required to allow close block before String
-	writerPrivate.Close()
-	keyPair.PrivateKey = privateKeyBuf.String()
-
-	publicKeyBuf := bytes.NewBuffer(nil)
-	writerPublic, err := armor.Encode(publicKeyBuf, openpgp.PublicKeyType, headers)
+	keyPair.PublicKey, err = o.serializePublicKey(entity)
 	if err != nil {
-		return keyPair, err
+		return nil, err
 	}
-	defer writerPublic.Close()
-
-	err = entity.Serialize(writerPublic)
-	if err != nil {
-		return keyPair, err
-	}
-	// this is required to allow close block before String
-	writerPublic.Close()
-	keyPair.PublicKey = publicKeyBuf.String()
 
 	return keyPair, nil
+}
+
+func (o *FastOpenPGP) serializePrivateKey(entity *openpgp.Entity, config *packet.Config) (string, error) {
+	buf := bytes.NewBuffer(nil)
+	w, err := armor.Encode(buf, openpgp.PrivateKeyType, headers)
+	if err != nil {
+		return "", err
+	}
+	defer w.Close()
+
+	err = entity.SerializePrivateWithoutSigning(w, config)
+	if err != nil {
+		return "", err
+	}
+	// this is required to allow close block before String
+	w.Close()
+	return buf.String(), nil
+}
+
+func (o *FastOpenPGP) serializePublicKey(entity *openpgp.Entity) (string, error) {
+	buf := bytes.NewBuffer(nil)
+	w, err := armor.Encode(buf, openpgp.PublicKeyType, headers)
+	if err != nil {
+		return "", err
+	}
+	defer w.Close()
+
+	err = entity.Serialize(w)
+	if err != nil {
+		return "", err
+	}
+	// this is required to allow close block before String
+	w.Close()
+	return buf.String(), nil
+}
+
+type serializable interface {
+	Serialize(w io.Writer) (err error)
+}
+
+func serialize(entity serializable) string {
+	buf := bytes.NewBuffer(nil)
+	w, err := armor.Encode(buf, openpgp.PublicKeyType, headers)
+	if err != nil {
+		return ""
+	}
+	defer w.Close()
+
+	err = entity.Serialize(w)
+	if err != nil {
+		return ""
+	}
+	// this is required to allow close block before String
+	w.Close()
+	return buf.String()
 }

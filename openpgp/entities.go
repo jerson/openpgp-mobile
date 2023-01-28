@@ -43,6 +43,7 @@ type PublicKeyMetadata struct {
 	CanSign      bool
 	CanEncrypt   bool
 	Identities   []Identity
+	SubKeys      []PublicKeyMetadata
 }
 
 type PrivateKeyMetadata struct {
@@ -55,4 +56,5 @@ type PrivateKeyMetadata struct {
 	Encrypted    bool
 	CanSign      bool
 	Identities   []Identity
+	SubKeys      []PrivateKeyMetadata
 }

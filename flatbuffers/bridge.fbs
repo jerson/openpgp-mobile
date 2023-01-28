@@ -300,7 +300,6 @@ table Identity {
   name:string;
 }
 
-
 table PublicKeyMetadata {
   algorithm:string;
   key_id:string;
@@ -312,6 +311,7 @@ table PublicKeyMetadata {
   can_sign:bool;
   can_encrypt:bool;
   identities:[model.Identity];
+  sub_keys:[model.PublicKeyMetadata];
 }
 
 table PrivateKeyMetadata {
@@ -324,4 +324,5 @@ table PrivateKeyMetadata {
   encrypted:bool;
   can_sign:bool;
   identities:[model.Identity];
+  sub_keys:[model.PrivateKeyMetadata];
 }

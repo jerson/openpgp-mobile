@@ -11,7 +11,7 @@ import (
 
 func getIdentities(input map[string]*openpgp.Identity) []Identity {
 
-	identities := []Identity{}
+	var identities []Identity
 	for _, identity := range input {
 		if identity == nil || identity.UserId == nil {
 			continue
@@ -40,11 +40,6 @@ func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, erro
 		return nil, fmt.Errorf("publicKey error: %w", errors.New("no publicKey found"))
 	}
 
-	var byteIDs []string
-	for _, byteID := range publicKey.Fingerprint {
-		byteIDs = append(byteIDs, fmt.Sprint(byteID))
-	}
-
 	return &PublicKeyMetadata{
 		CanSign:      publicKey.PubKeyAlgo.CanSign(),
 		CanEncrypt:   publicKey.PubKeyAlgo.CanEncrypt(),
@@ -53,10 +48,33 @@ func (o *FastOpenPGP) GetPublicKeyMetadata(key string) (*PublicKeyMetadata, erro
 		KeyIDShort:   publicKey.KeyIdShortString(),
 		KeyIDNumeric: fmt.Sprintf("%d", publicKey.KeyId),
 		CreationTime: publicKey.CreationTime.Format(time.RFC3339),
-		Fingerprint:  strings.Join(byteIDs, ":"),
+		Fingerprint:  o.fingerprint(publicKey.Fingerprint),
 		IsSubKey:     publicKey.IsSubkey,
 		Identities:   getIdentities(entity.Identities),
+		SubKeys:      o.getPublicSubKeys(entity.Subkeys),
 	}, nil
+}
+
+func (o *FastOpenPGP) getPublicSubKeys(keys []openpgp.Subkey) []PublicKeyMetadata {
+	var subKeys []PublicKeyMetadata
+	for _, subKey := range keys {
+		publicKey := subKey.PublicKey
+		if publicKey == nil {
+			continue
+		}
+		subKeys = append(subKeys, PublicKeyMetadata{
+			CanSign:      publicKey.PubKeyAlgo.CanSign(),
+			CanEncrypt:   publicKey.PubKeyAlgo.CanEncrypt(),
+			Algorithm:    functionToAlgorithm(publicKey.PubKeyAlgo),
+			KeyID:        publicKey.KeyIdString(),
+			KeyIDShort:   publicKey.KeyIdShortString(),
+			KeyIDNumeric: fmt.Sprintf("%d", publicKey.KeyId),
+			CreationTime: publicKey.CreationTime.Format(time.RFC3339),
+			Fingerprint:  o.fingerprint(publicKey.Fingerprint),
+			IsSubKey:     publicKey.IsSubkey,
+		})
+	}
+	return subKeys
 }
 
 func (o *FastOpenPGP) GetPrivateKeyMetadata(key string) (*PrivateKeyMetadata, error) {
@@ -73,20 +91,45 @@ func (o *FastOpenPGP) GetPrivateKeyMetadata(key string) (*PrivateKeyMetadata, er
 		return nil, fmt.Errorf("privateKey error: %w", errors.New("no privateKey found"))
 	}
 
-	var byteIDs []string
-	for _, byteID := range privateKey.Fingerprint {
-		byteIDs = append(byteIDs, fmt.Sprint(byteID))
-	}
-
 	return &PrivateKeyMetadata{
 		CanSign:      privateKey.CanSign(),
 		KeyID:        privateKey.KeyIdString(),
 		KeyIDShort:   privateKey.KeyIdShortString(),
 		KeyIDNumeric: fmt.Sprintf("%d", privateKey.KeyId),
 		CreationTime: privateKey.CreationTime.Format(time.RFC3339),
-		Fingerprint:  strings.Join(byteIDs, ":"),
+		Fingerprint:  o.fingerprint(privateKey.Fingerprint),
 		IsSubKey:     privateKey.IsSubkey,
 		Encrypted:    privateKey.Encrypted,
 		Identities:   getIdentities(entity.Identities),
+		SubKeys:      o.getPrivateSubKeys(entity.Subkeys),
 	}, nil
+}
+
+func (o *FastOpenPGP) getPrivateSubKeys(keys []openpgp.Subkey) []PrivateKeyMetadata {
+	var subKeys []PrivateKeyMetadata
+	for _, subKey := range keys {
+		privateKey := subKey.PrivateKey
+		if privateKey == nil {
+			continue
+		}
+		subKeys = append(subKeys, PrivateKeyMetadata{
+			CanSign:      privateKey.CanSign(),
+			KeyID:        privateKey.KeyIdString(),
+			KeyIDShort:   privateKey.KeyIdShortString(),
+			KeyIDNumeric: fmt.Sprintf("%d", privateKey.KeyId),
+			CreationTime: privateKey.CreationTime.Format(time.RFC3339),
+			Fingerprint:  o.fingerprint(privateKey.Fingerprint),
+			IsSubKey:     privateKey.IsSubkey,
+			Encrypted:    privateKey.Encrypted,
+		})
+	}
+	return subKeys
+}
+
+func (o *FastOpenPGP) fingerprint(input []byte) string {
+	var byteIDs []string
+	for _, byteID := range input {
+		byteIDs = append(byteIDs, fmt.Sprint(byteID))
+	}
+	return strings.Join(byteIDs, ":")
 }
