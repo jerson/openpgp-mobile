@@ -76,7 +76,7 @@ var MetadataPublicKey = async (publicKey: string) => {
         throw new Error(response.error()!)
     }
     const output = response.output()
-    const identity = output!.identities(0)
+    const identity = output!.identities(0)!
     console.log('canEncrypt', output!.canEncrypt());
     console.log('canSign', output!.canSign());
     console.log('algorithm', output!.algorithm());
@@ -104,7 +104,7 @@ var MetadataPrivateKey = async (publicKey: string) => {
         throw new Error(response.error()!)
     }
     const output = response.output()
-    const identity = output!.identities(0)
+    const identity = output!.identities(0)!
     console.log('canSign', output!.canSign());
     console.log('email', identity?.email());
     console.log('name', identity?.name());
