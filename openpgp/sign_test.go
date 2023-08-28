@@ -5,10 +5,42 @@ import (
 	"testing"
 )
 
+func TestFastOpenPGP_SignData(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	signed, err := openPGP.SignData(inputMessage, privateKey, passphrase, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("signed:", signed)
+}
+
+func TestFastOpenPGP_SignDataBytes(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	signed, err := openPGP.SignDataBytes([]byte(inputMessage), privateKey, passphrase, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("signed:", signed)
+
+}
+
+func TestFastOpenPGP_SignDataBytesToString(t *testing.T) {
+
+	openPGP := NewFastOpenPGP()
+	signed, err := openPGP.SignDataBytesToString([]byte(inputMessage), privateKey, passphrase, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("signed:", signed)
+
+}
+
 func TestFastOpenPGP_Sign(t *testing.T) {
 
 	openPGP := NewFastOpenPGP()
-	output, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase, nil)
+	output, err := openPGP.Sign(inputMessage, privateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +57,7 @@ func TestFastOpenPGP_SignFile(t *testing.T) {
 	}()
 
 	openPGP := NewFastOpenPGP()
-	output, err := openPGP.SignFile(input, publicKey, privateKey, passphrase, nil)
+	output, err := openPGP.SignFile(input, privateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +86,7 @@ func TestFastOpenPGP_SignVerifyAndGenerate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	signed, err := openPGP.Sign(inputMessage, keyPair.PublicKey, keyPair.PrivateKey, passphrase, nil)
+	signed, err := openPGP.Sign(inputMessage, keyPair.PrivateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

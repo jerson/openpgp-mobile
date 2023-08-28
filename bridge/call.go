@@ -28,18 +28,26 @@ func Call(name string, payload []byte) ([]byte, error) {
 		output = instance.encryptBytes(payload)
 	case "sign":
 		output = instance.sign(payload)
+	case "signData":
+		output = instance.signData(payload)
 	case "signFile":
 		output = instance.signFile(payload)
 	case "signBytes":
 		output = instance.signBytes(payload)
+	case "signDataBytes":
+		output = instance.signDataBytes(payload)
 	case "signBytesToString":
 		output = instance.signBytesToString(payload)
 	case "verify":
 		output = instance.verify(payload)
+	case "verifyData":
+		output = instance.verifyData(payload)
 	case "verifyFile":
 		output = instance.verifyFile(payload)
 	case "verifyBytes":
 		output = instance.verifyBytes(payload)
+	case "verifyDataBytes":
+		output = instance.verifyDataBytes(payload)
 	case "decryptSymmetric":
 		output = instance.decryptSymmetric(payload)
 	case "decryptSymmetricFile":
@@ -129,28 +137,42 @@ func (m instance) sign(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignRequest(payload, 0)
 
-	output, err := m.instance.Sign(m.toString(request.Message()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.Sign(m.toString(request.Message()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	return m._stringResponse(response, output, err)
+}
+func (m instance) signData(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsSignDataRequest(payload, 0)
+
+	output, err := m.instance.SignData(m.toString(request.Message()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	return m._stringResponse(response, output, err)
 }
 func (m instance) signFile(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignFileRequest(payload, 0)
 
-	output, err := m.instance.SignFile(m.toString(request.Input()), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.SignFile(m.toString(request.Input()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	return m._stringResponse(response, output, err)
 }
 func (m instance) signBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignBytesRequest(payload, 0)
 
-	output, err := m.instance.SignBytes(request.MessageBytes(), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.SignBytes(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	return m._bytesResponse(response, output, err)
+}
+func (m instance) signDataBytes(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsSignDataBytesRequest(payload, 0)
+
+	output, err := m.instance.SignDataBytes(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	return m._bytesResponse(response, output, err)
 }
 func (m instance) signBytesToString(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsSignBytesRequest(payload, 0)
 
-	output, err := m.instance.SignBytesToString(request.MessageBytes(), m.toString(request.PublicKey()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.SignBytesToString(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
 	return m._stringResponse(response, output, err)
 }
 func (m instance) verify(payload []byte) []byte {
@@ -158,6 +180,13 @@ func (m instance) verify(payload []byte) []byte {
 	request := model.GetRootAsVerifyRequest(payload, 0)
 
 	output, err := m.instance.Verify(m.toString(request.Signature()), m.toString(request.Message()), m.toString(request.PublicKey()))
+	return m._boolResponse(response, output, err)
+}
+func (m instance) verifyData(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsVerifyDataRequest(payload, 0)
+
+	output, err := m.instance.VerifyData(m.toString(request.Signature()), m.toString(request.PublicKey()))
 	return m._boolResponse(response, output, err)
 }
 func (m instance) verifyFile(payload []byte) []byte {
@@ -172,6 +201,13 @@ func (m instance) verifyBytes(payload []byte) []byte {
 	request := model.GetRootAsVerifyBytesRequest(payload, 0)
 
 	output, err := m.instance.VerifyBytes(m.toString(request.Signature()), request.MessageBytes(), m.toString(request.PublicKey()))
+	return m._boolResponse(response, output, err)
+}
+func (m instance) verifyDataBytes(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsVerifyDataBytesRequest(payload, 0)
+
+	output, err := m.instance.VerifyDataBytes(request.SignatureBytes(), m.toString(request.PublicKey()))
 	return m._boolResponse(response, output, err)
 }
 func (m instance) decryptSymmetric(payload []byte) []byte {

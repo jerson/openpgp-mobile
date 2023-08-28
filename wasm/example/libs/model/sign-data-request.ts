@@ -5,27 +5,27 @@ import * as flatbuffers from 'flatbuffers';
 import { KeyOptions } from '../model/key-options';
 
 
-export class SignFileRequest {
+export class SignDataRequest {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):SignFileRequest {
+__init(i:number, bb:flatbuffers.ByteBuffer):SignDataRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsSignFileRequest(bb:flatbuffers.ByteBuffer, obj?:SignFileRequest):SignFileRequest {
-  return (obj || new SignFileRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsSignDataRequest(bb:flatbuffers.ByteBuffer, obj?:SignDataRequest):SignDataRequest {
+  return (obj || new SignDataRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsSignFileRequest(bb:flatbuffers.ByteBuffer, obj?:SignFileRequest):SignFileRequest {
+static getSizePrefixedRootAsSignDataRequest(bb:flatbuffers.ByteBuffer, obj?:SignDataRequest):SignDataRequest {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new SignFileRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new SignDataRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-input():string|null
-input(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-input(optionalEncoding?:any):string|Uint8Array|null {
+message():string|null
+message(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+message(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
@@ -33,43 +33,43 @@ input(optionalEncoding?:any):string|Uint8Array|null {
 privateKey():string|null
 privateKey(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 privateKey(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 passphrase():string|null
 passphrase(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 passphrase(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 options(obj?:KeyOptions):KeyOptions|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new KeyOptions()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-static startSignFileRequest(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+static startSignDataRequest(builder:flatbuffers.Builder) {
+  builder.startObject(4);
 }
 
-static addInput(builder:flatbuffers.Builder, inputOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, inputOffset, 0);
+static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, messageOffset, 0);
 }
 
 static addPrivateKey(builder:flatbuffers.Builder, privateKeyOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, privateKeyOffset, 0);
+  builder.addFieldOffset(1, privateKeyOffset, 0);
 }
 
 static addPassphrase(builder:flatbuffers.Builder, passphraseOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, passphraseOffset, 0);
+  builder.addFieldOffset(2, passphraseOffset, 0);
 }
 
 static addOptions(builder:flatbuffers.Builder, optionsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, optionsOffset, 0);
+  builder.addFieldOffset(3, optionsOffset, 0);
 }
 
-static endSignFileRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endSignDataRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }

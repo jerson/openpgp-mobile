@@ -51,7 +51,7 @@ func TestFastOpenPGP_ConvertPrivateKeyToPublicKeyAndSign(t *testing.T) {
 	}
 	t.Log("publicKey:", publicKey)
 
-	signed, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase, nil)
+	signed, err := openPGP.Sign(inputMessage, privateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

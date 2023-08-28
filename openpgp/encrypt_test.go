@@ -142,7 +142,7 @@ func TestFastOpenPGP_EncryptFile(t *testing.T) {
 func TestFastOpenPGP_SignEncrypt(t *testing.T) {
 
 	openPGP := NewFastOpenPGP()
-	signature, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase, nil)
+	signature, err := openPGP.Sign(inputMessage, privateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

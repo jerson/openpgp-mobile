@@ -41,14 +41,6 @@ func (rcv *SignFileRequest) Input() []byte {
 	return nil
 }
 
-func (rcv *SignFileRequest) PublicKey() []byte {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
-	if o != 0 {
-		return rcv._tab.ByteVector(o + rcv._tab.Pos)
-	}
-	return nil
-}
-
 func (rcv *SignFileRequest) PrivateKey() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
 	if o != 0 {
@@ -83,9 +75,6 @@ func SignFileRequestStart(builder *flatbuffers.Builder) {
 }
 func SignFileRequestAddInput(builder *flatbuffers.Builder, input flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(input), 0)
-}
-func SignFileRequestAddPublicKey(builder *flatbuffers.Builder, publicKey flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(publicKey), 0)
 }
 func SignFileRequestAddPrivateKey(builder *flatbuffers.Builder, privateKey flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(privateKey), 0)
