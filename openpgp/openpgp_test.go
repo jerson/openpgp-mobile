@@ -191,7 +191,7 @@ func TestFastOpenPGP_Complete(t *testing.T) {
 func TestFastOpenPGP_VerifyAndSign(t *testing.T) {
 
 	openPGP := NewFastOpenPGP()
-	input, err := openPGP.Sign(inputMessage, publicKey, privateKey, passphrase, nil)
+	input, err := openPGP.Sign(inputMessage, privateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -244,7 +244,7 @@ func TestFastOpenPGP_GenerateComplete(t *testing.T) {
 	t.Logf("%s === %s", input, decrypted)
 
 	// Sign and Verify
-	signed, err := openPGP.Sign(input, keyPair.PublicKey, keyPair.PrivateKey, passphrase, nil)
+	signed, err := openPGP.Sign(input, keyPair.PrivateKey, passphrase, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

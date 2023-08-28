@@ -8,7 +8,6 @@ var encoded = `-----BEGIN PGP MESSAGE-----
 Version: openpgp-mobile
 
 cmFuZG9tIHN0cmluZw==
-=zR7q
 -----END PGP MESSAGE-----`
 
 func TestFastOpenPGP_ArmorEncode(t *testing.T) {

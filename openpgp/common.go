@@ -273,6 +273,18 @@ func (o *FastOpenPGP) readArmoredKeyRing(keys, blockType string) (openpgp.Entity
 	return entityList, nil
 }
 
+func (o *FastOpenPGP) readBlockWithReader(message io.Reader, blockType string) (io.Reader, error) {
+	block, err := armor.Decode(message)
+	if err != nil {
+		return nil, err
+	}
+	if block.Type != blockType {
+		return nil, fmt.Errorf("invalid block type, expected: %s received: %s", blockType, block.Type)
+	}
+
+	return block.Body, nil
+}
+
 func (o *FastOpenPGP) readBlock(message, blockType string) (io.Reader, error) {
 	block, err := armor.Decode(strings.NewReader(message))
 	if errors.Is(err, io.EOF) {

@@ -91,7 +91,7 @@ table DecryptBytesRequest {
 
 table SignRequest {
   message:string;
-  public_key:string;
+  public_key:string (deprecated); 
   private_key:string;
   passphrase:string;
   options:model.KeyOptions;
@@ -99,7 +99,7 @@ table SignRequest {
 
 table SignFileRequest {
   input:string;
-  public_key:string;
+  public_key:string (deprecated);
   private_key:string;
   passphrase:string;
   options:model.KeyOptions;
@@ -107,7 +107,21 @@ table SignFileRequest {
 
 table SignBytesRequest {
   message:[ubyte];
-  public_key:string;
+  public_key:string (deprecated);
+  private_key:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table SignDataRequest {
+  message:string;
+  private_key:string;
+  passphrase:string;
+  options:model.KeyOptions;
+}
+
+table SignDataBytesRequest {
+  message:[ubyte];
   private_key:string;
   passphrase:string;
   options:model.KeyOptions;
@@ -128,6 +142,16 @@ table VerifyFileRequest {
 table VerifyBytesRequest {
   signature:string;
   message:[ubyte];
+  public_key:string;
+}
+
+table VerifyDataRequest {
+  signature:string;
+  public_key:string;
+}
+
+table VerifyDataBytesRequest {
+  signature:[ubyte];
   public_key:string;
 }
 

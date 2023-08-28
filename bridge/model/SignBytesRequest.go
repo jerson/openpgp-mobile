@@ -67,14 +67,6 @@ func (rcv *SignBytesRequest) MutateMessage(j int, n byte) bool {
 	return false
 }
 
-func (rcv *SignBytesRequest) PublicKey() []byte {
-	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
-	if o != 0 {
-		return rcv._tab.ByteVector(o + rcv._tab.Pos)
-	}
-	return nil
-}
-
 func (rcv *SignBytesRequest) PrivateKey() []byte {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
 	if o != 0 {
@@ -112,9 +104,6 @@ func SignBytesRequestAddMessage(builder *flatbuffers.Builder, message flatbuffer
 }
 func SignBytesRequestStartMessageVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT {
 	return builder.StartVector(1, numElems, 1)
-}
-func SignBytesRequestAddPublicKey(builder *flatbuffers.Builder, publicKey flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(publicKey), 0)
 }
 func SignBytesRequestAddPrivateKey(builder *flatbuffers.Builder, privateKey flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(privateKey), 0)
