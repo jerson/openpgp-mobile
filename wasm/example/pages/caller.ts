@@ -6,9 +6,17 @@ import {PublicKeyMetadataResponse} from '../libs/model/public-key-metadata-respo
 import {KeyPairResponse} from "../libs/model/key-pair-response";
 import {PrivateKeyMetadataResponse} from '../libs/model/private-key-metadata-response';
 import {GetPrivateKeyMetadataRequest} from '../libs/model/get-private-key-metadata-request';
+import { ArmorDecodeRequest } from '../libs/model/armor-decode-request';
+import { ArmorDecodeResponse } from '../libs/model/armor-decode-response';
 
 export const GenerateSample = async () => {
     console.log("GenerateSample")
+
+var encoded = `-----BEGIN PGP MESSAGE-----
+Version: openpgp-mobile
+
+cmFuZG9tIHN0cmluZw==
+-----END PGP MESSAGE-----`
 
     const builder = new flatbuffers.Builder(0);
 
@@ -55,7 +63,33 @@ export const GenerateSample = async () => {
 
     await MetadataPublicKey(output!.publicKey()|| '')
     await MetadataPrivateKey(output!.privateKey()|| '')
+    await ArmorDecode(encoded)
    
+}
+
+
+var ArmorDecode = async (message: string) => {
+
+    console.log("ArmorDecode")
+    const builder = new flatbuffers.Builder(0);
+    const messageOffset = builder.createString(message)
+    
+    ArmorDecodeRequest.startArmorDecodeRequest(builder)
+    ArmorDecodeRequest.addMessage(builder, messageOffset);
+    const offsetMetadata = ArmorDecodeRequest.endArmorDecodeRequest(builder);
+    builder.finish(offsetMetadata);
+    const bytes = builder.asUint8Array()
+    const rawResponse = await sendToWorker('armorDecode', bytes)
+
+    const responseBuffer = new flatbuffers.ByteBuffer(rawResponse);
+    const response = ArmorDecodeResponse.getRootAsArmorDecodeResponse(responseBuffer)
+    if (response.error()) {
+        throw new Error(response.error()!)
+    }
+    const output = response.output()
+  
+    console.log('bodyArray',  output?.bodyArray());
+    console.log('type', output?.type());
 }
 
 var MetadataPublicKey = async (publicKey: string) => {

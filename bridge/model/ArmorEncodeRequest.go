@@ -67,14 +67,25 @@ func (rcv *ArmorEncodeRequest) MutatePacket(j int, n byte) bool {
 	return false
 }
 
+func (rcv *ArmorEncodeRequest) Type() []byte {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
+	if o != 0 {
+		return rcv._tab.ByteVector(o + rcv._tab.Pos)
+	}
+	return nil
+}
+
 func ArmorEncodeRequestStart(builder *flatbuffers.Builder) {
-	builder.StartObject(1)
+	builder.StartObject(2)
 }
 func ArmorEncodeRequestAddPacket(builder *flatbuffers.Builder, packet flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(packet), 0)
 }
 func ArmorEncodeRequestStartPacketVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT {
 	return builder.StartVector(1, numElems, 1)
+}
+func ArmorEncodeRequestAddType(builder *flatbuffers.Builder, type_ flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(type_), 0)
 }
 func ArmorEncodeRequestEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()
