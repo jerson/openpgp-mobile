@@ -2,7 +2,7 @@ package openpgp
 
 import (
 	"bytes"
-	"io"
+	"io/ioutil"
 	"strings"
 
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
@@ -31,7 +31,7 @@ func (o *FastOpenPGP) ArmorDecode(message string) (*ArmorMetadata, error) {
 		return nil, err
 	}
 
-	output, err := io.ReadAll(block.Body)
+	output, err := ioutil.ReadAll(block.Body)
 	if err != nil {
 		return nil, err
 	}
