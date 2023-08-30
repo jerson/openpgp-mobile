@@ -1,5 +1,10 @@
 package openpgp
 
+type ArmorMetadata struct {
+	Body []byte
+	Type string
+}
+
 type KeyPair struct {
 	PublicKey  string
 	PrivateKey string

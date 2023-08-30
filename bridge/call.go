@@ -64,6 +64,8 @@ func Call(name string, payload []byte) ([]byte, error) {
 		output = instance.generate(payload)
 	case "armorEncode":
 		output = instance.armorEncode(payload)
+	case "armorDecode":
+		output = instance.armorDecode(payload)
 	case "getPublicKeyMetadata":
 		output = instance.getPublicKeyMetadata(payload)
 	case "getPrivateKeyMetadata":
@@ -265,8 +267,15 @@ func (m instance) armorEncode(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsArmorEncodeRequest(payload, 0)
 
-	output, err := m.instance.ArmorEncode(request.PacketBytes())
+	output, err := m.instance.ArmorEncode(request.PacketBytes(), string(request.Type()))
 	return m._stringResponse(response, output, err)
+}
+func (m instance) armorDecode(payload []byte) []byte {
+	response := flatbuffers.NewBuilder(0)
+	request := model.GetRootAsArmorDecodeRequest(payload, 0)
+
+	output, err := m.instance.ArmorDecode(string(request.Message()))
+	return m._armorDecodeResponse(response, output, err)
 }
 
 func (m instance) getPublicKeyMetadata(payload []byte) []byte {
@@ -439,6 +448,29 @@ func (m instance) parseCompression(input model.Compression) string {
 	default:
 		return "none"
 	}
+}
+
+func (m instance) _armorDecodeResponse(response *flatbuffers.Builder, output *openpgp.ArmorMetadata, err error) []byte {
+	if err != nil {
+		outputOffset := response.CreateString(err.Error())
+		model.ArmorDecodeResponseStart(response)
+		model.ArmorDecodeResponseAddError(response, outputOffset)
+		response.Finish(model.ArmorDecodeResponseEnd(response))
+		return response.FinishedBytes()
+	}
+
+	bodyOffset := response.CreateByteVector(output.Body)
+	typeOffset := response.CreateString(output.Type)
+
+	model.ArmorMetadataStart(response)
+	model.ArmorMetadataAddBody(response, bodyOffset)
+	model.ArmorMetadataAddType(response, typeOffset)
+	metadata := model.ArmorMetadataEnd(response)
+
+	model.ArmorDecodeResponseStart(response)
+	model.ArmorDecodeResponseAddOutput(response, metadata)
+	response.Finish(model.ArmorDecodeResponseEnd(response))
+	return response.FinishedBytes()
 }
 
 func (m instance) _keyPairResponse(response *flatbuffers.Builder, output *openpgp.KeyPair, err error) []byte {
