@@ -3,10 +3,11 @@ package openpgp
 import (
 	"bytes"
 	"fmt"
-	"github.com/ProtonMail/go-crypto/openpgp"
 	"io"
 	"io/ioutil"
 	"os"
+
+	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 func (o *FastOpenPGP) Decrypt(message, privateKey, passphrase string, options *KeyOptions) (string, error) {
