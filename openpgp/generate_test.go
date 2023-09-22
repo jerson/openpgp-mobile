@@ -144,6 +144,17 @@ func TestFastOpenPGP_GenerateWithPassphrase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Log("output:", output)
+}
+
+func TestFastOpenPGP_GenerateEmpty(t *testing.T) {
+
+	options := &Options{KeyOptions: &KeyOptions{}}
+	openPGP := NewFastOpenPGP()
+	output, err := openPGP.Generate(options)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Log("output:", output)
 }

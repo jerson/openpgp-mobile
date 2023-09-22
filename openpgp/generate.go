@@ -3,10 +3,10 @@ package openpgp
 import (
 	"bytes"
 	"fmt"
+
 	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
 	"github.com/ProtonMail/go-crypto/openpgp/packet"
-	"io"
 )
 
 func (o *FastOpenPGP) Generate(options *Options) (*KeyPair, error) {
@@ -86,25 +86,4 @@ func (o *FastOpenPGP) serializePublicKey(entity *openpgp.Entity) (string, error)
 	// this is required to allow close block before String
 	w.Close()
 	return buf.String(), nil
-}
-
-type serializable interface {
-	Serialize(w io.Writer) (err error)
-}
-
-func serialize(entity serializable) string {
-	buf := bytes.NewBuffer(nil)
-	w, err := armor.Encode(buf, openpgp.PublicKeyType, headers)
-	if err != nil {
-		return ""
-	}
-	defer w.Close()
-
-	err = entity.Serialize(w)
-	if err != nil {
-		return ""
-	}
-	// this is required to allow close block before String
-	w.Close()
-	return buf.String()
 }
