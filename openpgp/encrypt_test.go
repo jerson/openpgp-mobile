@@ -266,7 +266,6 @@ HOOSOJ1iTODXF72eiHQuVRaH3mftjDwNMoys+snwBfhTUwQ+sMRPLA==
 -----END PGP PRIVATE KEY BLOCK-----`
 
 	signEntity := &Entity{
-		PublicKey:  publicKey,
 		PrivateKey: privateKey,
 	}
 	output, err := openPGP.Encrypt(inputMessage, publicKey, signEntity, nil, nil)
@@ -275,6 +274,9 @@ HOOSOJ1iTODXF72eiHQuVRaH3mftjDwNMoys+snwBfhTUwQ+sMRPLA==
 	}
 	t.Log("encrypted+signed:", output)
 
+	signEntity = &Entity{
+		PublicKey: publicKey,
+	}
 	decrypted, err := openPGP.Decrypt(output, privateKey, passphrase, signEntity, nil)
 	if err != nil {
 		t.Fatal(err)

@@ -2,10 +2,12 @@ package openpgp
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"io/ioutil"
+
 	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/ProtonMail/go-crypto/openpgp/armor"
-	"io/ioutil"
 )
 
 func (o *FastOpenPGP) Encrypt(message, publicKey string, signedEntity *Entity, fileHints *FileHints, options *KeyOptions) (string, error) {
@@ -61,8 +63,16 @@ func (o *FastOpenPGP) encrypt(message []byte, publicKey string, signedEntity *En
 		return nil, fmt.Errorf("publicKey error: %w", err)
 	}
 
+	var signedEntityToEncrypt *openpgp.Entity
+	if signedEntity != nil {
+		signedEntityToEncrypt, err = o.generateSignedEntity(signedEntity)
+		if err != nil {
+			return nil, fmt.Errorf("signedEntity error: %w", err)
+		}
+	}
+
 	buf := new(bytes.Buffer)
-	w, err := openpgp.Encrypt(buf, entityList, o.generateSignedEntity(signedEntity), generateFileHints(fileHints), generatePacketConfig(options))
+	w, err := openpgp.Encrypt(buf, entityList, signedEntityToEncrypt, generateFileHints(fileHints), generatePacketConfig(options))
 	if err != nil {
 		return nil, err
 	}
@@ -83,20 +93,19 @@ func (o *FastOpenPGP) encrypt(message []byte, publicKey string, signedEntity *En
 	return output, nil
 }
 
-func (o *FastOpenPGP) generateSignedEntity(options *Entity) *openpgp.Entity {
+func (o *FastOpenPGP) generateSignedEntity(options *Entity) (*openpgp.Entity, error) {
 
 	if options == nil {
-		return nil
+		return nil, errors.New("entity not provided")
 	}
-	entityList, err := o.readSignKeys(options.PublicKey, options.PrivateKey, options.Passphrase)
+	entityList, err := o.readPrivateKeys(options.PrivateKey, options.Passphrase)
 	if err != nil {
-		// by now we are skipping errors, be careful
-		return nil
+		return nil, fmt.Errorf("readSignKeys: %w", err)
 	}
-	// if for some reason dont contains any key we need to return nil
+
 	if len(entityList) < 1 {
-		return nil
+		return nil, errors.New("no entities found")
 	}
 	// for signed entity we only use first one
-	return entityList[0]
+	return entityList[0], nil
 }

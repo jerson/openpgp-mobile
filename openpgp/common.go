@@ -174,25 +174,6 @@ func hashTo(hash string) crypto.Hash {
 	}
 }
 
-func (o *FastOpenPGP) readSignKeys(publicKey, privateKey, passphrase string) (openpgp.EntityList, error) {
-
-	entityListPublic, err := o.readPublicKeys(publicKey)
-	if err != nil {
-		return nil, fmt.Errorf("publicKey error: %w", err)
-	}
-
-	entityListPrivate, err := o.readPrivateKeys(privateKey, passphrase)
-	if err != nil {
-		return nil, fmt.Errorf("privateKey error: %w", err)
-	}
-
-	for i := 0; i < len(entityListPublic); i++ {
-		entityListPublic[i].PrivateKey = entityListPrivate[i].PrivateKey
-	}
-
-	return entityListPublic, nil
-}
-
 func (o *FastOpenPGP) readPrivateKeys(key, passphrase string) (openpgp.EntityList, error) {
 
 	var entityList openpgp.EntityList
