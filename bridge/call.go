@@ -91,7 +91,7 @@ func (m instance) decrypt(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptRequest(payload, 0)
 
-	output, err := m.instance.Decrypt(m.toString(request.Message()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.Decrypt(m.toString(request.Message()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseEntity(request.Signed(nil)), m.parseKeyOptions(request.Options(nil)))
 	return m._stringResponse(response, output, err)
 }
 
@@ -99,7 +99,7 @@ func (m instance) decryptFile(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptFileRequest(payload, 0)
 
-	output, err := m.instance.DecryptFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.DecryptFile(m.toString(request.Input()), m.toString(request.Output()), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseEntity(request.Signed(nil)), m.parseKeyOptions(request.Options(nil)))
 	return m._intResponse(response, int64(output), err)
 }
 
@@ -107,7 +107,7 @@ func (m instance) decryptBytes(payload []byte) []byte {
 	response := flatbuffers.NewBuilder(0)
 	request := model.GetRootAsDecryptBytesRequest(payload, 0)
 
-	output, err := m.instance.DecryptBytes(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseKeyOptions(request.Options(nil)))
+	output, err := m.instance.DecryptBytes(request.MessageBytes(), m.toString(request.PrivateKey()), m.toString(request.Passphrase()), m.parseEntity(request.Signed(nil)), m.parseKeyOptions(request.Options(nil)))
 	return m._bytesResponse(response, output, err)
 }
 

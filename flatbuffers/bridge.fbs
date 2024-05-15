@@ -72,6 +72,7 @@ table DecryptRequest {
   private_key:string;
   passphrase:string;
   options:model.KeyOptions;
+  signed:model.Entity;
 }
 
 table DecryptFileRequest {
@@ -80,6 +81,7 @@ table DecryptFileRequest {
   private_key:string;
   passphrase:string;
   options:model.KeyOptions;
+  signed:model.Entity;
 }
 
 table DecryptBytesRequest {
@@ -87,6 +89,7 @@ table DecryptBytesRequest {
   private_key:string;
   passphrase:string;
   options:model.KeyOptions;
+  signed:model.Entity;
 }
 
 table SignRequest {

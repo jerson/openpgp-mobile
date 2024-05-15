@@ -177,7 +177,7 @@ func TestFastOpenPGP_Complete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	output, err := openPGP.Decrypt(input, privateKey, passphrase, nil)
+	output, err := openPGP.Decrypt(input, privateKey, passphrase, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -233,7 +233,7 @@ func TestFastOpenPGP_GenerateComplete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	decrypted, err := openPGP.Decrypt(encrypted, keyPair.PrivateKey, passphrase, nil)
+	decrypted, err := openPGP.Decrypt(encrypted, keyPair.PrivateKey, passphrase, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

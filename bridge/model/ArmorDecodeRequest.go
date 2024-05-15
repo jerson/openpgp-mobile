@@ -17,11 +17,19 @@ func GetRootAsArmorDecodeRequest(buf []byte, offset flatbuffers.UOffsetT) *Armor
 	return x
 }
 
+func FinishArmorDecodeRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsArmorDecodeRequest(buf []byte, offset flatbuffers.UOffsetT) *ArmorDecodeRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &ArmorDecodeRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedArmorDecodeRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *ArmorDecodeRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

@@ -17,11 +17,19 @@ func GetRootAsDecryptBytesRequest(buf []byte, offset flatbuffers.UOffsetT) *Decr
 	return x
 }
 
+func FinishDecryptBytesRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsDecryptBytesRequest(buf []byte, offset flatbuffers.UOffsetT) *DecryptBytesRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &DecryptBytesRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedDecryptBytesRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *DecryptBytesRequest) Init(buf []byte, i flatbuffers.UOffsetT) {
@@ -96,8 +104,21 @@ func (rcv *DecryptBytesRequest) Options(obj *KeyOptions) *KeyOptions {
 	return nil
 }
 
+func (rcv *DecryptBytesRequest) Signed(obj *Entity) *Entity {
+	o := flatbuffers.UOffsetT(rcv._tab.Offset(12))
+	if o != 0 {
+		x := rcv._tab.Indirect(o + rcv._tab.Pos)
+		if obj == nil {
+			obj = new(Entity)
+		}
+		obj.Init(rcv._tab.Bytes, x)
+		return obj
+	}
+	return nil
+}
+
 func DecryptBytesRequestStart(builder *flatbuffers.Builder) {
-	builder.StartObject(4)
+	builder.StartObject(5)
 }
 func DecryptBytesRequestAddMessage(builder *flatbuffers.Builder, message flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(message), 0)
@@ -113,6 +134,9 @@ func DecryptBytesRequestAddPassphrase(builder *flatbuffers.Builder, passphrase f
 }
 func DecryptBytesRequestAddOptions(builder *flatbuffers.Builder, options flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(3, flatbuffers.UOffsetT(options), 0)
+}
+func DecryptBytesRequestAddSigned(builder *flatbuffers.Builder, signed flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(4, flatbuffers.UOffsetT(signed), 0)
 }
 func DecryptBytesRequestEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()

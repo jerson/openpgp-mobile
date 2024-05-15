@@ -31,7 +31,7 @@ func TestFastOpenPGP_ConvertPrivateKeyToPublicKeyAndEncrypt(t *testing.T) {
 	}
 	t.Log("encrypted:", encrypted)
 
-	decrypted, err := openPGP.Decrypt(encrypted, privateKey, passphrase, nil)
+	decrypted, err := openPGP.Decrypt(encrypted, privateKey, passphrase, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
