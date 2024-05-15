@@ -18,19 +18,11 @@ func GetRootAsKeyOptions(buf []byte, offset flatbuffers.UOffsetT) *KeyOptions {
 	return x
 }
 
-func FinishKeyOptionsBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsKeyOptions(buf []byte, offset flatbuffers.UOffsetT) *KeyOptions {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &KeyOptions{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedKeyOptionsBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *KeyOptions) Init(buf []byte, i flatbuffers.UOffsetT) {

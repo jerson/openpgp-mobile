@@ -17,19 +17,11 @@ func GetRootAsIntResponse(buf []byte, offset flatbuffers.UOffsetT) *IntResponse 
 	return x
 }
 
-func FinishIntResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsIntResponse(buf []byte, offset flatbuffers.UOffsetT) *IntResponse {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &IntResponse{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedIntResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *IntResponse) Init(buf []byte, i flatbuffers.UOffsetT) {

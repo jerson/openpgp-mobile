@@ -17,19 +17,11 @@ func GetRootAsArmorMetadata(buf []byte, offset flatbuffers.UOffsetT) *ArmorMetad
 	return x
 }
 
-func FinishArmorMetadataBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsArmorMetadata(buf []byte, offset flatbuffers.UOffsetT) *ArmorMetadata {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &ArmorMetadata{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedArmorMetadataBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *ArmorMetadata) Init(buf []byte, i flatbuffers.UOffsetT) {

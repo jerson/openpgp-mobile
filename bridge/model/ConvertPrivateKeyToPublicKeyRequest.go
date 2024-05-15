@@ -17,19 +17,11 @@ func GetRootAsConvertPrivateKeyToPublicKeyRequest(buf []byte, offset flatbuffers
 	return x
 }
 
-func FinishConvertPrivateKeyToPublicKeyRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsConvertPrivateKeyToPublicKeyRequest(buf []byte, offset flatbuffers.UOffsetT) *ConvertPrivateKeyToPublicKeyRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &ConvertPrivateKeyToPublicKeyRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedConvertPrivateKeyToPublicKeyRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *ConvertPrivateKeyToPublicKeyRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

@@ -17,19 +17,11 @@ func GetRootAsSignDataBytesRequest(buf []byte, offset flatbuffers.UOffsetT) *Sig
 	return x
 }
 
-func FinishSignDataBytesRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsSignDataBytesRequest(buf []byte, offset flatbuffers.UOffsetT) *SignDataBytesRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &SignDataBytesRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedSignDataBytesRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *SignDataBytesRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

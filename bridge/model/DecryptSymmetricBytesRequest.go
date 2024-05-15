@@ -17,19 +17,11 @@ func GetRootAsDecryptSymmetricBytesRequest(buf []byte, offset flatbuffers.UOffse
 	return x
 }
 
-func FinishDecryptSymmetricBytesRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsDecryptSymmetricBytesRequest(buf []byte, offset flatbuffers.UOffsetT) *DecryptSymmetricBytesRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &DecryptSymmetricBytesRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedDecryptSymmetricBytesRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *DecryptSymmetricBytesRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

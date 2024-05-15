@@ -17,19 +17,11 @@ func GetRootAsEncryptSymmetricFileRequest(buf []byte, offset flatbuffers.UOffset
 	return x
 }
 
-func FinishEncryptSymmetricFileRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsEncryptSymmetricFileRequest(buf []byte, offset flatbuffers.UOffsetT) *EncryptSymmetricFileRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &EncryptSymmetricFileRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedEncryptSymmetricFileRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *EncryptSymmetricFileRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

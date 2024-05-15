@@ -17,19 +17,11 @@ func GetRootAsVerifyDataRequest(buf []byte, offset flatbuffers.UOffsetT) *Verify
 	return x
 }
 
-func FinishVerifyDataRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsVerifyDataRequest(buf []byte, offset flatbuffers.UOffsetT) *VerifyDataRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &VerifyDataRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedVerifyDataRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *VerifyDataRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

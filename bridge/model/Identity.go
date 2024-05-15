@@ -17,19 +17,11 @@ func GetRootAsIdentity(buf []byte, offset flatbuffers.UOffsetT) *Identity {
 	return x
 }
 
-func FinishIdentityBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsIdentity(buf []byte, offset flatbuffers.UOffsetT) *Identity {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &Identity{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedIdentityBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *Identity) Init(buf []byte, i flatbuffers.UOffsetT) {

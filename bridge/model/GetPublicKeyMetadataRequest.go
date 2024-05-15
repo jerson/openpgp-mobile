@@ -17,19 +17,11 @@ func GetRootAsGetPublicKeyMetadataRequest(buf []byte, offset flatbuffers.UOffset
 	return x
 }
 
-func FinishGetPublicKeyMetadataRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.Finish(offset)
-}
-
 func GetSizePrefixedRootAsGetPublicKeyMetadataRequest(buf []byte, offset flatbuffers.UOffsetT) *GetPublicKeyMetadataRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &GetPublicKeyMetadataRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
-}
-
-func FinishSizePrefixedGetPublicKeyMetadataRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
-	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *GetPublicKeyMetadataRequest) Init(buf []byte, i flatbuffers.UOffsetT) {
