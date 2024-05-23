@@ -4,7 +4,7 @@
 
 SDK_PATH=`xcrun --sdk $SDK --show-sdk-path`
 CLANG=`xcrun --sdk $SDK --find clang`
-MIN_VERSION=15
+MIN_VERSION=10
 
 if [ "$GOARCH" == "amd64" ]; then
     CARCH="x86_64"

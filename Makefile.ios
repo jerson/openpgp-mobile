@@ -19,11 +19,11 @@ binding_ios_xcframework: binding_ios_arm64 binding_ios_x86_64_sim binding_ios_ar
 	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME)
 	mkdir -p $(IOS_BINDING_OUTPUT)/headers
 	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)/headers
-	rm -rf $(IOS_BINDING_OUTPUT)/FastOpenPGP.xcframework
+	rm -rf $(IOS_BINDING_OUTPUT)/Openpgp.xcframework
 	xcodebuild -create-xcframework \
 		-library $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
 		-library $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
-		-output $(IOS_BINDING_OUTPUT)/FastOpenPGP.xcframework
+		-output $(IOS_BINDING_OUTPUT)/Openpgp.xcframework
 	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/arm64_sim $(IOS_BINDING_OUTPUT)/sim $(IOS_BINDING_OUTPUT)/headers
 
 binding_ios_arm64:
@@ -33,14 +33,14 @@ binding_ios_arm64:
 	make binding
 
 binding_ios_x86_64_sim:  
-	CGO_LDFLAGS="-target arm64-apple-ios15-simulator" \
+	CGO_LDFLAGS="-target arm64-apple-ios10-simulator" \
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_arm64_sim: 
-	CGO_LDFLAGS="-target arm64-apple-ios15-simulator" \
+	CGO_LDFLAGS="-target arm64-apple-ios10-simulator" \
 	BINDING_FILE=$(IOS_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
