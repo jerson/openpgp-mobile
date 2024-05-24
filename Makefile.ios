@@ -7,42 +7,61 @@ binding_ios: binding_ios_arm64 binding_ios_x86_64_sim
 	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)
 	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/armv7
 
-binding_ios_test: binding_ios_arm64 binding_ios_x86_64_sim binding_ios_arm64_sim
-	mkdir -p $(IOS_BINDING_OUTPUT)/sim
-	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME)
-	lipo $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/$(IOS_BINDING_NAME)
-	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)
-	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/arm64_sim
-
-binding_ios_xcframework: binding_ios_arm64 binding_ios_x86_64_sim binding_ios_arm64_sim
-	mkdir -p $(IOS_BINDING_OUTPUT)/sim
-	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME)
+binding_ios_xcframework: binding_ios_all_iphone binding_ios_all_sim binding_ios_all_catalyst
 	mkdir -p $(IOS_BINDING_OUTPUT)/headers
 	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)/headers
 	rm -rf $(IOS_BINDING_OUTPUT)/Openpgp.xcframework
 	xcodebuild -create-xcframework \
 		-library $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
 		-library $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
+		-library $(IOS_BINDING_OUTPUT)/catalyst/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
 		-output $(IOS_BINDING_OUTPUT)/Openpgp.xcframework
-	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/arm64_sim $(IOS_BINDING_OUTPUT)/sim $(IOS_BINDING_OUTPUT)/headers
+	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/sim $(IOS_BINDING_OUTPUT)/catalyst $(IOS_BINDING_OUTPUT)/headers
 
-binding_ios_arm64:
-	BINDING_FILE=$(IOS_OUTPUT)/arm64/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
-	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
-	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
+binding_ios_all_iphone: binding_ios_arm64 
+
+binding_ios_all_sim: binding_ios_x86_64_sim binding_ios_arm64_sim
+	mkdir -p $(IOS_BINDING_OUTPUT)/sim
+	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME)
+	rm -rf $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/arm64_sim
+
+binding_ios_all_catalyst: binding_ios_x86_64_catalyst binding_ios_arm64_catalyst
+	mkdir -p $(IOS_BINDING_OUTPUT)/catalyst
+	lipo $(IOS_BINDING_OUTPUT)/x86_64_catalyst/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_catalyst/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/catalyst/$(IOS_BINDING_NAME)
+	rm -rf $(IOS_BINDING_OUTPUT)/x86_64_catalyst $(IOS_BINDING_OUTPUT)/arm64_catalyst
+
+binding_ios_x86_64_catalyst:  
+	CGO_LDFLAGS="-target x86_64-apple-ios14-macabi" \
+	BINDING_FILE=$(IOS_OUTPUT)/x86_64_catalyst/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
+	SDK=macosx CC=$(PWD)/clangwrap.sh \
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
+	make binding
+
+binding_ios_arm64_catalyst:  
+	CGO_LDFLAGS="-target arm64-apple-ios14-macabi -fembed-bitcode" \
+	BINDING_FILE=$(IOS_OUTPUT)/arm64_catalyst/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
+	SDK=macosx CC=$(PWD)/clangwrap.sh \
+	GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_x86_64_sim:  
-	CGO_LDFLAGS="-target arm64-apple-ios10-simulator" \
+	CGO_LDFLAGS="-target x86_64-apple-ios10-simulator -fembed-bitcode" \
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_arm64_sim: 
-	CGO_LDFLAGS="-target arm64-apple-ios10-simulator" \
+	CGO_LDFLAGS="-target arm64-apple-ios10-simulator -fembed-bitcode" \
 	BINDING_FILE=$(IOS_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
+	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
+	make binding
+
+binding_ios_arm64:
+	CGO_LDFLAGS="-target arm64-apple-ios10 -fembed-bitcode" \
+	BINDING_FILE=$(IOS_OUTPUT)/arm64/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
+	SDK=iphoneos CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
 
