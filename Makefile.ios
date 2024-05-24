@@ -31,32 +31,37 @@ binding_ios_all_catalyst: binding_ios_x86_64_catalyst binding_ios_arm64_catalyst
 	rm -rf $(IOS_BINDING_OUTPUT)/x86_64_catalyst $(IOS_BINDING_OUTPUT)/arm64_catalyst
 
 binding_ios_x86_64_catalyst:  
+	CGO_LDFLAGS="-target x86_64-apple-ios14-macabi" \
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64_catalyst/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=macosx CC=$(PWD)/clangwrap.sh \
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_arm64_catalyst:  
+	CGO_LDFLAGS="-target arm64-apple-ios14-macabi -fembed-bitcode" \
 	BINDING_FILE=$(IOS_OUTPUT)/arm64_catalyst/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=macosx CC=$(PWD)/clangwrap.sh \
 	GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_x86_64_sim:  
+	CGO_LDFLAGS="-target x86_64-apple-ios10-simulator -fembed-bitcode" \
 	BINDING_FILE=$(IOS_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=amd64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_arm64_sim: 
+	CGO_LDFLAGS="-target arm64-apple-ios10-simulator -fembed-bitcode" \
 	BINDING_FILE=$(IOS_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphonesimulator CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
 
 binding_ios_arm64:
+	CGO_LDFLAGS="-target arm64-apple-ios10 -fembed-bitcode" \
 	BINDING_FILE=$(IOS_OUTPUT)/arm64/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
-	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
+	SDK=iphoneos CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
 	make binding
 
