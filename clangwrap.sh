@@ -4,7 +4,8 @@
 
 SDK_PATH=`xcrun --sdk $SDK --show-sdk-path`
 CLANG=`xcrun --sdk $SDK --find clang`
-MIN_VERSION=10
+IOS_TARGET=10
+EXTRA_ARGS=""
 
 if [ "$GOARCH" == "amd64" ]; then
     CARCH="x86_64"
@@ -17,9 +18,17 @@ elif [ "$GOARCH" == "386" ]; then
 fi
 
 if [ "$SDK" = "iphoneos" ]; then
- TARGET="$CARCH-apple-ios$MIN_VERSION"
+ EXTRA_ARGS="-fembed-bitcode -miphoneos-version-min==$IOS_TARGET"
+ TARGET="$CARCH-apple-ios$IOS_TARGET"
 elif [ "$SDK" = "iphonesimulator" ]; then
- TARGET="$CARCH-apple-ios$MIN_VERSION-simulator"
+ EXTRA_ARGS="-fembed-bitcode -mios-simulator-version-min=$IOS_TARGET"
+ TARGET="$CARCH-apple-ios$IOS_TARGET-simulator"
+elif [ "$SDK" = "macosx" ]; then
+ IOS_TARGET=14
+ TARGET="$CARCH-apple-ios$IOS_TARGET-macabi"
+   if [ "$GOARCH" == "arm64" ]; then
+     EXTRA_ARGS="-fembed-bitcode"
+   fi
 fi
 
-exec $CLANG -arch $CARCH -target $TARGET -isysroot $SDK_PATH "$@"
+exec $CLANG -target $TARGET $EXTRA_ARGS -isysroot $SDK_PATH "$@"
