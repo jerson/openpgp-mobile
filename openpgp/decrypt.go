@@ -68,7 +68,7 @@ func (o *FastOpenPGP) decrypt(reader io.Reader, privateKey, passphrase string, s
 			return nil, fmt.Errorf("signature error: %w", md.SignatureError)
 		}
 
-		if md.SignedBy == nil {
+		if !md.IsSigned {
 			return nil, errors.New("message is not signed")
 		}
 

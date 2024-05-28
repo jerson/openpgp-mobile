@@ -86,7 +86,7 @@ func (o *FastOpenPGP) verifyDataBytes(signedData io.Reader, publicKey string, sh
 		return false, fmt.Errorf("invalid read message: %w", err)
 	}
 
-	if md.SignedBy == nil {
+	if !md.IsSigned {
 		return false, errors.New("message was not signed")
 	}
 
