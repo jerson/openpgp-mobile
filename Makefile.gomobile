@@ -5,6 +5,7 @@ GOMOBILE_NAME?=Openpgp
 
 gomobile:
 	go install golang.org/x/mobile/cmd/gomobile@latest
+	go get golang.org/x/mobile/cmd/gobind
 	gomobile init
 
 gomobile_bridge_android:
