@@ -3,9 +3,9 @@ IOS_BINDING_OUTPUT?=$(BINDING_OUTPUT)/$(IOS_OUTPUT)
 IOS_BINDING_NAME?=$(BINDING_NAME).a
 
 binding_ios: binding_ios_arm64 binding_ios_x86_64_sim
-	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/armv7/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/$(IOS_BINDING_NAME)
+	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/$(IOS_BINDING_NAME)
 	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)
-	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/armv7
+	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim
 
 binding_ios_xcframework: binding_ios_all_iphone binding_ios_all_sim binding_ios_all_catalyst
 	mkdir -p $(IOS_BINDING_OUTPUT)/headers
@@ -63,10 +63,4 @@ binding_ios_arm64:
 	BINDING_FILE=$(IOS_OUTPUT)/arm64/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
 	SDK=iphoneos CC=$(PWD)/clangwrap.sh \
 	GOOS=ios GOARCH=arm64 CGO_ENABLED=1 \
-	make binding
-
-binding_ios_armv7:
-	BINDING_FILE=$(IOS_OUTPUT)/armv7/$(IOS_BINDING_NAME) BUILD_MODE="c-archive" \
-	SDK=iphoneos CC=$(PWD)/clangwrap.sh CGO_CFLAGS="-fembed-bitcode" \
-	GOOS=darwin GOARCH=arm CGO_ENABLED=1 BINDING_ARGS="-tags ios" \
 	make binding

@@ -5,7 +5,7 @@ flatbuffers_deps:
 	cd /tmp && \
 	git clone https://github.com/google/flatbuffers.git -b master && \
     cd flatbuffers && \
-	git checkout v2.0.6 && \
+	git checkout v24.3.25 && \
     cmake -G "Unix Makefiles" && \
     make && \
     sudo make install && \
@@ -38,7 +38,3 @@ flatbuffers_kotlin:
 flatbuffers_java:
 	rm -rf output/flatbuffers/java && mkdir -p output/flatbuffers/java
 	flatc --java --gen-mutable -o ./output/flatbuffers/java flatbuffers/*.fbs
-
-flatbuffers_rust:
-	rm -rf output/flatbuffers/rust && mkdir -p output/flatbuffers/rust
-	flatc --rust --gen-mutable -o ./output/flatbuffers/rust flatbuffers/*.fbs

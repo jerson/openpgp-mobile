@@ -16,12 +16,12 @@ env:
 
 jobs:
   binding:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: '^1.21'
+          go-version: '^1.23'
       - name: Build
         run: make binding_darwin
       - name: Compress
@@ -35,7 +35,7 @@ jobs:
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libopenpgp_bridge_darwin
           path: output.tar.gz

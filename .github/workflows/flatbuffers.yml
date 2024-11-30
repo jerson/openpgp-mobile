@@ -18,13 +18,13 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        language: [ dart, go, ts, java, kotlin, swift, rust ]
+        language: [ dart, go, ts, java, kotlin, swift ]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Flatbuffers
         run: make flatbuffers_deps
       - name: Build
@@ -40,7 +40,7 @@ jobs:
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: flatbuffers_libopenpgp_bridge_${{ matrix.language }}
           path: output.tar.gz
