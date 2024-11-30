@@ -1,5 +1,5 @@
 import * as flatbuffers from 'flatbuffers';
-import {Algorithm, Cipher, Compression, Hash, KeyOptions, Options} from "../libs/bridge";
+import {Algorithm, Cipher, Compression, Hash, KeyOptions, Options} from "../libs/model";
 import {GenerateRequest} from "../libs/model/generate-request";
 import {GetPublicKeyMetadataRequest} from '../libs/model/get-public-key-metadata-request';
 import {PublicKeyMetadataResponse} from '../libs/model/public-key-metadata-response';
@@ -12,7 +12,7 @@ import { ArmorDecodeResponse } from '../libs/model/armor-decode-response';
 export const GenerateSample = async () => {
     console.log("GenerateSample")
 
-var encoded = `-----BEGIN PGP MESSAGE-----
+const encoded = `-----BEGIN PGP MESSAGE-----
 Version: openpgp-mobile
 
 cmFuZG9tIHN0cmluZw==
@@ -68,7 +68,7 @@ cmFuZG9tIHN0cmluZw==
 }
 
 
-var ArmorDecode = async (message: string) => {
+const ArmorDecode = async (message: string) => {
 
     console.log("ArmorDecode")
     const builder = new flatbuffers.Builder(0);
@@ -92,7 +92,7 @@ var ArmorDecode = async (message: string) => {
     console.log('type', output?.type());
 }
 
-var MetadataPublicKey = async (publicKey: string) => {
+const MetadataPublicKey = async (publicKey: string) => {
     console.log("MetadataPublicKey")
     const builder = new flatbuffers.Builder(0);
     const publicKeyOffset = builder.createString(publicKey)
@@ -120,7 +120,7 @@ var MetadataPublicKey = async (publicKey: string) => {
     console.log('id', identity?.id());
 }
 
-var MetadataPrivateKey = async (publicKey: string) => {
+const MetadataPrivateKey = async (publicKey: string) => {
     console.log("MetadataPrivateKey")
     const builder = new flatbuffers.Builder(0);
     const publicKeyOffset = builder.createString(publicKey)

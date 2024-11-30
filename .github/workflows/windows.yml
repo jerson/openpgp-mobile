@@ -16,10 +16,9 @@ env:
 
 jobs:
   binding:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker-practice/actions-setup-docker@master
+      - uses: actions/checkout@v4
       - name: Build
         run: make binding_windows
       - name: Compress
@@ -33,7 +32,7 @@ jobs:
           tag: ${{ env.VERSION }}
           overwrite: true
       - if: ${{ env.VERSION=='' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libopenpgp_bridge_windows
           path: output.tar.gz

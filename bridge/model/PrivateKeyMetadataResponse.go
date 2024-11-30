@@ -17,11 +17,19 @@ func GetRootAsPrivateKeyMetadataResponse(buf []byte, offset flatbuffers.UOffsetT
 	return x
 }
 
+func FinishPrivateKeyMetadataResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsPrivateKeyMetadataResponse(buf []byte, offset flatbuffers.UOffsetT) *PrivateKeyMetadataResponse {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &PrivateKeyMetadataResponse{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedPrivateKeyMetadataResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *PrivateKeyMetadataResponse) Init(buf []byte, i flatbuffers.UOffsetT) {

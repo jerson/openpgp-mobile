@@ -7,15 +7,15 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        go: [ '1.20', '1.14']
+        go: [ '1.23']
     name: Using Go ${{ matrix.go }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
       - name: Tests
@@ -28,7 +28,7 @@ jobs:
 
   finish:
     needs: tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: shogo82148/actions-goveralls@v1
         with:

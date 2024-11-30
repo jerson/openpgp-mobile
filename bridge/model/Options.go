@@ -17,11 +17,19 @@ func GetRootAsOptions(buf []byte, offset flatbuffers.UOffsetT) *Options {
 	return x
 }
 
+func FinishOptionsBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsOptions(buf []byte, offset flatbuffers.UOffsetT) *Options {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &Options{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedOptionsBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *Options) Init(buf []byte, i flatbuffers.UOffsetT) {

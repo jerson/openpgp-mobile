@@ -17,11 +17,19 @@ func GetRootAsKeyPair(buf []byte, offset flatbuffers.UOffsetT) *KeyPair {
 	return x
 }
 
+func FinishKeyPairBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsKeyPair(buf []byte, offset flatbuffers.UOffsetT) *KeyPair {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &KeyPair{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedKeyPairBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *KeyPair) Init(buf []byte, i flatbuffers.UOffsetT) {
