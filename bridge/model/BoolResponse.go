@@ -17,11 +17,19 @@ func GetRootAsBoolResponse(buf []byte, offset flatbuffers.UOffsetT) *BoolRespons
 	return x
 }
 
+func FinishBoolResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsBoolResponse(buf []byte, offset flatbuffers.UOffsetT) *BoolResponse {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &BoolResponse{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedBoolResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *BoolResponse) Init(buf []byte, i flatbuffers.UOffsetT) {

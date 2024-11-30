@@ -20,11 +20,19 @@ func GetRootAsEntity(buf []byte, offset flatbuffers.UOffsetT) *Entity {
 	return x
 }
 
+func FinishEntityBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsEntity(buf []byte, offset flatbuffers.UOffsetT) *Entity {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &Entity{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedEntityBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *Entity) Init(buf []byte, i flatbuffers.UOffsetT) {

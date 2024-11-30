@@ -17,11 +17,19 @@ func GetRootAsGenerateRequest(buf []byte, offset flatbuffers.UOffsetT) *Generate
 	return x
 }
 
+func FinishGenerateRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsGenerateRequest(buf []byte, offset flatbuffers.UOffsetT) *GenerateRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &GenerateRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedGenerateRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *GenerateRequest) Init(buf []byte, i flatbuffers.UOffsetT) {

@@ -17,11 +17,19 @@ func GetRootAsFileHints(buf []byte, offset flatbuffers.UOffsetT) *FileHints {
 	return x
 }
 
+func FinishFileHintsBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsFileHints(buf []byte, offset flatbuffers.UOffsetT) *FileHints {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &FileHints{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedFileHintsBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *FileHints) Init(buf []byte, i flatbuffers.UOffsetT) {

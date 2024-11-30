@@ -17,11 +17,19 @@ func GetRootAsKeyPairResponse(buf []byte, offset flatbuffers.UOffsetT) *KeyPairR
 	return x
 }
 
+func FinishKeyPairResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsKeyPairResponse(buf []byte, offset flatbuffers.UOffsetT) *KeyPairResponse {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &KeyPairResponse{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedKeyPairResponseBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *KeyPairResponse) Init(buf []byte, i flatbuffers.UOffsetT) {

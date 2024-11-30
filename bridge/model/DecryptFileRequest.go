@@ -17,11 +17,19 @@ func GetRootAsDecryptFileRequest(buf []byte, offset flatbuffers.UOffsetT) *Decry
 	return x
 }
 
+func FinishDecryptFileRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.Finish(offset)
+}
+
 func GetSizePrefixedRootAsDecryptFileRequest(buf []byte, offset flatbuffers.UOffsetT) *DecryptFileRequest {
 	n := flatbuffers.GetUOffsetT(buf[offset+flatbuffers.SizeUint32:])
 	x := &DecryptFileRequest{}
 	x.Init(buf, n+offset+flatbuffers.SizeUint32)
 	return x
+}
+
+func FinishSizePrefixedDecryptFileRequestBuffer(builder *flatbuffers.Builder, offset flatbuffers.UOffsetT) {
+	builder.FinishSizePrefixed(offset)
 }
 
 func (rcv *DecryptFileRequest) Init(buf []byte, i flatbuffers.UOffsetT) {
