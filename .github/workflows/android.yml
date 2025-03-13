@@ -22,12 +22,12 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '23'
       - uses: android-actions/setup-android@v3
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r21d
+          ndk-version: r28
       - uses: actions/setup-go@v5
         with:
           go-version: '^1.23'
