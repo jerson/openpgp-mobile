@@ -42,8 +42,6 @@ func createBytesReturn(result []byte, err error) *C.BytesReturn {
 
 	if err != nil {
 		output.error = C.CString(err.Error())
-		output.message = nil
-		output.size = 0
 		return output
 	}
 	output.error = nil
