@@ -30,7 +30,7 @@ jobs:
           ndk-version: r28
       - uses: actions/setup-go@v5
         with:
-          go-version: '^1.23'
+          go-version: '^1.24'
       - name: Build
         run: make binding_android
         env:

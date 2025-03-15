@@ -16,14 +16,15 @@ env:
 
 jobs:
   binding:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: '^1.23'
+          go-version: '^1.24'
       - name: Build Go
-        run: ./go.sh 1.23.3 fastopenpgp
+        # this should match with go.mod version
+        run: ./go.sh 1.24.1 fastopenpgp
       - name: Build
         run: |
           export PATH="/tmp/go/bin:$PATH"
@@ -45,14 +46,15 @@ jobs:
           path: output.tar.gz
 
   xcframework:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: '^1.23'
+          go-version: '^1.24'
       - name: Build Go
-        run: ./go.sh 1.23.3 fastopenpgp
+        # this should match with go.mod version
+        run: ./go.sh 1.24.1 fastopenpgp
       - name: Build
         run: |
           export PATH="/tmp/go/bin:$PATH"
