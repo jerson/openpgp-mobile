@@ -23,11 +23,11 @@ jobs:
         with:
           go-version: '^1.24'
       - name: Build Go
-        # this should match with go.mod version
         run: ./go.sh 1.24.1 fastopenpgp
       - name: Build
         run: |
           export PATH="/tmp/go/bin:$PATH"
+          export GOTOOLCHAIN=local
           make binding_ios
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/ios .
@@ -53,11 +53,11 @@ jobs:
         with:
           go-version: '^1.24'
       - name: Build Go
-        # this should match with go.mod version
         run: ./go.sh 1.24.1 fastopenpgp
       - name: Build
         run: |
           export PATH="/tmp/go/bin:$PATH"
+          export GOTOOLCHAIN=local
           make binding_ios_xcframework
       - name: Compress
         run: tar -czvf output.tar.gz -C output/binding/ios .
