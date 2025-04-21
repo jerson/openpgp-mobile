@@ -16,6 +16,5 @@ jobs:
         with:
           generate_release_notes: true
           prerelease: ${{ contains(github.ref, '-rc') }}
-          draft: ${{ contains(github.ref, '-alpha') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
