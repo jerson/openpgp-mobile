@@ -17,12 +17,10 @@ jobs:
         id: changelog
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          onlyLastTag: true
-          stripGeneratorNotice: true
-          stripHeaders: true
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
+          prerelease: ${{ contains(github.ref, '-rc') }}
           body: |
             ${{ steps.changelog.outputs.changelog }}
