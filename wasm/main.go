@@ -1,11 +1,13 @@
+//go:build js && wasm
 // +build js,wasm
 
 package main
 
 import (
 	"errors"
-	openPGPBridge "github.com/jerson/openpgp-mobile/bridge"
 	"syscall/js"
+
+	openPGPBridge "github.com/jerson/openpgp-mobile/bridge"
 )
 
 func Promise(i []js.Value, fn func() (result interface{}, err error)) interface{} {

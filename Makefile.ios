@@ -1,6 +1,7 @@
 IOS_OUTPUT?=ios
 IOS_BINDING_OUTPUT?=$(BINDING_OUTPUT)/$(IOS_OUTPUT)
-IOS_BINDING_NAME?=$(BINDING_NAME).a
+IOS_BINDING_NAME?=Openpgp.a
+IOS_FRAMEWORK_NAME?=Openpgp
 
 binding_ios: binding_ios_arm64 binding_ios_x86_64_sim
 	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/$(IOS_BINDING_NAME)
@@ -8,26 +9,44 @@ binding_ios: binding_ios_arm64 binding_ios_x86_64_sim
 	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/x86_64_sim
 
 binding_ios_xcframework: binding_ios_all_iphone binding_ios_all_sim binding_ios_all_catalyst
-	mkdir -p $(IOS_BINDING_OUTPUT)/headers
-	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)/headers
-	rm -rf $(IOS_BINDING_OUTPUT)/Openpgp.xcframework
+	rm -rf $(IOS_BINDING_OUTPUT)/$(IOS_FRAMEWORK_NAME).xcframework
+
+	rm -rf $(IOS_BINDING_OUTPUT)/arm64_framework
+	mkdir -p $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+	cp $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/Openpgp
+	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+
+	rm -rf $(IOS_BINDING_OUTPUT)/sim_framework
+	mkdir -p $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+	cp $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework/$(IOS_FRAMEWORK_NAME)
+	cp $(IOS_BINDING_OUTPUT)/sim/*.h $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+
+	rm -rf $(IOS_BINDING_OUTPUT)/catalyst_framework
+	mkdir -p $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+	cp $(IOS_BINDING_OUTPUT)/catalyst/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework/$(IOS_FRAMEWORK_NAME)
+	cp $(IOS_BINDING_OUTPUT)/catalyst/*.h $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+
 	xcodebuild -create-xcframework \
-		-library $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
-		-library $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
-		-library $(IOS_BINDING_OUTPUT)/catalyst/$(IOS_BINDING_NAME) -headers $(IOS_BINDING_OUTPUT)/headers \
-		-output $(IOS_BINDING_OUTPUT)/Openpgp.xcframework
-	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/sim $(IOS_BINDING_OUTPUT)/catalyst $(IOS_BINDING_OUTPUT)/headers
+		-framework $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework \
+		-framework $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework \
+		-framework $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework \
+		-output $(IOS_BINDING_OUTPUT)/$(IOS_FRAMEWORK_NAME).xcframework
+
+	rm -rf $(IOS_BINDING_OUTPUT)/arm64 $(IOS_BINDING_OUTPUT)/sim $(IOS_BINDING_OUTPUT)/catalyst
+	rm -rf $(IOS_BINDING_OUTPUT)/arm64_framework $(IOS_BINDING_OUTPUT)/sim_framework $(IOS_BINDING_OUTPUT)/catalyst_framework $(IOS_BINDING_OUTPUT)/framework_headers
 
 binding_ios_all_iphone: binding_ios_arm64 
 
 binding_ios_all_sim: binding_ios_x86_64_sim binding_ios_arm64_sim
 	mkdir -p $(IOS_BINDING_OUTPUT)/sim
 	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_sim/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME)
+	cp $(IOS_BINDING_OUTPUT)/arm64_sim/*.h $(IOS_BINDING_OUTPUT)/sim
 	rm -rf $(IOS_BINDING_OUTPUT)/x86_64_sim $(IOS_BINDING_OUTPUT)/arm64_sim
 
 binding_ios_all_catalyst: binding_ios_x86_64_catalyst binding_ios_arm64_catalyst
 	mkdir -p $(IOS_BINDING_OUTPUT)/catalyst
 	lipo $(IOS_BINDING_OUTPUT)/x86_64_catalyst/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_catalyst/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/catalyst/$(IOS_BINDING_NAME)
+	cp $(IOS_BINDING_OUTPUT)/arm64_catalyst/*.h $(IOS_BINDING_OUTPUT)/catalyst
 	rm -rf $(IOS_BINDING_OUTPUT)/x86_64_catalyst $(IOS_BINDING_OUTPUT)/arm64_catalyst
 
 binding_ios_x86_64_catalyst:  
