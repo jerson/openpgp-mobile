@@ -11,16 +11,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
         with:
-          fetch-depth: 0
-      - uses: heinrichreimer/github-changelog-generator-action@v2
-        id: changelog
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
+          generate_release_notes: true
           prerelease: ${{ contains(github.ref, '-rc') }}
-          body: |
-            ${{ steps.changelog.outputs.changelog }}
+          draft: ${{ contains(github.ref, '-alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
