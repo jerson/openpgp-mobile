@@ -1,7 +1,7 @@
 IOS_OUTPUT?=ios
 IOS_BINDING_OUTPUT?=$(BINDING_OUTPUT)/$(IOS_OUTPUT)
-IOS_BINDING_NAME?=Openpgp.a
-IOS_FRAMEWORK_NAME?=Openpgp
+IOS_BINDING_NAME?=$(BINDING_NAME).a
+IOS_FRAMEWORK_NAME?=OpenPGPBridge
 
 binding_ios: binding_ios_arm64 binding_ios_x86_64_sim
 	lipo $(IOS_BINDING_OUTPUT)/x86_64_sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) -create -output $(IOS_BINDING_OUTPUT)/$(IOS_BINDING_NAME)
@@ -13,19 +13,24 @@ binding_ios_xcframework: binding_ios_all_iphone binding_ios_all_sim binding_ios_
 
 	rm -rf $(IOS_BINDING_OUTPUT)/arm64_framework
 	mkdir -p $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
-	cp $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/Openpgp
+	cp -r ios/framework-template/ $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework
+	cp $(IOS_BINDING_OUTPUT)/arm64/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/$(IOS_FRAMEWORK_NAME)
 	cp $(IOS_BINDING_OUTPUT)/arm64/*.h $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
 
 	rm -rf $(IOS_BINDING_OUTPUT)/sim_framework
 	mkdir -p $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+	cp -r ios/framework-template/ $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework
 	cp $(IOS_BINDING_OUTPUT)/sim/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework/$(IOS_FRAMEWORK_NAME)
 	cp $(IOS_BINDING_OUTPUT)/sim/*.h $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
 
 	rm -rf $(IOS_BINDING_OUTPUT)/catalyst_framework
 	mkdir -p $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
+	cp -r ios/framework-template/ $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework
 	cp $(IOS_BINDING_OUTPUT)/catalyst/$(IOS_BINDING_NAME) $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework/$(IOS_FRAMEWORK_NAME)
 	cp $(IOS_BINDING_OUTPUT)/catalyst/*.h $(IOS_BINDING_OUTPUT)/catalyst_framework/$(IOS_FRAMEWORK_NAME).framework/Headers
 
+	NAME=$(IOS_FRAMEWORK_NAME) HEADER_NAME=$(BINDING_NAME) ./ios/prepare-xcframework.sh $(IOS_BINDING_OUTPUT)
+	
 	xcodebuild -create-xcframework \
 		-framework $(IOS_BINDING_OUTPUT)/arm64_framework/$(IOS_FRAMEWORK_NAME).framework \
 		-framework $(IOS_BINDING_OUTPUT)/sim_framework/$(IOS_FRAMEWORK_NAME).framework \

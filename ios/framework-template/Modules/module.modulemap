@@ -1,0 +1,4 @@
+framework module "_NAME_" {
+	header "_HEADER_NAME_.h"
+  export *
+}
