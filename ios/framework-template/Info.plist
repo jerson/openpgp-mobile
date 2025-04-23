@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleExecutable</key>
+  <string>_NAME_</string>
+  <key>CFBundleIdentifier</key>
+  <string>_NAME_</string>
+  <key>MinimumOSVersion</key>
+  <string>100.0</string>
+  <key>CFBundleShortVersionString</key>
+  <string>_VERSION_</string>
+  <key>CFBundleVersion</key>
+  <string>_BUILD_NUMBER_</string>
+  <key>CFBundlePackageType</key>
+  <string>FMWK</string>
+</dict>
+</plist>
