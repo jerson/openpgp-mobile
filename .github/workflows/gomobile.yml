@@ -32,7 +32,7 @@ jobs:
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r21d
+          ndk-version: r23c
       - uses: actions/setup-go@v5
         with:
           go-version: '^1.24'
@@ -43,9 +43,6 @@ jobs:
           go get golang.org/x/mobile/cmd/gobind
           go get golang.org/x/mobile/cmd/gomobile
           gomobile init
-        env:
-          GOPROXY: https://proxy.golang.org,direct
-          GO111MODULE: "on"
       - name: Build
         run: make gomobile_android
         env:
@@ -81,9 +78,6 @@ jobs:
           go get golang.org/x/mobile/cmd/gobind
           go get golang.org/x/mobile/cmd/gomobile
           gomobile init
-        env:
-          GOPROXY: https://proxy.golang.org,direct
-          GO111MODULE: "on"
       - name: Build Framework
         run: make gomobile_ios
       - name: Compress Framework

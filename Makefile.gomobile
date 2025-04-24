@@ -10,7 +10,7 @@ gomobile:
 
 gomobile_bridge_android:
 	mkdir -p output/android
-	gomobile bind -ldflags="-w -s" -target=android -o output/android/$(GOMOBILE_BRIDGE_NAME).aar $(GOMOBILE_BRIDGE_PACKAGE)
+	gomobile bind -ldflags="-w -s -extldflags=-Wl,-z,max-page-size=16384" -target=android -o output/android/$(GOMOBILE_BRIDGE_NAME).aar $(GOMOBILE_BRIDGE_PACKAGE)
 
 gomobile_bridge_ios:
 	mkdir -p output/ios
@@ -18,7 +18,7 @@ gomobile_bridge_ios:
 
 gomobile_android:
 	mkdir -p output/android
-	gomobile bind -ldflags="-w -s" -target=android -o output/android/$(GOMOBILE_NAME).aar $(GOMOBILE_PACKAGE)
+	gomobile bind -ldflags="-w -s -extldflags=-Wl,-z,max-page-size=16384" -target=android -o output/android/$(GOMOBILE_NAME).aar $(GOMOBILE_PACKAGE)
 
 gomobile_ios:
 	mkdir -p output/ios
