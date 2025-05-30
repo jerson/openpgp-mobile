@@ -27,7 +27,7 @@ jobs:
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r28
+          ndk-version: r28b
       - uses: actions/setup-go@v5
         with:
           go-version: '^1.24'
